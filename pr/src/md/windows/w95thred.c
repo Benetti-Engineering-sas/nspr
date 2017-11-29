@@ -66,7 +66,7 @@ void _PR_MD_CLEANUP_BEFORE_EXIT(void)
             PR_Lock(_fd_waiting_for_overlapped_done_lock);
             cur = _fd_waiting_for_overlapped_done;
             PR_Unlock(_fd_waiting_for_overlapped_done_lock);
-#if define DO_NOT_WAIT_FOR_CONNECT_OVERLAPPED_OPERATIONS
+#if defined(DO_NOT_WAIT_FOR_CONNECT_OVERLAPPED_OPERATIONS)
             cur = NULL;
 #endif
             if (cur) {
