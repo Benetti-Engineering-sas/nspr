@@ -1095,8 +1095,6 @@ PR_IMPLEMENT(PRStatus) PR_Cleanup(void)
 
         _PR_MD_EARLY_CLEANUP();
 
-        _PR_CleanupErrorTables();
-
         _PR_CleanupMW();
         _PR_CleanupTime();
         _PR_CleanupDtoa();
@@ -1129,7 +1127,6 @@ PR_IMPLEMENT(PRStatus) PR_Cleanup(void)
 #ifdef _PR_ZONE_ALLOCATOR
         _PR_DestroyZones();
 #endif
-        _PR_CleanupTPD();
         _pr_initialized = PR_FALSE;
         return PR_SUCCESS;
     }

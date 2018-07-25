@@ -216,6 +216,8 @@ void _PR_InitLinker(void)
  */
 void _PR_ShutdownLinker(void)
 {
+    /* FIXME: pr_exe_loadmap should be destroyed. */
+    
     PR_DestroyMonitor(pr_linker_lock);
     pr_linker_lock = NULL;
 
@@ -223,9 +225,6 @@ void _PR_ShutdownLinker(void)
         free(_pr_currentLibPath);
         _pr_currentLibPath = NULL;
     }
-
-    free(pr_exe_loadmap->name);
-    PR_FREEIF(pr_exe_loadmap);
 }
 
 /******************************************************************************/

@@ -379,8 +379,6 @@ PR_IMPLEMENT(PRStatus) PR_Cleanup()
 
         _PR_MD_EARLY_CLEANUP();
 
-        _PR_CleanupErrorTables();
-
         _PR_CleanupMW();
         _PR_CleanupTime();
         _PR_CleanupDtoa();

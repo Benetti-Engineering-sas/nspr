@@ -1802,7 +1802,6 @@ extern void _PR_InitDtoa(void);
 extern void _PR_InitTime(void);
 extern void _PR_InitMW(void);
 extern void _PR_InitRWLocks(void);
-extern void _PR_CleanupErrorTables();
 extern void _PR_CleanupThread(PRThread *thread);
 extern void _PR_CleanupCallOnce(void);
 extern void _PR_CleanupMW(void);
