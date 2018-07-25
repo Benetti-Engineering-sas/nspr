@@ -72,6 +72,10 @@ void _PR_InitTPD(void)
 */
 void _PR_CleanupTPD(void)
 {
+    _pr_tpd_length = 0;
+    _pr_tpd_highwater = 0;
+    PR_FREEIF(_pr_tpd_destructors);
+    _pr_tpd_destructors = NULL;
 }  /* _PR_CleanupTPD */
 
 /*

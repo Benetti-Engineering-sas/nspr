@@ -181,6 +181,26 @@ PR_ErrorInstallTable(const struct PRErrorTable *table)
     return 0;
 }
 
+void
+_PR_CleanupErrorTables()
+{
+    struct PRErrorTableList *et;
+
+    et = Table_List;
+
+    while (et) {
+        struct PRErrorTableList *next_et;
+
+        next_et = et->next;
+
+        PR_FREEIF(et);
+
+        et = next_et;
+    }
+
+    Table_List = NULL;
+}
+
 PR_IMPLEMENT(void)
 PR_ErrorInstallCallback(const char * const * languages,
 		       PRErrorCallbackLookupFn *lookup, 
