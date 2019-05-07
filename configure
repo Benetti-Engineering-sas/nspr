@@ -2641,6 +2641,12 @@ fi
 
 
 case "$target" in
+x86_64-linux*-android*)
+    android_tool_prefix="x86_64-linux-android"
+    ;;
+aarch64-linux*-android*)
+    android_tool_prefix="aarch64-linux-android"
+    ;;
 arm-linux*-android*|*-linuxandroid*)
     android_tool_prefix="arm-linux-androideabi"
     ;;
