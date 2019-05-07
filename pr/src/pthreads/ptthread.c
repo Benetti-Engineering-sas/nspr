@@ -25,10 +25,6 @@
 #include <pthread_np.h>
 #endif
 
-#if defined(ANDROID)
-#include <sys/prctl.h>
-#endif
-
 #ifdef SYMBIAN
 /* In Open C sched_get_priority_min/max do not work properly, so we undefine
  * _POSIX_THREAD_PRIORITY_SCHEDULING here.
@@ -1637,8 +1633,6 @@ PR_IMPLEMENT(PRStatus) PR_SetCurrentThreadName(const char *name)
 
 #if defined(OPENBSD) || defined(FREEBSD) || defined(DRAGONFLY)
     pthread_set_name_np(thread->id, name);
-#elif defined(ANDROID)
-    prctl(PR_SET_NAME, (unsigned long)(name));
 #elif defined(NETBSD)
     result = pthread_setname_np(thread->id, "%s", (void *)name);
 #else /* not BSD */
