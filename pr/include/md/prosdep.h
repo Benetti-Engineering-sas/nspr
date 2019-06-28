@@ -55,9 +55,6 @@ PR_BEGIN_EXTERN_C
 #elif defined(LINUX) || defined(__GNU__) || defined(__GLIBC__)
 #include "md/_linux.h"
 
-#elif defined(OSF1)
-#include "md/_osf1.h"
-
 #elif defined(DARWIN)
 #include "md/_darwin.h"
 

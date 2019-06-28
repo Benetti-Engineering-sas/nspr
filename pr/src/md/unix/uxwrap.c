@@ -255,7 +255,7 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
                     nbits++;
                 }
                 PR_ASSERT(nbits > 0);
-#if defined(HPUX) || defined(SOLARIS) || defined(OSF1) || defined(AIX)
+#if defined(HPUX) || defined(SOLARIS) || defined(AIX)
                 retVal += nbits;
 #else /* IRIX */
                 retVal += 1;
@@ -303,7 +303,7 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
 int wrap_poll(void *listptr, unsigned long nfds, long timeout)
 #elif (defined(AIX) && !defined(AIX_RENAME_SELECT))
 int poll(void *listptr, unsigned long nfds, long timeout)
-#elif defined(OSF1) || (defined(HPUX) && !defined(HPUX9))
+#elif defined(HPUX) && !defined(HPUX9)
 int poll(struct pollfd filedes[], unsigned int nfds, int timeout)
 #elif defined(HPUX9)
 int poll(struct pollfd filedes[], int nfds, int timeout)

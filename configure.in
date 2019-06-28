@@ -458,10 +458,6 @@ if test -z "$CC"; then
         CC=cc
     ;;
 
-    *-osf*)
-        CC=cc
-    ;;
-
     *-solaris*)
         CC=cc
     ;;
@@ -501,10 +497,6 @@ if test -z "$CXX"; then
 
     *-irix*)
         CXX=CC
-    ;;
-
-    *-osf*)
-        CXX=cxx
     ;;
 
     *-solaris*)
@@ -1569,7 +1561,7 @@ tools are selected during the Xcode/Developer Tools installation.])
     AC_DEFINE(XP_UNIX)
     AC_DEFINE(HPUX)
     AC_DEFINE(_HPUX_SOURCE)
-    # OSF1 and HPUX report the POLLHUP event for a socket when the
+    # HPUX report the POLLHUP event for a socket when the
     # shutdown(SHUT_WR) operation is called for the remote end, even though
     # the socket is still writeable. Use select(), instead of poll(), to
     # workaround this problem.
@@ -2177,47 +2169,6 @@ tools are selected during the Xcode/Developer Tools installation.])
     fi
     DSO_LDOPTS='-shared -fPIC -Wl,-soname,$(notdir $@)'
     MKSHLIB='$(CC) $(DSO_LDOPTS) -o $@'
-    ;;
-
-*-osf*)
-    SHELL_OVERRIDE="SHELL		= /usr/bin/ksh"
-    AC_DEFINE(XP_UNIX)
-    AC_DEFINE(OSF1)
-    AC_DEFINE(_REENTRANT)
-    # OSF1 and HPUX report the POLLHUP event for a socket when the
-    # shutdown(SHUT_WR) operation is called for the remote end, even though
-    # the socket is still writeable. Use select(), instead of poll(), to
-    # workaround this problem.
-    AC_DEFINE(_PR_POLL_WITH_SELECT)
-
-    if echo "$OS_RELEASE" | egrep -c '(V2.0|V3.2)' 2>/dev/null ; then
-        USE_NSPR_THREADS=1
-    fi
-
-    if test -z "$GNU_CC"; then
-        CC="$CC -std1 -ieee_with_inexact"
-        if test "$OS_RELEASE" != "V2.0"; then
-            CC="$CC -readonly_strings"
-        fi
-        _OPTIMIZE_FLAGS="$_OPTIMIZE_FLAGS -Olimit 4000"
-        AC_CHECK_HEADER(machine/builtins.h, AC_DEFINE(OSF1_HAVE_MACHINE_BUILTINS_H))
-    else
-        CFLAGS="$CFLAGS -mieee"
-        CXXFLAGS="$CXXFLAGS -mieee"
-    fi
-
-    if echo $OS_RELEASE | egrep -c '(V2.0|V3.2)' 2>/dev/null; then
-        AC_DEFINE(HAVE_INT_LOCALTIME_R)
-    else
-        AC_DEFINE(HAVE_FCNTL_FILE_LOCKING)
-        AC_DEFINE(HAVE_POINTER_LOCALTIME_R)
-    fi
-    if echo $OS_RELEASE | grep -c V4.0 >/dev/null; then
-        AC_DEFINE(OSF1V4_MAP_PRIVATE_BUG)
-    fi
-    DSO_LDOPTS='-shared -all -expect_unresolved "*" -soname $(notdir $@)'
-    MDCPUCFG_H=_osf1.cfg
-    PR_MD_CSRCS=osf1.c
     ;;
 
 *-qnx*)
@@ -2912,18 +2863,6 @@ case "$target" in
 *-netbsd*|*-openbsd*)
     if test -n "$USE_NSPR_THREADS"; then
         AC_DEFINE(_PR_LOCAL_THREADS_ONLY)
-    fi
-    ;;
-*-osf*)
-    if test -n "$USE_NSPR_THREADS"; then
-        AC_DEFINE(_PR_LOCAL_THREADS_ONLY)
-    fi
-    if test -n "$USE_PTHREADS"; then
-        if echo $OS_RELEASE | egrep -c '(V2.0|V3.2)' 2>/dev/null; then
-            :
-        else
-            AC_DEFINE(_PR_HAVE_THREADSAFE_GETHOST)
-        fi
     fi
     ;;
 *-solaris*)

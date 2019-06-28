@@ -178,7 +178,7 @@ static PRBool _pr_ipv6_v6only_on_by_default;
 #elif defined(AIX4_1)
 #define _PRSelectFdSetArg_t void *
 #elif defined(IRIX) || (defined(AIX) && !defined(AIX4_1)) \
-    || defined(OSF1) || defined(SOLARIS) \
+    || defined(SOLARIS) \
     || defined(HPUX10_30) || defined(HPUX11) \
     || defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
     || defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
@@ -403,7 +403,7 @@ PR_IMPLEMENT(void) PT_FPrintStats(PRFileDesc *debug_out, const char *msg)
 
 #if defined(_PR_POLL_WITH_SELECT)
 /*
- * OSF1 and HPUX report the POLLHUP event for a socket when the
+ * HPUX report the POLLHUP event for a socket when the
  * shutdown(SHUT_WR) operation is called for the remote end, even though
  * the socket is still writeable. Use select(), instead of poll(), to
  * workaround this problem.
@@ -1254,26 +1254,8 @@ static PRStatus pt_Close(PRFileDesc *fd)
     {
         if (-1 == close(fd->secret->md.osfd))
         {
-#ifdef OSF1
-            /*
-             * Bug 86941: On Tru64 UNIX V5.0A and V5.1, the close()
-             * system call, when called to close a TCP socket, may
-             * return -1 with errno set to EINVAL but the system call
-             * does close the socket successfully.  An application
-             * may safely ignore the EINVAL error.  This bug is fixed
-             * on Tru64 UNIX V5.1A and later.  The defect tracking
-             * number is QAR 81431.
-             */
-            if (PR_DESC_SOCKET_TCP != fd->methods->file_type
-            || EINVAL != errno)
-            {
-                pt_MapError(_PR_MD_MAP_CLOSE_ERROR, errno);
-                return PR_FAILURE;
-            }
-#else
             pt_MapError(_PR_MD_MAP_CLOSE_ERROR, errno);
             return PR_FAILURE;
-#endif
         }
         fd->secret->state = _PR_FILEDESC_CLOSED;
     }
@@ -3352,7 +3334,7 @@ static PRIOMethods _pr_socketpollfd_methods = {
     (PRReservedFN)_PR_InvalidInt
 };
 
-#if defined(HPUX) || defined(OSF1) || defined(SOLARIS) || defined (IRIX) \
+#if defined(HPUX) || defined(SOLARIS) || defined (IRIX) \
     || defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
     || defined(AIX) || defined(FREEBSD) || defined(NETBSD) \
     || defined(OPENBSD) || defined(BSDI) || defined(NTO) \
@@ -4106,7 +4088,7 @@ retry:
 
 #if defined(_PR_POLL_WITH_SELECT)
 /*
- * OSF1 and HPUX report the POLLHUP event for a socket when the
+ * HPUX report the POLLHUP event for a socket when the
  * shutdown(SHUT_WR) operation is called for the remote end, even though
  * the socket is still writeable. Use select(), instead of poll(), to
  * workaround this problem.

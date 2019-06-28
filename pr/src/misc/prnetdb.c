@@ -29,8 +29,7 @@ extern int h_errno;
  * The meaning of the macros related to gethostbyname, gethostbyaddr,
  * and gethostbyname2 is defined below.
  * - _PR_HAVE_THREADSAFE_GETHOST: the gethostbyXXX functions return
- *   the result in thread specific storage.  For example, AIX, HP-UX,
- *   and OSF1.
+ *   the result in thread specific storage.  For example, AIX, HP-UX.
  * -  _PR_HAVE_GETHOST_R: have the gethostbyXXX_r functions. See next
  *   two macros.
  * - _PR_HAVE_GETHOST_R_INT: the gethostbyXXX_r functions return an
@@ -72,8 +71,7 @@ PRLock *_pr_dnsLock = NULL;
 #define _PR_HAVE_GETPROTO_R_POINTER
 #endif
 
-#if defined(OSF1) \
-        || defined(AIX4_3_PLUS) || (defined(AIX) && defined(_THREAD_SAFE)) \
+#if defined(AIX4_3_PLUS) || (defined(AIX) && defined(_THREAD_SAFE)) \
 	|| (defined(HPUX10_10) && defined(_REENTRANT)) \
         || (defined(HPUX10_20) && defined(_REENTRANT)) \
         || defined(OPENBSD)

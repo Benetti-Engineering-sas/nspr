@@ -41,7 +41,7 @@
 #if defined(HAVE_SOCKLEN_T) \
     || (defined(__GLIBC__) && __GLIBC__ >= 2)
 #define _PRSockLen_t socklen_t
-#elif defined(IRIX) || defined(HPUX) || defined(OSF1) || defined(SOLARIS) \
+#elif defined(IRIX) || defined(HPUX) || defined(SOLARIS) \
     || defined(AIX4_1) || defined(LINUX) \
     || defined(BSDI) || defined(SCO) \
     || defined(DARWIN) \
@@ -2735,28 +2735,6 @@ mmap64(void *addr, size_t len, int prot, int flags, int fd, loff_t offset)
 }
 #endif
 
-#if defined(OSF1) && defined(__GNUC__)
-
-/*
- * On OSF1 V5.0A, <sys/stat.h> defines stat and fstat as
- * macros when compiled under gcc, so it is rather tricky to
- * take the addresses of the real functions the macros expend
- * to.  A simple solution is to define forwarder functions
- * and take the addresses of the forwarder functions instead.
- */
-
-static int stat_forwarder(const char *path, struct stat *buffer)
-{
-    return stat(path, buffer);
-}
-
-static int fstat_forwarder(int filedes, struct stat *buffer)
-{
-    return fstat(filedes, buffer);
-}
-
-#endif
-
 static void _PR_InitIOV(void)
 {
 #if defined(SOLARIS2_5)
@@ -2811,13 +2789,8 @@ static void _PR_InitIOV(void)
 #elif defined(_PR_HAVE_LARGE_OFF_T)
     _md_iovector._open64 = open;
     _md_iovector._mmap64 = mmap;
-#if defined(OSF1) && defined(__GNUC__)
-    _md_iovector._fstat64 = fstat_forwarder;
-    _md_iovector._stat64 = stat_forwarder;
-#else
     _md_iovector._fstat64 = fstat;
     _md_iovector._stat64 = stat;
-#endif
     _md_iovector._lseek64 = lseek;
 #else
 #error "I don't know yet"
@@ -3569,14 +3542,9 @@ PRStatus _MD_CreateFileMap(PRFileMap *fmap, PRInt64 size)
     }
     if (fmap->prot == PR_PROT_READONLY) {
         fmap->md.prot = PROT_READ;
-#if defined(OSF1V4_MAP_PRIVATE_BUG) || defined(DARWIN) || defined(ANDROID)
+#if defined(DARWIN) || defined(ANDROID)
         /*
-         * Use MAP_SHARED to work around a bug in OSF1 V4.0D
-         * (QAR 70220 in the OSF_QAR database) that results in
-         * corrupted data in the memory-mapped region.  This
-         * bug is fixed in V5.0.
-         *
-         * This is also needed on OS X because its implementation of
+         * This is needed on OS X because its implementation of
          * POSIX shared memory returns an error for MAP_PRIVATE, even
          * when the mapping is read-only.
          *

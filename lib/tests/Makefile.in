@@ -85,10 +85,6 @@ ifeq (,$(filter-out OpenBSD,$(OS_ARCH)))
     endif
 endif
 
-ifeq ($(OS_ARCH), OSF1)
-LDOPTS += -rpath $(PWD)/$(dist_libdir) -lpthread
-endif
-
 ifeq ($(OS_ARCH), HP-UX)
 LDOPTS += -Wl,+s,+b,$(PWD)/$(dist_libdir)
 endif

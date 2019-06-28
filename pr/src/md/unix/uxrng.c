@@ -54,28 +54,6 @@ GetHighResClock(void *buf, size_t maxbytes)
 }
 #endif
 
-#elif defined(OSF1)
-
-#include <c_asm.h>
-
-/*
- * Use the "get the cycle counter" instruction on the alpha.
- * The low 32 bits completely turn over in less than a minute.
- * The high 32 bits are some non-counter gunk that changes sometimes.
- */
-static size_t
-GetHighResClock(void *buf, size_t maxbytes)
-{
-    unsigned long t;
-
-#ifdef __GNUC__
-    __asm__("rpcc %0" : "=r" (t));
-#else
-    t = asm("rpcc %v0");
-#endif
-    return _pr_CopyLowBits(buf, maxbytes, &t, sizeof(t));
-}
-
 #elif defined(AIX)
 
 static size_t

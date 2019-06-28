@@ -38,10 +38,6 @@
 #define L_IGNOREUNLOAD 0x10000000
 #endif
 #endif
-#ifdef OSF1
-#include <loader.h>
-#include <rld_interface.h>
-#endif
 #elif defined(USE_HPSHL)
 #include <dl.h>
 #elif defined(USE_MACH_DYLD)
@@ -1425,74 +1421,6 @@ PR_GetLibraryFilePathname(const char *name, PRFuncPtr addr)
     }
     PR_Free(info);
     return result;
-#elif defined(OSF1)
-    /* Contributed by Steve Streeter of HP */
-    ldr_process_t process, ldr_my_process();
-    ldr_module_t mod_id;
-    ldr_module_info_t info;
-    ldr_region_t regno;
-    ldr_region_info_t reginfo;
-    size_t retsize;
-    int rv;
-    char *result;
-
-    /* Get process for which dynamic modules will be listed */
-
-    process = ldr_my_process();
-
-    /* Attach to process */
-
-    rv = ldr_xattach(process);
-    if (rv) {
-        /* should not happen */
-        _PR_MD_MAP_DEFAULT_ERROR(_MD_ERRNO());
-        return NULL;
-    }
-
-    /* Print information for list of modules */
-
-    mod_id = LDR_NULL_MODULE;
-
-    for (;;) {
-
-        /* Get information for the next module in the module list. */
-
-        ldr_next_module(process, &mod_id);
-        if (ldr_inq_module(process, mod_id, &info, sizeof(info),
-                           &retsize) != 0) {
-            /* No more modules */
-            break;
-        }
-        if (retsize < sizeof(info)) {
-            continue;
-        }
-
-        /*
-         * Get information for each region in the module and check if any
-         * contain the address of this function.
-         */
-
-        for (regno = 0; ; regno++) {
-            if (ldr_inq_region(process, mod_id, regno, &reginfo,
-                               sizeof(reginfo), &retsize) != 0) {
-                /* No more regions */
-                break;
-            }
-            if (((unsigned long)reginfo.lri_mapaddr <=
-                (unsigned long)addr) &&
-                (((unsigned long)reginfo.lri_mapaddr + reginfo.lri_size) >
-                (unsigned long)addr)) {
-                /* Found it. */
-                result = PR_Malloc(strlen(info.lmi_name)+1);
-                if (result != NULL) {
-                    strcpy(result, info.lmi_name);
-                }
-                return result;
-            }
-        }
-    }
-    PR_SetError(PR_LIBRARY_NOT_LOADED_ERROR, 0);
-    return NULL;
 #elif defined(HPUX) && defined(USE_HPSHL)
     int index;
     struct shl_descriptor desc;

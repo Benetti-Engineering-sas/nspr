@@ -70,7 +70,7 @@ struct sockaddr_dl;
  * Prototypes of ntohl() etc. are declared in <machine/endian.h>
  * on these platforms.
  */
-#if defined(BSDI) || defined(OSF1)
+#if defined(BSDI)
 #include <machine/endian.h>
 #endif
 

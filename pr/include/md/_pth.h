@@ -84,7 +84,7 @@
  *   PR_EnterMonitor calls any of these functions, infinite
  *   recursion ensues.
  */
-#if defined(IRIX) || defined(OSF1) || defined(AIX) || defined(SOLARIS) \
+#if defined(IRIX) || defined(AIX) || defined(SOLARIS) \
 	|| defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
 	|| defined(HPUX) || defined(FREEBSD) \
 	|| defined(NETBSD) || defined(OPENBSD) || defined(BSDI) \
@@ -120,10 +120,7 @@
 #define PT_NO_SIGTIMEDWAIT
 #endif
 
-#if defined(OSF1)
-#define PT_PRIO_MIN            PRI_OTHER_MIN
-#define PT_PRIO_MAX            PRI_OTHER_MAX
-#elif defined(IRIX)
+#if defined(IRIX)
 #include <sys/sched.h>
 #define PT_PRIO_MIN            PX_PRIO_MIN
 #define PT_PRIO_MAX            PX_PRIO_MAX
@@ -177,13 +174,7 @@
  * Needed for garbage collection -- Look at PR_Suspend/PR_Resume
  * implementation.
  */
-#if defined(OSF1)
-/*
- * sched_yield can't be called from a signal handler.  Must use
- * the _np version.
- */
-#define _PT_PTHREAD_YIELD()            	pthread_yield_np()
-#elif defined(AIX)
+#if defined(AIX)
 extern int (*_PT_aix_yield_fcn)();
 #define _PT_PTHREAD_YIELD()			(*_PT_aix_yield_fcn)()
 #elif defined(IRIX)

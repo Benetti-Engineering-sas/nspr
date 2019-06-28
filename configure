@@ -2988,10 +2988,6 @@ if test -z "$CC"; then
         CC=cc
     ;;
 
-    *-osf*)
-        CC=cc
-    ;;
-
     *-solaris*)
         CC=cc
     ;;
@@ -3026,10 +3022,6 @@ if test -z "$CXX"; then
 
     *-irix*)
         CXX=CC
-    ;;
-
-    *-osf*)
-        CXX=cxx
     ;;
 
     *-solaris*)
@@ -3888,15 +3880,6 @@ static char *f (char * (*g) (char **, int), char **p, ...)
   va_end (v);
   return s;
 }
-
-/* OSF 4.0 Compaq cc is some sort of almost-ANSI by default.  It has
-   function prototypes and stuff, but not '\xHH' hex character constants.
-   These don't provoke an error unfortunately, instead are silently treated
-   as 'x'.  The following induces an error, until -std is added to get
-   proper ANSI mode.  Curiously '\x00'!='x' always comes out true, for an
-   array size at least.  It's necessary to write '\x00'==0 to get something
-   that's true only with -std.  */
-int osf4_cc_array ['\x00' == 0 ? 1 : -1];
 
 /* IBM C 6 for AIX is almost-ANSI by default, but it replaces macro parameters
    inside strings and character constants.  */
@@ -6730,7 +6713,7 @@ tools are selected during the Xcode/Developer Tools installation." "$LINENO" 5
 
     $as_echo "#define _HPUX_SOURCE 1" >>confdefs.h
 
-    # OSF1 and HPUX report the POLLHUP event for a socket when the
+    # HPUX report the POLLHUP event for a socket when the
     # shutdown(SHUT_WR) operation is called for the remote end, even though
     # the socket is still writeable. Use select(), instead of poll(), to
     # workaround this problem.
@@ -7391,61 +7374,6 @@ $as_echo "$as_me: WARNING: Unknown version of the Microsoft (R) Manifest Tool." 
     fi
     DSO_LDOPTS='-shared -fPIC -Wl,-soname,$(notdir $@)'
     MKSHLIB='$(CC) $(DSO_LDOPTS) -o $@'
-    ;;
-
-*-osf*)
-    SHELL_OVERRIDE="SHELL		= /usr/bin/ksh"
-    $as_echo "#define XP_UNIX 1" >>confdefs.h
-
-    $as_echo "#define OSF1 1" >>confdefs.h
-
-    $as_echo "#define _REENTRANT 1" >>confdefs.h
-
-    # OSF1 and HPUX report the POLLHUP event for a socket when the
-    # shutdown(SHUT_WR) operation is called for the remote end, even though
-    # the socket is still writeable. Use select(), instead of poll(), to
-    # workaround this problem.
-    $as_echo "#define _PR_POLL_WITH_SELECT 1" >>confdefs.h
-
-
-    if echo "$OS_RELEASE" | egrep -c '(V2.0|V3.2)' 2>/dev/null ; then
-        USE_NSPR_THREADS=1
-    fi
-
-    if test -z "$GNU_CC"; then
-        CC="$CC -std1 -ieee_with_inexact"
-        if test "$OS_RELEASE" != "V2.0"; then
-            CC="$CC -readonly_strings"
-        fi
-        _OPTIMIZE_FLAGS="$_OPTIMIZE_FLAGS -Olimit 4000"
-        ac_fn_c_check_header_mongrel "$LINENO" "machine/builtins.h" "ac_cv_header_machine_builtins_h" "$ac_includes_default"
-if test "x$ac_cv_header_machine_builtins_h" = xyes; then :
-  $as_echo "#define OSF1_HAVE_MACHINE_BUILTINS_H 1" >>confdefs.h
-
-fi
-
-
-    else
-        CFLAGS="$CFLAGS -mieee"
-        CXXFLAGS="$CXXFLAGS -mieee"
-    fi
-
-    if echo $OS_RELEASE | egrep -c '(V2.0|V3.2)' 2>/dev/null; then
-        $as_echo "#define HAVE_INT_LOCALTIME_R 1" >>confdefs.h
-
-    else
-        $as_echo "#define HAVE_FCNTL_FILE_LOCKING 1" >>confdefs.h
-
-        $as_echo "#define HAVE_POINTER_LOCALTIME_R 1" >>confdefs.h
-
-    fi
-    if echo $OS_RELEASE | grep -c V4.0 >/dev/null; then
-        $as_echo "#define OSF1V4_MAP_PRIVATE_BUG 1" >>confdefs.h
-
-    fi
-    DSO_LDOPTS='-shared -all -expect_unresolved "*" -soname $(notdir $@)'
-    MDCPUCFG_H=_osf1.cfg
-    PR_MD_CSRCS=osf1.c
     ;;
 
 *-qnx*)
@@ -8504,20 +8432,6 @@ _ACEOF
     if test -n "$USE_NSPR_THREADS"; then
         $as_echo "#define _PR_LOCAL_THREADS_ONLY 1" >>confdefs.h
 
-    fi
-    ;;
-*-osf*)
-    if test -n "$USE_NSPR_THREADS"; then
-        $as_echo "#define _PR_LOCAL_THREADS_ONLY 1" >>confdefs.h
-
-    fi
-    if test -n "$USE_PTHREADS"; then
-        if echo $OS_RELEASE | egrep -c '(V2.0|V3.2)' 2>/dev/null; then
-            :
-        else
-            $as_echo "#define _PR_HAVE_THREADSAFE_GETHOST 1" >>confdefs.h
-
-        fi
     fi
     ;;
 *-solaris*)
