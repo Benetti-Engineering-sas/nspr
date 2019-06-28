@@ -208,7 +208,7 @@ PR_IMPLEMENT(PRInt32) PR_GetNumberOfProcessors( void )
         numCpus = -1; /* set to -1 for return value on error */
         _PR_MD_MAP_DEFAULT_ERROR( _MD_ERRNO() );
     }
-#elif defined(RISCOS) || defined(SYMBIAN)
+#elif defined(RISCOS)
     numCpus = 1;
 #elif defined(LINUX)
     /* for the benefit of devices with advanced power-saving, that

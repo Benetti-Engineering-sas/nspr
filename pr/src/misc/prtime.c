@@ -1722,7 +1722,7 @@ PR_FormatTime(char *buf, int buflen, const char *fmt,
 
 #if (__GLIBC__ >= 2) || defined(XP_BEOS) \
         || defined(NETBSD) || defined(OPENBSD) || defined(FREEBSD) \
-        || defined(DARWIN) || defined(SYMBIAN) || defined(ANDROID)
+        || defined(DARWIN) || defined(ANDROID)
         a.tm_zone = NULL;
         a.tm_gmtoff = time->tm_params.tp_gmt_offset +
                       time->tm_params.tp_dst_offset;

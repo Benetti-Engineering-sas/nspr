@@ -2527,11 +2527,7 @@ PRInt32 _MD_getopenfileinfo64(const PRFileDesc *fd, PRFileInfo64 *info)
  * initialized by _PR_MD_FINAL_INIT.  This means the log file cannot be a
  * large file on some platforms.
  */
-#ifdef SYMBIAN
-struct _MD_IOVector _md_iovector; /* Will crash if NSPR_LOG_FILE is set. */
-#else
 struct _MD_IOVector _md_iovector = { open };
-#endif
 
 /*
 ** These implementations are to emulate large file routines on systems that

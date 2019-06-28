@@ -623,7 +623,6 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 MT
 NEXT_ROOT
-SYMBIAN_SDK_DIR
 MACOS_SDK_DIR
 WRAP_SYSTEM_INCLUDES
 VISIBILITY_FLAGS
@@ -792,7 +791,6 @@ enable_optimize
 enable_debug
 enable_debug_symbols
 enable_win32_target
-enable_symbian_target
 enable_debug_rtl
 enable_static_rtl
 enable_n32
@@ -811,7 +809,6 @@ with_arch
 with_fpu
 with_float_abi
 with_soft_float
-with_symbian_sdk
 with_ccache
 enable_strip
 with_pthreads
@@ -1453,8 +1450,6 @@ Optional Features:
                                        (using compiler flags DBG)
   --enable-win32-target=\$t
                           Specify win32 flavor. (WIN95 or WINNT)
-  --enable-symbian-target=\$t
-                          Specify symbian flavor. (WINSCW or GCCE)
   --enable-debug-rtl      Use the MSVC debug runtime library
   --enable-static-rtl     Use the MSVC static runtime library
   --enable-x32            Enable x32 ABI support (x86_64 only)
@@ -1505,8 +1500,6 @@ Optional Packages:
                            Use specific arm float ABI (-mfloat-abi=type)
   --with-soft-float[=yes|no|toolchain-default]
                            Use soft float library (-msoft-float)
-  --with-symbian-sdk=SYMBIAN_SDK_DIR
-                          The path to the Symbian SDK
   --with-ccache=path/to/ccache
                           Enable compiling with ccache
   --with-pthreads         Use system pthreads library as thread subsystem
@@ -2859,11 +2852,6 @@ if test "${enable_win32_target+set}" = set; then :
   enableval=$enable_win32_target; OS_TARGET=`echo $enableval | tr a-z A-Z`
 fi
 
-
-# Check whether --enable-symbian-target was given.
-if test "${enable_symbian_target+set}" = set; then :
-  enableval=$enable_symbian_target; OS_TARGET=`echo $enableval | tr a-z A-Z`
-fi
 
 
 # Check whether --enable-debug-rtl was given.
@@ -7476,94 +7464,6 @@ $as_echo "$as_me: WARNING: Unknown version of the Microsoft (R) Manifest Tool." 
     PR_MD_CSRCS=unixware.c
     DSO_LDOPTS=-G
     CPU_ARCH=x86
-    ;;
-
-*-symbian*)
-
-# Check whether --with-symbian-sdk was given.
-if test "${with_symbian_sdk+set}" = set; then :
-  withval=$with_symbian_sdk; SYMBIAN_SDK_DIR=$withval
-fi
-
-
-    echo -----------------------------------------------------------------------------
-    echo Building with Symbian SDK in: $SYMBIAN_SDK_DIR
-    echo -----------------------------------------------------------------------------
-
-    $as_echo "#define XP_UNIX 1" >>confdefs.h
-
-    $as_echo "#define SYMBIAN 1" >>confdefs.h
-
-    $as_echo "#define __arm__ 1" >>confdefs.h
-
-    $as_echo "#define __SYMBIAN32__ 1" >>confdefs.h
-
-    $as_echo "#define _UNICODE 1" >>confdefs.h
-
-    $as_echo "#define NDEBUG 1" >>confdefs.h
-
-    $as_echo "#define __SUPPORT_CPP_EXCEPTIONS__ 1" >>confdefs.h
-
-    $as_echo "#define MOZ_STDERR_TO_STDOUT 1" >>confdefs.h
-
-    $as_echo "#define HAVE_FCNTL_FILE_LOCKING 1" >>confdefs.h
-
-    $as_echo "#define HAVE_SOCKLEN_T 1" >>confdefs.h
-
-    USE_PTHREADS=1
-    LIB_SUFFIX=lib
-    DLL_SUFFIX=dll
-    MKSHLIB=
-    DSO_LDOPTS=
-    DSO_CFLAGS=
-    VISIBILITY_FLAGS=
-    MDCPUCFG_H=_symbian.cfg
-    PR_MD_CSRCS=symbian.c
-    NSINSTALL=nsinstall
-    RANLIB='echo no ranlib '
-    CPU_ARCH=ARM
-    OS_ARCH=SYMBIAN
-    OS_EXE_CFLAGS="$OS_EXE_CFLAGS -D__EXE__"
-    CFLAGS="$CFLAGS -MD -nostdinc"
-    SYMBIAN_SYS_INCLUDE="-I$SYMBIAN_SDK_DIR/Epoc32/include/variant -I$SYMBIAN_SDK_DIR/Epoc32/include -I$SYMBIAN_SDK_DIR/Epoc32/include/stdapis"
-    echo -------------------------------------------------------
-    echo SYMBIAN_SYS_INCLUDE is: $SYMBIAN_SYS_INCLUDE
-    echo -------------------------------------------------------
-    case "$OS_TARGET" in
-    WINSCW)
-        CC=mwccsym2.exe
-        CXX=mwccsym2.exe
-        LD=mwldsym2.exe
-        AR=mwldsym2.exe
-        WINSCW_LD_DIR="\$(SYMBIAN_SDK_DIR)/EPOC32/RELEASE/WINSCW/UDEB"
-        CFLAGS="$CFLAGS -O0 -inline off -wchar_t off -align 4 -warnings on -w nohidevirtual,nounusedexpr -msgstyle gcc -enum int -str pool -exc ms -trigraphs on -nostderr -gccdep -cwd source -i- -I\$(VPATH)"
-        SYMBIAN_SYS_INCLUDE="$SYMBIAN_SYS_INCLUDE -include Symbian_OS_v9.2.hrh"
-        AR_FLAGS="-library -msgstyle gcc -stdlib -subsystem windows -noimplib -o \$@"
-        $as_echo "#define _DEBUG 1" >>confdefs.h
-
-        $as_echo "#define __CW32__ 1" >>confdefs.h
-
-        $as_echo "#define __WINS__ 1" >>confdefs.h
-
-        $as_echo "#define __WINSCW__ 1" >>confdefs.h
-
-        DEFINES="$DEFINES -U_WIN32"
-	    ;;
-    GCCE)
-        CFLAGS="$CFLAGS -Wall -Wno-unknown-pragmas -fexceptions -march=armv5t -mapcs -pipe -x c -msoft-float"
-        CXXFLAGS="$CXXFLAGS $CFLAGS -Wno-ctor-dtor-privacy"
-        SYMBIAN_SYS_INCLUDE="$SYMBIAN_SYS_INCLUDE -include $SYMBIAN_SDK_DIR/EPOC32/INCLUDE/GCCE/GCCE.h"
-        $as_echo "#define __GCCE__ 1" >>confdefs.h
-
-        $as_echo "#define __EABI__ 1" >>confdefs.h
-
-        DEFINES="$DEFINES -D__PRODUCT_INCLUDE__=$SYMBIAN_SDK_DIR/Epoc32/include/variant/Symbian_OS_v9.2.hrh"
-	    ;;
-    *)
-	    as_fn_error $? "Missing OS_TARGET for ${target}. Set --enable-symbian-target to with 'WINSCW' or 'GCCE'." "$LINENO" 5
-   	;;
-    esac
-    CFLAGS="$CFLAGS ${SYMBIAN_SYS_INCLUDE}"
     ;;
 
 *-os2*)

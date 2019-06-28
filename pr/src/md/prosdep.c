@@ -31,7 +31,7 @@ static void GetPageSize(void)
 #if defined BSDI || defined AIX \
         || defined LINUX || defined __GNU__ || defined __GLIBC__ \
         || defined FREEBSD || defined NETBSD || defined OPENBSD \
-        || defined DARWIN || defined SYMBIAN
+        || defined DARWIN
     _pr_pageSize = getpagesize();
 #elif defined(HPUX)
     /* I have no idea. Don't get me started. --Rob */

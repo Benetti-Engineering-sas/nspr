@@ -29,13 +29,6 @@
 #include <sys/prctl.h>
 #endif
 
-#ifdef SYMBIAN
-/* In Open C sched_get_priority_min/max do not work properly, so we undefine
- * _POSIX_THREAD_PRIORITY_SCHEDULING here.
- */
-#undef _POSIX_THREAD_PRIORITY_SCHEDULING
-#endif
-
 #ifdef _PR_NICE_PRIORITY_SCHEDULING
 #undef _POSIX_THREAD_PRIORITY_SCHEDULING
 #include <sys/resource.h>
@@ -1186,7 +1179,6 @@ static void null_signal_handler(PRIntn sig);
  */
 static void init_pthread_gc_support(void)
 {
-#ifndef SYMBIAN
     PRIntn rv;
 
 	{
@@ -1216,7 +1208,6 @@ static void init_pthread_gc_support(void)
 	    PR_ASSERT(0 ==rv); 
     }
 #endif  /* defined(PT_NO_SIGTIMEDWAIT) */
-#endif /* SYMBIAN */
 }
 
 PR_IMPLEMENT(void) PR_SetThreadGCAble(void)
@@ -1362,8 +1353,7 @@ static void suspend_signal_handler(PRIntn sig)
 	{
 #if !defined(FREEBSD) && !defined(NETBSD) && !defined(OPENBSD) \
     && !defined(BSDI) && !defined(UNIXWARE) \
-    && !defined(DARWIN) && !defined(RISCOS) \
-    && !defined(SYMBIAN) /*XXX*/
+    && !defined(DARWIN) && !defined(RISCOS)
         PRIntn rv;
 	    sigwait(&sigwait_set, &rv);
 #endif
@@ -1407,12 +1397,7 @@ static void pt_SuspendSet(PRThread *thred)
     PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
 	   ("doing pthread_kill in pt_SuspendSet thred %p tid = %X\n",
 	   thred, thred->id));
-#if defined(SYMBIAN)
-    /* All signal group functions are not implemented in Symbian OS */
-    rv = 0;
-#else
     rv = pthread_kill (thred->id, SIGUSR2);
-#endif
     PR_ASSERT(0 == rv);
 }
 
@@ -1464,11 +1449,7 @@ static void pt_ResumeSet(PRThread *thred)
     thred->suspend &= ~PT_THREAD_SUSPENDED;
 
 #if defined(PT_NO_SIGTIMEDWAIT)
-#if defined(SYMBIAN) 
-	/* All signal group functions are not implemented in Symbian OS */
-#else
 	pthread_kill(thred->id, SIGUSR1);
-#endif
 #endif
 
 }  /* pt_ResumeSet */
