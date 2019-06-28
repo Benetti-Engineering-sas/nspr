@@ -6656,28 +6656,6 @@ tools are selected during the Xcode/Developer Tools installation." "$LINENO" 5
     fi
     ;;
 
-*-dgux*)
-    $as_echo "#define XP_UNIX 1" >>confdefs.h
-
-    $as_echo "#define _PR_LOCAL_THREADS_ONLY 1" >>confdefs.h
-
-    $as_echo "#define SVR4 1" >>confdefs.h
-
-    $as_echo "#define SYSV 1" >>confdefs.h
-
-    $as_echo "#define DGUX 1" >>confdefs.h
-
-    $as_echo "#define _DGUX_SOURCE 1" >>confdefs.h
-
-    $as_echo "#define _POSIX4A_DRAFT6_SOURCE 1" >>confdefs.h
-
-    DSO_LDOPTS=-G
-    _OPTIMIZE_FLAGS=-O2
-    _DEBUG_FLAGS=
-    MDCPUCFG_H=_dgux.cfg
-    PR_MD_CSRCS=dgux.c
-    ;;
-
 *-freebsd*)
     if test -z "$USE_NSPR_THREADS"; then
         USE_PTHREADS=1

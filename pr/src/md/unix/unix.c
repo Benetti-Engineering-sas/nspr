@@ -49,7 +49,7 @@
 #define _PRSockLen_t int
 #elif (defined(AIX) && !defined(AIX4_1)) || defined(FREEBSD) \
     || defined(NETBSD) || defined(OPENBSD) || defined(UNIXWARE) \
-    || defined(DGUX) || defined(NTO) || defined(RISCOS)
+    || defined(NTO) || defined(RISCOS)
 #define _PRSockLen_t size_t
 #else
 #error "Cannot determine architecture"

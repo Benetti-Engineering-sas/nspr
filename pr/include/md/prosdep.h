@@ -67,9 +67,6 @@ PR_BEGIN_EXTERN_C
 #elif defined(UNIXWARE)
 #include "md/_unixware.h"
 
-#elif defined(DGUX)
-#include "md/_dgux.h"
-
 #elif defined(QNX)
 #include "md/_qnx.h"
 
