@@ -274,7 +274,7 @@ typedef struct _PRInterruptTable {
 #define _PR_CPU_PTR(_qp) \
     ((_PRCPU*) ((char*) (_qp) - offsetof(_PRCPU,links)))
 
-#if !defined(IRIX) && !defined(WIN32) && !defined(XP_OS2) \
+#if !defined(WIN32) && !defined(XP_OS2) \
         && !(defined(SOLARIS) && defined(_PR_GLOBAL_THREADS_ONLY))
 #define _MD_GET_ATTACHED_THREAD()        (_PR_MD_CURRENT_THREAD())
 #endif
@@ -947,10 +947,6 @@ extern void _PR_MD_BEGIN_RESUME_ALL(void);
 
 extern void _PR_MD_END_RESUME_ALL(void);
 #define    _PR_MD_END_RESUME_ALL _MD_END_RESUME_ALL
-
-#if defined(IRIX) 
-NSPR_API(void) _PR_IRIX_CHILD_PROCESS(void);
-#endif        /* IRIX */
 
 #endif        /* !_PR_LOCAL_THREADS_ONLY */
 

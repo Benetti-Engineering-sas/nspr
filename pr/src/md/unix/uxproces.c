@@ -55,11 +55,10 @@ typedef struct pr_PidRecord {
 } pr_PidRecord;
 
 /*
- * Irix sprocs and LinuxThreads are actually a kind of processes
+ * LinuxThreads are actually a kind of processes
  * that can share the virtual address space and file descriptors.
  */
-#if (defined(IRIX) && !defined(_PR_PTHREADS)) \
-        || ((defined(LINUX) || defined(__GNU__) || defined(__GLIBC__)) \
+#if ((defined(LINUX) || defined(__GNU__) || defined(__GLIBC__)) \
         && defined(_PR_PTHREADS))
 #define _PR_SHARE_CLONES
 #endif

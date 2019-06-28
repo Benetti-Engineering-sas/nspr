@@ -35,7 +35,7 @@ extern int h_errno;
  * - _PR_HAVE_GETHOST_R_INT: the gethostbyXXX_r functions return an
  *   int.  For example, Linux glibc.
  * - _PR_HAVE_GETHOST_R_POINTER: the gethostbyXXX_r functions return
- *   a struct hostent* pointer.  For example, Solaris and IRIX.
+ *   a struct hostent* pointer.  For example, Solaris.
  */
 #if defined(_PR_NO_PREEMPT) || defined(_PR_HAVE_GETHOST_R) \
     || defined(_PR_HAVE_THREADSAFE_GETHOST)

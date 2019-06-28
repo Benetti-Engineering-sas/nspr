@@ -478,7 +478,7 @@ PRIntervalTime timeout)
 	 * platforms can skip the following _PR_MD_MAKE_NONBLOCK
 	 * call.
 	 */
-#if !defined(SOLARIS) && !defined(IRIX) && !defined(WINNT)
+#if !defined(SOLARIS) && !defined(WINNT)
 	_PR_MD_MAKE_NONBLOCK(fd2);
 #endif
 

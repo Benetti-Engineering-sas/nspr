@@ -1457,7 +1457,6 @@ Optional Features:
                           Specify symbian flavor. (WINSCW or GCCE)
   --enable-debug-rtl      Use the MSVC debug runtime library
   --enable-static-rtl     Use the MSVC static runtime library
-  --enable-n32            Enable n32 ABI support (IRIX only)
   --enable-x32            Enable x32 ABI support (x86_64 only)
   --enable-64bit          Enable 64-bit support (on certain platforms)
   --enable-mdupdate       Enable use of certain compilers' mdupdate feature
@@ -2984,10 +2983,6 @@ if test -z "$CC"; then
         CC=cc
     ;;
 
-    *-irix*)
-        CC=cc
-    ;;
-
     *-solaris*)
         CC=cc
     ;;
@@ -3018,10 +3013,6 @@ if test -z "$CXX"; then
             CXX=CC
             ;;
         esac
-    ;;
-
-    *-irix*)
-        CXX=CC
     ;;
 
     *-solaris*)
@@ -5615,10 +5606,6 @@ else
     OS_TEST=`uname -m`
 fi
 
-if test "$OS_ARCH" = "IRIX64"; then
-    OS_ARCH=IRIX
-fi
-
 if test "$OS_ARCH" = "AIX"; then
     OS_RELEASE=`uname -v`.`uname -r`
 fi
@@ -6855,110 +6842,6 @@ tools are selected during the Xcode/Developer Tools installation." "$LINENO" 5
             USE_PTHREADS=
         fi
     fi
-    ;;
-
-*-irix*)
-    $as_echo "#define XP_UNIX 1" >>confdefs.h
-
-    $as_echo "#define IRIX 1" >>confdefs.h
-
-    $as_echo "#define SVR4 1" >>confdefs.h
-
-    $as_echo "#define _SGI_MP_SOURCE 1" >>confdefs.h
-
-    $as_echo "#define HAVE_FCNTL_FILE_LOCKING 1" >>confdefs.h
-
-    PR_MD_CSRCS=irix.c
-    PR_MD_ASFILES=os_Irix.s
-    MKSHLIB='$(LD) $(DSO_LDOPTS) -rdata_shared -shared -soname $(notdir $@) -o $@'
-    STRIP="$STRIP -f"
-    RESOLVE_LINK_SYMBOLS=1
-    if test -n "$USE_64"; then
-        MDCPUCFG_H=_irix64.cfg
-    else
-        MDCPUCFG_H=_irix32.cfg
-    fi
-    case "${target_os}" in
-    irix6*)
-        $as_echo "#define IRIX6 1" >>confdefs.h
-
-        USE_PTHREADS=1
-        USE_N32=1
-        COMPILER_TAG=_n32
-        IMPL_STRATEGY=_PTH
-        ;;
-    irix5*)
-        $as_echo "#define IRIX5 1" >>confdefs.h
-
-        USE_NSPR_THREADS=1
-        ;;
-    *)
-        USE_PTHREADS=1
-        USE_N32=1
-        ;;
-    esac
-    if test "$GNU_CC"; then
-                                                        	    AS='$(CC) -Wp,-P -x assembler-with-cpp -D_ASM -mips2 $(INCLUDES)'
-	    CFLAGS="$CFLAGS -Wall -Wno-format"
-	    _OPTIMIZE_FLAGS="-O6"
-    else
-	    if test -n "$USE_N32"; then
-		AS='as -D_ASM $(INCLUDES) -n32'
-	    else
-		AS='as -D_ASM $(INCLUDES)'
-	    fi
-	    CFLAGS="$CFLAGS -fullwarn -xansi"
-	    if test "$USE_N32"; then
-	        _OPTIMIZE_FLAGS="-O -OPT:Olimit=4000"
-	    else
-	        _OPTIMIZE_FLAGS="-O -Olimit 4000"
-	    fi
-	    if test "$USE_MDUPDATE"; then
-                CFLAGS="$CFLAGS -MDupdate \$(DEPENDENCIES)"
-	    fi
-	    case "${target}" in
-	    *-irix6.*)
-	        CFLAGS="$CFLAGS -multigot"
-	        DSO_LDOPTS="-no_unresolved"
-	        if test "$USE_N32"; then
-		        CFLAGS="$CFLAGS -n32 -woff 1209"
-		        DSO_LDOPTS="$DSO_LDOPTS -n32"
-	        else
-		        if test "$USE_64"; then
-		            CFLAGS="$CFLAGS -64"
-		        else
-		            CFLAGS="$CFLAGS -32"
-		        fi
-	        fi
-	        ;;
-	    *)
-	        CFLAGS="$CFLAGS -xgot"
-	        ;;
-	    esac
-    fi
-    if test "${target_os}" = "irix5.3"; then
-	    $as_echo "#define IRIX5_3 1" >>confdefs.h
-
-    fi
-    case "${target_os}" in
-	irix6.5)
-	    if test -z "$GNU_CC"; then
-		    CFLAGS="$CFLAGS -mips3"
-	    fi
-	    $as_echo "#define _PR_HAVE_GETPROTO_R 1" >>confdefs.h
-
-	    $as_echo "#define _PR_HAVE_GETPROTO_R_POINTER 1" >>confdefs.h
-
-	    $as_echo "#define _PR_HAVE_SGI_PRDA_PROCMASK 1" >>confdefs.h
-
-	    ;;
-	irix5*)
-	    ;;
-	*)
-	    $as_echo "#define _PR_HAVE_SGI_PRDA_PROCMASK 1" >>confdefs.h
-
-	    ;;
-	esac
     ;;
 
 *-linux*|*-gnu*|*-k*bsd*-gnu|*-android*|*-linuxandroid*)
@@ -8383,16 +8266,6 @@ _ACEOF
 #define _POSIX_C_SOURCE 199506L
 _ACEOF
 
-    fi
-    ;;
-*-irix*)
-    if test "${target_os}" = "irix6.5"; then
-        if test -n "$USE_PTHREADS"; then
-            $as_echo "#define _PR_HAVE_GETHOST_R 1" >>confdefs.h
-
-            $as_echo "#define _PR_HAVE_GETHOST_R_POINTER 1" >>confdefs.h
-
-        fi
     fi
     ;;
 *-linux*|*-gnu*|*-k*bsd*-gnu)

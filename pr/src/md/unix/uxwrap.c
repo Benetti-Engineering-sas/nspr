@@ -18,11 +18,6 @@
 /* Do not wrap select() and poll(). */
 #else  /* defined(_PR_PTHREADS) || defined(_PR_GLOBAL_THREADS_ONLY) */
 /* The include files for select() */
-#ifdef IRIX
-#include <unistd.h>
-#include <bstring.h>
-#endif
-
 #include <string.h>
 #include <sys/types.h>
 #include <sys/time.h>
@@ -257,8 +252,6 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
                 PR_ASSERT(nbits > 0);
 #if defined(HPUX) || defined(SOLARIS) || defined(AIX)
                 retVal += nbits;
-#else /* IRIX */
-                retVal += 1;
 #endif
             }
         }

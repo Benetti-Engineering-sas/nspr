@@ -5,12 +5,6 @@
 
 #include <stdio.h>
 
-#if defined(sgi)
-#ifndef IRIX
-	error - IRIX is not defined
-#endif
-#endif
-
 #if defined(__sun)
 #ifndef SOLARIS
 	error - SOLARIS is not defined

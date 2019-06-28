@@ -438,17 +438,6 @@ static PRThread* _PR_CreateThread(
 
         if (EPERM == rv)
         {
-#if defined(IRIX)
-        	if (PR_GLOBAL_BOUND_THREAD == scope) {
-				/*
-				 * SCOPE_SYSTEM requires appropriate privilege
-				 * reset to process scope and try again
-				 */
-    			rv = pthread_attr_setscope(&tattr, PTHREAD_SCOPE_PROCESS);
-    			PR_ASSERT(0 == rv);
-            	thred->state &= ~PT_THREAD_BOUND;
-			}
-#else
             /* Remember that we don't have thread scheduling privilege. */
             pt_schedpriv = EPERM;
             PR_LOG(_pr_thread_lm, PR_LOG_MIN,
@@ -458,7 +447,6 @@ static PRThread* _PR_CreateThread(
             rv = pthread_attr_setinheritsched(&tattr, PTHREAD_INHERIT_SCHED);
             PR_ASSERT(0 == rv);
 #endif
-#endif	/* IRIX */
             rv = _PT_PTHREAD_CREATE(&id, tattr, _pt_root, thred);
         }
 

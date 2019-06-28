@@ -41,7 +41,7 @@
 #if defined(HAVE_SOCKLEN_T) \
     || (defined(__GLIBC__) && __GLIBC__ >= 2)
 #define _PRSockLen_t socklen_t
-#elif defined(IRIX) || defined(HPUX) || defined(SOLARIS) \
+#elif defined(HPUX) || defined(SOLARIS) \
     || defined(AIX4_1) || defined(LINUX) \
     || defined(BSDI) || defined(SCO) \
     || defined(DARWIN) \
@@ -83,10 +83,6 @@ static sigset_t empty_set;
  * _nspr_noclock - if set clock interrupts are disabled
  */
 int _nspr_noclock = 1;
-
-#ifdef IRIX
-extern PRInt32 _nspr_terminate_on_error;
-#endif
 
 /*
  * There is an assertion in this code that NSPR's definition of PRIOVec
@@ -1084,10 +1080,6 @@ PRInt32 _MD_connect(
     PRInt32 rv, err;
     PRThread *me = _PR_MD_CURRENT_THREAD();
     PRInt32 osfd = fd->secret->md.osfd;
-#ifdef IRIX
-extern PRInt32 _MD_irix_connect(
-        PRInt32 osfd, const PRNetAddr *addr, PRInt32 addrlen, PRIntervalTime timeout);
-#endif
 #ifdef _PR_HAVE_SOCKADDR_LEN
     PRNetAddr addrCopy;
 
@@ -1109,14 +1101,10 @@ extern PRInt32 _MD_irix_connect(
      */
 
 retry:
-#ifdef IRIX
-    if ((rv = _MD_irix_connect(osfd, addr, addrlen, timeout)) == -1) {
-#else
 #ifdef _PR_HAVE_SOCKADDR_LEN
     if ((rv = connect(osfd, (struct sockaddr *)&addrCopy, addrlen)) == -1) {
 #else
     if ((rv = connect(osfd, (struct sockaddr *)addr, addrlen)) == -1) {
-#endif
 #endif
         err = _MD_ERRNO();
 
@@ -1466,9 +1454,6 @@ void _MD_PauseCPU(PRIntervalTime ticks)
     PRCList *q;
     PRUint32 min_timeout;
     sigset_t oldset;
-#ifdef IRIX
-extern sigset_t ints_off;
-#endif
 
     PR_ASSERT(_PR_MD_GET_INTSOFF() != 0);
 
@@ -1487,16 +1472,6 @@ extern sigset_t ints_off;
      */
     if (_PR_IS_NATIVE_THREAD_SUPPORTED()) {
         npollfds++;
-#ifdef	IRIX
-		/*
-		 * On Irix, a second pipe is used to cause the primordial cpu to
-		 * wakeup and exit, when the process is exiting because of a call
-		 * to exit/PR_ProcessExit.
-		 */
-		if (me->cpu->id == 0) {
-        	npollfds++;
-		}
-#endif
 	}
 
     /*
@@ -1522,16 +1497,6 @@ extern sigset_t ints_off;
         pollfdPtr->fd = _pr_md_pipefd[0];
         pollfdPtr->events = POLLIN;
         pollfdPtr++;
-#ifdef	IRIX
-		/*
-		 * On Irix, the second element is the exit pipe
-		 */
-		if (me->cpu->id == 0) {
-			pollfdPtr->fd = _pr_irix_primoridal_cpu_fd[0];
-			pollfdPtr->events = POLLIN;
-			pollfdPtr++;
-		}
-#endif
     }
 
     min_timeout = PR_INTERVAL_NO_TIMEOUT;
@@ -1615,22 +1580,9 @@ extern sigset_t ints_off;
      * are enabled. Otherwise, when the select/poll calls are interrupted, the
      * timer value starts ticking from zero again when the system call is restarted.
      */
-#ifdef IRIX
-    /*
-     * SIGCHLD signal is used on Irix to detect he termination of an
-     * sproc by SIGSEGV, SIGBUS or SIGABRT signals when
-     * _nspr_terminate_on_error is set.
-     */
-    if ((!_nspr_noclock) || (_nspr_terminate_on_error))
-#else
         if (!_nspr_noclock)
-#endif    /* IRIX */
-#ifdef IRIX
-    sigprocmask(SIG_BLOCK, &ints_off, &oldset);
-#else
     PR_ASSERT(sigismember(&timer_set, SIGALRM));
     sigprocmask(SIG_BLOCK, &timer_set, &oldset);
-#endif    /* IRIX */
 #endif  /* !_PR_NO_CLOCK_TIMER */
 
 #ifndef _PR_USE_POLL
@@ -1641,19 +1593,13 @@ extern sigset_t ints_off;
 #endif  /* !_PR_USE_POLL */
 
 #ifndef _PR_NO_CLOCK_TIMER
-#ifdef IRIX
-    if ((!_nspr_noclock) || (_nspr_terminate_on_error))
-#else
         if (!_nspr_noclock)
-#endif    /* IRIX */
     sigprocmask(SIG_SETMASK, &oldset, 0);
 #endif  /* !_PR_NO_CLOCK_TIMER */
 
     _MD_CHECK_FOR_EXIT();
 
-#ifdef IRIX
 	_PR_MD_primordial_cpu();
-#endif
 
     _PR_MD_IOQ_LOCK();
     /*
@@ -1679,30 +1625,6 @@ extern sigset_t ints_off;
                 PR_ASSERT((rv > 0) || ((rv == -1) && (errno == EAGAIN)));
             }
             pollfdPtr++;
-#ifdef	IRIX
-			/*
-			 * On Irix, check to see if the primordial cpu needs to exit
-			 * to cause the process to terminate
-			 */
-			if (me->cpu->id == 0) {
-            	PR_ASSERT(pollfds[1].fd == _pr_irix_primoridal_cpu_fd[0]);
-				if (pollfdPtr->revents & POLLIN) {
-					if (_pr_irix_process_exit) {
-						/*
-						 * process exit due to a call to PR_ProcessExit
-						 */
-						prctl(PR_SETEXITSIG, SIGKILL);
-						_exit(_pr_irix_process_exit_code);
-					} else {
-						while ((rv = read(_pr_irix_primoridal_cpu_fd[0],
-							_pr_md_pipebuf, PIPE_BUF)) == PIPE_BUF) {
-						}
-						PR_ASSERT(rv > 0);
-					}
-				}
-				pollfdPtr++;
-			}
-#endif
         }
         for (q = _PR_IOQ(me->cpu).next; q != &_PR_IOQ(me->cpu); q = q->next) {
             PRPollQueue *pq = _PR_POLLQUEUE_PTR(q);
@@ -1898,27 +1820,6 @@ extern sigset_t ints_off;
             }
             if (_PR_IOQ_MAX_OSFD(me->cpu) < _pr_md_pipefd[0])
                 _PR_IOQ_MAX_OSFD(me->cpu) = _pr_md_pipefd[0];
-#ifdef	IRIX
-			if ((me->cpu->id == 0) && 
-						(FD_ISSET(_pr_irix_primoridal_cpu_fd[0], rp))) {
-				if (_pr_irix_process_exit) {
-					/*
-					 * process exit due to a call to PR_ProcessExit
-					 */
-					prctl(PR_SETEXITSIG, SIGKILL);
-					_exit(_pr_irix_process_exit_code);
-				} else {
-						while ((rv = read(_pr_irix_primoridal_cpu_fd[0],
-							_pr_md_pipebuf, PIPE_BUF)) == PIPE_BUF) {
-						}
-						PR_ASSERT(rv > 0);
-				}
-			}
-			if (me->cpu->id == 0) {
-				if (_PR_IOQ_MAX_OSFD(me->cpu) < _pr_irix_primoridal_cpu_fd[0])
-					_PR_IOQ_MAX_OSFD(me->cpu) = _pr_irix_primoridal_cpu_fd[0];
-			}
-#endif
         }
     } else if (nfd < 0) {
         if (errno == EBADF) {
@@ -2241,7 +2142,7 @@ PRInt32 _MD_open(const char *name, PRIntn flags, PRIntn mode)
 
 PRIntervalTime intr_timeout_ticks;
 
-#if defined(SOLARIS) || defined(IRIX)
+#if defined(SOLARIS)
 static void sigsegvhandler() {
     fprintf(stderr,"Received SIGSEGV\n");
     fflush(stderr);
@@ -2259,7 +2160,7 @@ static void sigbushandler() {
     fflush(stderr);
     pause();
 }
-#endif /* SOLARIS, IRIX */
+#endif /* SOLARIS */
 
 #endif  /* !defined(_PR_PTHREADS) */
 
@@ -2767,7 +2668,7 @@ static void _PR_InitIOV(void)
     _md_iovector._stat64 = stat;
     _md_iovector._lseek64 = _MD_Unix_lseek64;
 #elif defined(_PR_HAVE_OFF64_T)
-#if defined(IRIX5_3) || (defined(ANDROID) && __ANDROID_API__ < 21)
+#if (defined(ANDROID) && __ANDROID_API__ < 21)
     /*
      * Android < 21 doesn't have open64.  We pass the O_LARGEFILE flag to open
      * in _MD_open.
@@ -2812,7 +2713,7 @@ void _PR_UnixInit(void)
     intr_timeout_ticks =
             PR_SecondsToInterval(_PR_INTERRUPT_CHECK_INTERVAL_SECS);
 
-#if defined(SOLARIS) || defined(IRIX)
+#if defined(SOLARIS)
 
     if (getenv("NSPR_SIGSEGV_HANDLE")) {
         sigact.sa_handler = sigsegvhandler;

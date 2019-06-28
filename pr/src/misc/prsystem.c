@@ -208,8 +208,6 @@ PR_IMPLEMENT(PRInt32) PR_GetNumberOfProcessors( void )
         numCpus = -1; /* set to -1 for return value on error */
         _PR_MD_MAP_DEFAULT_ERROR( _MD_ERRNO() );
     }
-#elif defined(IRIX)
-    numCpus = sysconf( _SC_NPROC_ONLN );
 #elif defined(RISCOS) || defined(SYMBIAN)
     numCpus = 1;
 #elif defined(LINUX)

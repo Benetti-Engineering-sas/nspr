@@ -40,11 +40,6 @@
 #elif defined(_PR_PTHREADS)
 #include <pthread.h>
 #include "md/_pth.h"
-#elif defined(IRIX)
-#include <sys/types.h>
-#include <sys/prctl.h>
-#include <sys/wait.h>
-#include <errno.h>
 #elif defined(SOLARIS)
 #include <thread.h>
 #elif defined(OS2)
@@ -103,8 +98,6 @@ static void Measure(void (*func)(void), const char *msg)
 
 #ifdef WIN32
 static unsigned __stdcall threadStartFunc(void *arg)
-#elif defined(IRIX) && !defined(_PR_PTHREADS)
-static void threadStartFunc(void *arg)
 #elif defined(XP_BEOS)
 static int32 threadStartFunc(void *arg)
 #else
@@ -113,9 +106,7 @@ static void * threadStartFunc(void *arg)
 {
     Measure(AttachDetach, "Attach/Detach");
 
-#ifndef IRIX
     return 0;
-#endif
 }
 
 int main(int argc, char **argv)
@@ -131,9 +122,6 @@ int main(int argc, char **argv)
     DWORD rv;
     unsigned threadID;
     HANDLE hThread;
-#elif defined(IRIX)
-    int rv;
-    int threadID;
 #elif defined(OS2)
     int rv;
     TID threadID;
@@ -258,30 +246,6 @@ int main(int argc, char **argv)
     rv = WaitForSingleObject(hThread, INFINITE);
     if (debug_mode)PR_ASSERT(rv != WAIT_FAILED);
 	else if (rv == WAIT_FAILED) {
-		failed_already=1;
-		goto exit_now;
-	}
-
-#elif defined(IRIX)
-
-    threadID = sproc(threadStartFunc, PR_SALL, NULL);
-    if (threadID == -1) {
-
-			fprintf(stderr, "thread creation failed: error code %d\n",
-					errno);
-			failed_already=1;
-			goto exit_now;
-	
-	}
-	else {
-		if (debug_mode) 
-			printf ("thread creation succeeded \n");
-		sleep(3);
-		goto exit_now;
-	}
-    rv = waitpid(threadID, NULL, 0);
-    if (debug_mode) PR_ASSERT(rv != -1);
-	else  if (rv != -1) {
 		failed_already=1;
 		goto exit_now;
 	}

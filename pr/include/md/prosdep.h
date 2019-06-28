@@ -49,9 +49,6 @@ PR_BEGIN_EXTERN_C
 #elif defined(HPUX)
 #include "md/_hpux.h"
 
-#elif defined(IRIX)
-#include "md/_irix.h"
-
 #elif defined(LINUX) || defined(__GNU__) || defined(__GLIBC__)
 #include "md/_linux.h"
 

@@ -64,10 +64,6 @@ ifneq ($(OS_ARCH), WINNT)
 PWD = $(shell pwd)
 endif
 
-ifeq ($(OS_ARCH), IRIX)
-LDOPTS += -rpath $(PWD)/$(dist_libdir)
-endif
-
 ifeq ($(OS_ARCH), Linux)
     ifeq ($(OS_RELEASE), 1.2)
         EXTRA_LIBS = -ldl

@@ -177,7 +177,7 @@ static PRBool _pr_ipv6_v6only_on_by_default;
 #define _PRSelectFdSetArg_t int *
 #elif defined(AIX4_1)
 #define _PRSelectFdSetArg_t void *
-#elif defined(IRIX) || (defined(AIX) && !defined(AIX4_1)) \
+#elif (defined(AIX) && !defined(AIX4_1)) \
     || defined(SOLARIS) \
     || defined(HPUX10_30) || defined(HPUX11) \
     || defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
@@ -3334,7 +3334,7 @@ static PRIOMethods _pr_socketpollfd_methods = {
     (PRReservedFN)_PR_InvalidInt
 };
 
-#if defined(HPUX) || defined(SOLARIS) || defined (IRIX) \
+#if defined(HPUX) || defined(SOLARIS) \
     || defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
     || defined(AIX) || defined(FREEBSD) || defined(NETBSD) \
     || defined(OPENBSD) || defined(BSDI) || defined(NTO) \

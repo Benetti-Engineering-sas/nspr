@@ -261,9 +261,7 @@ extern void		_MD_Wakeup_CPUs(void);
 #define _MD_CLEANUP_BEFORE_EXIT()
 #endif
 
-#ifndef IRIX
 #define _MD_EXIT(status)		_exit(status)
-#endif
 
 /************************************************************************/
 

@@ -358,15 +358,6 @@ AC_ARG_ENABLE(static-rtl,
 	    USE_STATIC_RTL=1
       fi ])
 
-AC_ARG_ENABLE(n32,
-    [  --enable-n32            Enable n32 ABI support (IRIX only)],
-    [ if test "$enableval" = "yes"; then
-	USE_N32=1
-      else if test "$enableval" = "no"; then
-	USE_N32=
-      fi
-    fi ])
-
 AC_ARG_ENABLE(x32,
     [  --enable-x32            Enable x32 ABI support (x86_64 only)],
     [ if test "$enableval" = "yes"; then
@@ -454,10 +445,6 @@ if test -z "$CC"; then
         CC=cc
     ;;
 
-    *-irix*)
-        CC=cc
-    ;;
-
     *-solaris*)
         CC=cc
     ;;
@@ -493,10 +480,6 @@ if test -z "$CXX"; then
             CXX=CC
             ;;
         esac
-    ;;
-
-    *-irix*)
-        CXX=CC
     ;;
 
     *-solaris*)
@@ -852,10 +835,6 @@ else
     OS_ARCH=`uname -s | sed -e 's|/|_|g'`
     OS_RELEASE=`uname -r`
     OS_TEST=`uname -m`
-fi
-
-if test "$OS_ARCH" = "IRIX64"; then
-    OS_ARCH=IRIX
 fi
 
 if test "$OS_ARCH" = "AIX"; then
@@ -1689,105 +1668,6 @@ tools are selected during the Xcode/Developer Tools installation.])
             USE_PTHREADS=
         fi
     fi
-    ;;
-
-*-irix*)
-    AC_DEFINE(XP_UNIX)
-    AC_DEFINE(IRIX)
-    AC_DEFINE(SVR4)
-    AC_DEFINE(_SGI_MP_SOURCE)
-    AC_DEFINE(HAVE_FCNTL_FILE_LOCKING)
-    PR_MD_CSRCS=irix.c
-    PR_MD_ASFILES=os_Irix.s
-    MKSHLIB='$(LD) $(DSO_LDOPTS) -rdata_shared -shared -soname $(notdir $@) -o $@'
-    STRIP="$STRIP -f"
-    RESOLVE_LINK_SYMBOLS=1
-    if test -n "$USE_64"; then
-        MDCPUCFG_H=_irix64.cfg
-    else
-        MDCPUCFG_H=_irix32.cfg
-    fi
-    case "${target_os}" in
-    irix6*)
-        AC_DEFINE(IRIX6)
-        USE_PTHREADS=1
-        USE_N32=1
-        COMPILER_TAG=_n32
-        IMPL_STRATEGY=_PTH
-        ;;
-    irix5*)
-        AC_DEFINE(IRIX5)
-        USE_NSPR_THREADS=1
-        ;;
-    *)
-        USE_PTHREADS=1
-        USE_N32=1
-        ;;
-    esac
-    if test "$GNU_CC"; then
-        dnl
-        dnl If we are using gcc with native binutils, we need to
-        dnl suppress the
-        dnl #lineno "filename" num num
-        dnl lines, which confuse IRIX native as.  Add -Wp,-P to the
-        dnl gcc command line, which passes -P to the preprocessor.
-        dnl
-	    AS='$(CC) -Wp,-P -x assembler-with-cpp -D_ASM -mips2 $(INCLUDES)'
-	    CFLAGS="$CFLAGS -Wall -Wno-format"
-	    _OPTIMIZE_FLAGS="-O6"
-    else
-	    if test -n "$USE_N32"; then
-		AS='as -D_ASM $(INCLUDES) -n32'
-	    else
-		AS='as -D_ASM $(INCLUDES)'
-	    fi
-	    CFLAGS="$CFLAGS -fullwarn -xansi"
-	    if test "$USE_N32"; then
-	        _OPTIMIZE_FLAGS="-O -OPT:Olimit=4000"
-	    else
-	        _OPTIMIZE_FLAGS="-O -Olimit 4000"
-	    fi
-	    if test "$USE_MDUPDATE"; then
-                CFLAGS="$CFLAGS -MDupdate \$(DEPENDENCIES)"
-	    fi
-	    case "${target}" in
-	    *-irix6.*)
-	        CFLAGS="$CFLAGS -multigot"
-	        DSO_LDOPTS="-no_unresolved"
-	        if test "$USE_N32"; then
-		        CFLAGS="$CFLAGS -n32 -woff 1209"
-		        DSO_LDOPTS="$DSO_LDOPTS -n32"
-	        else
-		        if test "$USE_64"; then
-		            CFLAGS="$CFLAGS -64"
-		        else
-		            CFLAGS="$CFLAGS -32"
-		        fi
-	        fi
-	        ;;
-	    *)
-	        CFLAGS="$CFLAGS -xgot"
-	        ;;
-	    esac
-    fi
-    if test "${target_os}" = "irix5.3"; then
-	    AC_DEFINE(IRIX5_3)
-    fi
-    case "${target_os}" in
-	irix6.5)
-	    if test -z "$GNU_CC"; then
-		    CFLAGS="$CFLAGS -mips3"
-	    fi
-	    AC_DEFINE(_PR_HAVE_GETPROTO_R)
-	    AC_DEFINE(_PR_HAVE_GETPROTO_R_POINTER)
-	    AC_DEFINE(_PR_HAVE_SGI_PRDA_PROCMASK)
-	    ;;
-	irix5*)
-	    ;;
-	*)
-	    AC_DEFINE(_PR_HAVE_SGI_PRDA_PROCMASK)
-	    ;;
-	esac
     ;;
 
 *-linux*|*-gnu*|*-k*bsd*-gnu|*-android*|*-linuxandroid*)
@@ -2824,14 +2704,6 @@ case "$target" in
     fi
     if test "$USE_USER_PTHREADS"; then
         AC_DEFINE_UNQUOTED(_POSIX_C_SOURCE,199506L)
-    fi
-    ;;
-*-irix*)
-    if test "${target_os}" = "irix6.5"; then
-        if test -n "$USE_PTHREADS"; then
-            AC_DEFINE(_PR_HAVE_GETHOST_R)
-            AC_DEFINE(_PR_HAVE_GETHOST_R_POINTER)
-        fi
     fi
     ;;
 *-linux*|*-gnu*|*-k*bsd*-gnu)

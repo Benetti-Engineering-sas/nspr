@@ -84,7 +84,7 @@
  *   PR_EnterMonitor calls any of these functions, infinite
  *   recursion ensues.
  */
-#if defined(IRIX) || defined(AIX) || defined(SOLARIS) \
+#if defined(AIX) || defined(SOLARIS) \
 	|| defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
 	|| defined(HPUX) || defined(FREEBSD) \
 	|| defined(NETBSD) || defined(OPENBSD) || defined(BSDI) \
@@ -120,11 +120,7 @@
 #define PT_NO_SIGTIMEDWAIT
 #endif
 
-#if defined(IRIX)
-#include <sys/sched.h>
-#define PT_PRIO_MIN            PX_PRIO_MIN
-#define PT_PRIO_MAX            PX_PRIO_MAX
-#elif defined(AIX)
+#if defined(AIX)
 #include <sys/priv.h>
 #include <sys/sched.h>
 #ifndef PTHREAD_CREATE_JOINABLE
@@ -177,14 +173,6 @@
 #if defined(AIX)
 extern int (*_PT_aix_yield_fcn)();
 #define _PT_PTHREAD_YIELD()			(*_PT_aix_yield_fcn)()
-#elif defined(IRIX)
-#include <time.h>
-#define _PT_PTHREAD_YIELD() \
-    PR_BEGIN_MACRO               				\
-		struct timespec onemillisec = {0};		\
-		onemillisec.tv_nsec = 1000000L;			\
-        nanosleep(&onemillisec,NULL);			\
-    PR_END_MACRO
 #elif defined(HPUX) || defined(SOLARIS) \
 	|| defined(LINUX) || defined(__GNU__) || defined(__GLIBC__) \
 	|| defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
