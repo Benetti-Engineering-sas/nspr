@@ -30,9 +30,6 @@
 
 #define HAVE_FCHMOD
 
-#if defined(BEOS)
-#undef HAVE_FCHMOD
-#endif
 
 /*
  * Does getcwd() take NULL as the first argument and malloc
