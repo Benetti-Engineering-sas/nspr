@@ -259,6 +259,7 @@ int main(int argc, char **argv)
         goto exit_now;
     }
 
+#else
 	if (!debug_mode)
 		failed_already=1;
 	else	
@@ -266,6 +267,7 @@ int main(int argc, char **argv)
 	    "either this platform does not have native threads or the\n"
 	    "test needs to be written for this platform.\n");
 	goto exit_now;
+#endif
 
 exit_now:
    if(failed_already)	
