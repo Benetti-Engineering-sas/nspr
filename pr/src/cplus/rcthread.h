@@ -157,7 +157,7 @@ private:
 public:
     static RCPrimordialThread *WrapPrimordialThread();
 
- };
+};
 
 /*
 ** class RCPrimordialThread
@@ -180,7 +180,7 @@ public:
     */
     static PRStatus SetVirtualProcessors(PRIntn count=10);
 
-friend class RCThread;
+    friend class RCThread;
 private:
     /*
     ** None other than the runtime can create of destruct
@@ -192,4 +192,4 @@ private:
     void RootFunction();
 };  /* RCPrimordialThread */
 
- #endif /* defined(_RCTHREAD_H) */
+#endif /* defined(_RCTHREAD_H) */

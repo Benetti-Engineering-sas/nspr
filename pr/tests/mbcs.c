@@ -69,7 +69,7 @@ static void TraverseDirectory( unsigned char *dir )
     cwd = PR_OpenDir( dir );
     if ( NULL == cwd )  {
         printf("PR_OpenDir() failed on directory: %s, with error: %d, %d\n",
-            dir, PR_GetError(), PR_GetOSError());
+               dir, PR_GetError(), PR_GetOSError());
         exit(1);
     }
     while( NULL != (dirEntry = PR_ReadDir( cwd, PR_SKIP_BOTH | PR_SKIP_HIDDEN )))  {
@@ -77,7 +77,7 @@ static void TraverseDirectory( unsigned char *dir )
         rc = PR_GetFileInfo( file, &info );
         if ( PR_FAILURE == rc ) {
             printf("PR_GetFileInfo() failed on file: %s, with error: %d, %d\n",
-                dirEntry->name, PR_GetError(), PR_GetOSError());
+                   dirEntry->name, PR_GetError(), PR_GetOSError());
             exit(1);
         }
         if ( PR_FILE_FILE == info.type )  {
@@ -85,12 +85,12 @@ static void TraverseDirectory( unsigned char *dir )
             fd = PR_Open( file, PR_RDONLY, 0 );
             if ( NULL == fd )  {
                 printf("PR_Open() failed. Error: %ld, OSError: %ld\n",
-                    PR_GetError(), PR_GetOSError());
+                       PR_GetError(), PR_GetOSError());
             }
             rc = PR_Close( fd );
             if ( PR_FAILURE == rc )  {
                 printf("PR_Close() failed. Error: %ld, OSError: %ld\n",
-                    PR_GetError(), PR_GetOSError());
+                       PR_GetError(), PR_GetOSError());
             }
         } else if ( PR_FILE_DIRECTORY == info.type ) {
             sprintf( nextDir, "%s/%s", dir, dirEntry->name );
@@ -105,38 +105,40 @@ static void TraverseDirectory( unsigned char *dir )
     rc = PR_CloseDir( cwd );
     if ( PR_FAILURE == rc ) {
         printf("PR_CloseDir() failed on directory: %s, with error: %d, %d\n",
-            dir, PR_GetError(), PR_GetOSError());
+               dir, PR_GetError(), PR_GetOSError());
     }
 
 } /* end TraverseDirectory() */
 
 int main(int argc, char **argv)
 {
-    { /* get command line options */
+    {   /* get command line options */
         /*
         ** Get command line options
         */
         PLOptStatus os;
         PLOptState *opt = PL_CreateOptState(argc, argv, "dv");
 
-	    while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
+        while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
         {
-		    if (PL_OPT_BAD == os) continue;
+            if (PL_OPT_BAD == os) {
+                continue;
+            }
             switch (opt->option)
             {
-            case 'd':  /* debug */
-                debug = 1;
-			    msgLevel = PR_LOG_ERROR;
-                break;
-            case 'v':  /* verbose mode */
-			    msgLevel = PR_LOG_DEBUG;
-                break;
-             default:
-                dirName = strdup(opt->value);
-                break;
+                case 'd':  /* debug */
+                    debug = 1;
+                    msgLevel = PR_LOG_ERROR;
+                    break;
+                case 'v':  /* verbose mode */
+                    msgLevel = PR_LOG_DEBUG;
+                    break;
+                default:
+                    dirName = strdup(opt->value);
+                    break;
             }
         }
-	    PL_DestroyOptState(opt);
+        PL_DestroyOptState(opt);
     } /* end get command line options */
 
     lm = PR_NewLogModule("Test");       /* Initialize logging */
@@ -149,7 +151,9 @@ int main(int argc, char **argv)
 
     TraverseDirectory( dirName );
 
-    if (debug) printf("%s\n", (failed_already)? "FAIL" : "PASS");
+    if (debug) {
+        printf("%s\n", (failed_already)? "FAIL" : "PASS");
+    }
     return( (failed_already == PR_TRUE )? 1 : 0 );
 }  /* main() */
 /* end template.c */

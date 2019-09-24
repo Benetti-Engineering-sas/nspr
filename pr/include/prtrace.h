@@ -174,10 +174,10 @@ typedef enum PRTraceOption
 #endif
 
 NSPR_API(PRTraceHandle)
-	PR_CreateTrace(
-    	const char *qName,          /* QName for this trace handle */
-	    const char *rName,          /* RName for this trace handle */
-	    const char *description     /* description for this trace handle */
+PR_CreateTrace(
+    const char *qName,          /* QName for this trace handle */
+    const char *rName,          /* RName for this trace handle */
+    const char *description     /* description for this trace handle */
 );
 
 
@@ -208,8 +208,8 @@ NSPR_API(PRTraceHandle)
 #endif
 
 NSPR_API(void)
-	PR_DestroyTrace(
-		PRTraceHandle handle    /* Handle to be destroyed */
+PR_DestroyTrace(
+    PRTraceHandle handle    /* Handle to be destroyed */
 );
 
 
@@ -249,16 +249,16 @@ NSPR_API(void)
 #endif
 
 NSPR_API(void)
-	PR_Trace(
-    	PRTraceHandle handle,       /* use this trace handle */
-	    PRUint32    userData0,      /* User supplied data word 0 */
-	    PRUint32    userData1,      /* User supplied data word 1 */
-	    PRUint32    userData2,      /* User supplied data word 2 */
-	    PRUint32    userData3,      /* User supplied data word 3 */
-	    PRUint32    userData4,      /* User supplied data word 4 */
-	    PRUint32    userData5,      /* User supplied data word 5 */
-	    PRUint32    userData6,      /* User supplied data word 6 */
-	    PRUint32    userData7       /* User supplied data word 7 */
+PR_Trace(
+    PRTraceHandle handle,       /* use this trace handle */
+    PRUint32    userData0,      /* User supplied data word 0 */
+    PRUint32    userData1,      /* User supplied data word 1 */
+    PRUint32    userData2,      /* User supplied data word 2 */
+    PRUint32    userData3,      /* User supplied data word 3 */
+    PRUint32    userData4,      /* User supplied data word 4 */
+    PRUint32    userData5,      /* User supplied data word 5 */
+    PRUint32    userData6,      /* User supplied data word 6 */
+    PRUint32    userData7       /* User supplied data word 7 */
 );
 
 /* -----------------------------------------------------------------------
@@ -336,9 +336,9 @@ NSPR_API(void)
 #endif
 
 NSPR_API(void)
-	PR_SetTraceOption(
-	    PRTraceOption command,  /* One of the enumerated values */
-	    void *value             /* command value or NULL */
+PR_SetTraceOption(
+    PRTraceOption command,  /* One of the enumerated values */
+    void *value             /* command value or NULL */
 );
 
 
@@ -374,9 +374,9 @@ NSPR_API(void)
 #endif
 
 NSPR_API(void)
-	PR_GetTraceOption(
-    	PRTraceOption command,  /* One of the enumerated values */
-	    void *value             /* command value or NULL */
+PR_GetTraceOption(
+    PRTraceOption command,  /* One of the enumerated values */
+    void *value             /* command value or NULL */
 );
 
 /* -----------------------------------------------------------------------
@@ -410,9 +410,9 @@ NSPR_API(void)
 #endif
 
 NSPR_API(PRTraceHandle)
-	PR_GetTraceHandleFromName(
-    	const char *qName,      /* QName search argument */
-        const char *rName       /* RName search argument */
+PR_GetTraceHandleFromName(
+    const char *qName,      /* QName search argument */
+    const char *rName       /* RName search argument */
 );
 
 /* -----------------------------------------------------------------------
@@ -442,11 +442,11 @@ NSPR_API(PRTraceHandle)
 #endif
 
 NSPR_API(void)
-	PR_GetTraceNameFromHandle(
-    	PRTraceHandle handle,       /* handle as search argument */
-	    const char **qName,         /* pointer to associated QName */
-	    const char **rName,         /* pointer to associated RName */
-    	const char **description    /* pointer to associated description */
+PR_GetTraceNameFromHandle(
+    PRTraceHandle handle,       /* handle as search argument */
+    const char **qName,         /* pointer to associated QName */
+    const char **rName,         /* pointer to associated RName */
+    const char **description    /* pointer to associated description */
 );
 
 /* -----------------------------------------------------------------------
@@ -484,8 +484,8 @@ NSPR_API(void)
 #endif
 
 NSPR_API(PRTraceHandle)
-	PR_FindNextTraceQname(
-        PRTraceHandle handle
+PR_FindNextTraceQname(
+    PRTraceHandle handle
 );
 
 
@@ -526,9 +526,9 @@ NSPR_API(PRTraceHandle)
 #endif
 
 NSPR_API(PRTraceHandle)
-	PR_FindNextTraceRname(
-        PRTraceHandle rhandle,
-        PRTraceHandle qhandle
+PR_FindNextTraceRname(
+    PRTraceHandle rhandle,
+    PRTraceHandle qhandle
 );
 
 /* -----------------------------------------------------------------------
@@ -576,14 +576,14 @@ NSPR_API(PRTraceHandle)
 */
 #if defined (DEBUG) || defined (FORCE_NSPR_TRACE)
 #define PR_RECORD_TRACE_ENTRIES()\
-	PR_RecordTraceEntries()
+    PR_RecordTraceEntries()
 #else
 #define PR_RECORD_TRACE_ENTRIES()
 #endif
 
 NSPR_API(void)
-	PR_RecordTraceEntries(
-        void
+PR_RecordTraceEntries(
+    void
 );
 
 /* -----------------------------------------------------------------------
@@ -634,10 +634,10 @@ NSPR_API(void)
 #endif
 
 NSPR_API(PRIntn)
-    PR_GetTraceEntries(
-        PRTraceEntry    *buffer,    /* where to write output */
-        PRInt32         count,      /* number to get */
-        PRInt32         *found      /* number you got */
+PR_GetTraceEntries(
+    PRTraceEntry    *buffer,    /* where to write output */
+    PRInt32         count,      /* number to get */
+    PRInt32         *found      /* number you got */
 );
 
 PR_END_EXTERN_C

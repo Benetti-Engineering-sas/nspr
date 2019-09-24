@@ -25,10 +25,12 @@ static HANDLE OpenSemaphore(DWORD inDesiredAccess,
     if (NULL != semaphore) {
         DWORD lastErr = GetLastError();
 
-        if (ERROR_ALREADY_EXISTS != lastErr)
+        if (ERROR_ALREADY_EXISTS != lastErr) {
             CloseHandle(semaphore);
-        else
+        }
+        else {
             retval = semaphore;
+        }
     }
     return retval;
 }
@@ -97,8 +99,8 @@ static DWORD FiberSafeWaitForSingleObject(
         warg.handle = hHandle;
         warg.timeout = dwMilliseconds;
         waitThread = PR_CreateThread(
-            PR_USER_THREAD, WaitSingleThread, &warg,
-            PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD, PR_JOINABLE_THREAD, 0);
+                         PR_USER_THREAD, WaitSingleThread, &warg,
+                         PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD, PR_JOINABLE_THREAD, 0);
         if (waitThread == NULL) {
             return WAIT_FAILED;
         }
@@ -133,7 +135,7 @@ PRSem *_PR_MD_OPEN_SEMAPHORE(
     }
     if (flags & PR_SEM_CREATE) {
         if (_PR_NT_MakeSecurityDescriptorACL(mode, semAccessTable,
-                &pSD, &pACL) == PR_SUCCESS) {
+                                             &pSD, &pACL) == PR_SUCCESS) {
             sa.nLength = sizeof(sa);
             sa.lpSecurityDescriptor = pSD;
             sa.bInheritHandle = FALSE;
@@ -165,7 +167,7 @@ PRSem *_PR_MD_OPEN_SEMAPHORE(
         }
     } else {
         sem->sem = OpenSemaphore(
-                SEMAPHORE_MODIFY_STATE|SYNCHRONIZE, FALSE, osname);
+                       SEMAPHORE_MODIFY_STATE|SYNCHRONIZE, FALSE, osname);
         if (sem->sem == NULL) {
             DWORD err = GetLastError();
 

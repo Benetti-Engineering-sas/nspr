@@ -29,9 +29,9 @@ void _MD_unix_map_default_error(int err)
         case EAGAIN:
             prError = PR_WOULD_BLOCK_ERROR;
             break;
-        /*
-         * On QNX and Neutrino, EALREADY is defined as EBUSY.
-         */
+            /*
+             * On QNX and Neutrino, EALREADY is defined as EBUSY.
+             */
 #if EALREADY != EBUSY
         case EALREADY:
             prError = PR_ALREADY_INITIATED_ERROR;
@@ -127,9 +127,9 @@ void _MD_unix_map_default_error(int err)
         case ENFILE:
             prError = PR_SYS_DESC_TABLE_FULL_ERROR;
             break;
-        /*
-         * On SCO OpenServer 5, ENOBUFS is defined as ENOSR.
-         */
+            /*
+             * On SCO OpenServer 5, ENOBUFS is defined as ENOSR.
+             */
 #if defined(ENOBUFS) && (ENOBUFS != ENOSR)
         case ENOBUFS:
             prError = PR_INSUFFICIENT_RESOURCES_ERROR;
@@ -362,9 +362,9 @@ void _MD_unix_map_rmdir_error(int err)
     PRErrorCode prError;
 
     switch (err) {
-        /*
-         * On AIX 4.3, ENOTEMPTY is defined as EEXIST.
-         */
+            /*
+             * On AIX 4.3, ENOTEMPTY is defined as EEXIST.
+             */
 #if ENOTEMPTY != EEXIST
         case ENOTEMPTY:
             prError = PR_DIRECTORY_NOT_EMPTY_ERROR;
@@ -738,14 +738,18 @@ void _MD_unix_map_poll_error(int err)
 
 void _MD_unix_map_poll_revents_error(int err)
 {
-    if (err & POLLNVAL)
+    if (err & POLLNVAL) {
         PR_SetError(PR_BAD_DESCRIPTOR_ERROR, EBADF);
-    else if (err & POLLHUP)
+    }
+    else if (err & POLLHUP) {
         PR_SetError(PR_CONNECT_RESET_ERROR, EPIPE);
-    else if (err & POLLERR)
+    }
+    else if (err & POLLERR) {
         PR_SetError(PR_IO_ERROR, EIO);
-    else
+    }
+    else {
         PR_SetError(PR_UNKNOWN_ERROR, err);
+    }
 }
 #endif /* _PR_POLL_AVAILABLE || _PR_NEED_FAKE_POLL */
 

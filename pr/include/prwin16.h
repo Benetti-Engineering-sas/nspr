@@ -54,7 +54,7 @@ PR_MD_RegisterW16StdioCallbacks(
     PRStdinRead inReadf,            /* i: function pointer for stdin read       */
     PRStdoutWrite outWritef,        /* i: function pointer for stdout write     */
     PRStderrWrite errWritef         /* i: function pointer for stderr write     */
-    );
+);
 
 NSPR_API(PRInt32)
 _PL_W16StdioWrite( void *buf, PRInt32 amount );
@@ -79,7 +79,7 @@ struct PRMethodCallbackStr {
     void    (PR_CALLBACK *free)( void *ptr );
     void *  (PR_CALLBACK *getenv)( const char *name);
     int     (PR_CALLBACK *putenv)( const char *assoc);
-/*    void *  (PR_CALLBACK *perror)( const char *prefix ); */
+    /*    void *  (PR_CALLBACK *perror)( const char *prefix ); */
 };
 
 NSPR_API(void) PR_MDRegisterCallbacks(struct PRMethodCallbackStr *);

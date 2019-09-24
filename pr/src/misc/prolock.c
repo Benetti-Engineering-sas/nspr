@@ -14,9 +14,9 @@
 #include "prerror.h"
 
 PR_IMPLEMENT(PROrderedLock *)
-    PR_CreateOrderedLock(
-        PRInt32 order,
-        const char *name
+PR_CreateOrderedLock(
+    PRInt32 order,
+    const char *name
 )
 {
     PR_NOT_REACHED("Not implemented"); /* Not implemented yet */
@@ -26,8 +26,8 @@ PR_IMPLEMENT(PROrderedLock *)
 
 
 PR_IMPLEMENT(void)
-    PR_DestroyOrderedLock(
-        PROrderedLock *lock
+PR_DestroyOrderedLock(
+    PROrderedLock *lock
 )
 {
     PR_NOT_REACHED("Not implemented"); /* Not implemented yet */
@@ -36,8 +36,8 @@ PR_IMPLEMENT(void)
 
 
 PR_IMPLEMENT(void)
-    PR_LockOrderedLock(
-        PROrderedLock *lock
+PR_LockOrderedLock(
+    PROrderedLock *lock
 )
 {
     PR_NOT_REACHED("Not implemented"); /* Not implemented yet */
@@ -46,8 +46,8 @@ PR_IMPLEMENT(void)
 
 
 PR_IMPLEMENT(PRStatus)
-    PR_UnlockOrderedLock(
-        PROrderedLock *lock
+PR_UnlockOrderedLock(
+    PROrderedLock *lock
 )
 {
     PR_NOT_REACHED("Not implemented"); /* Not implemented yet */

@@ -28,21 +28,22 @@ static PRInt32 PR_CALLBACK FileRead(PRFileDesc *fd, void *buf, PRInt32 amount)
     PRThread *me = _PR_MD_CURRENT_THREAD();
 
     if (_PR_PENDING_INTERRUPT(me)) {
- 		me->flags &= ~_PR_INTERRUPT;
-		PR_SetError(PR_PENDING_INTERRUPT_ERROR, 0);
-		rv = -1;
+        me->flags &= ~_PR_INTERRUPT;
+        PR_SetError(PR_PENDING_INTERRUPT_ERROR, 0);
+        rv = -1;
     }
     if (_PR_IO_PENDING(me)) {
         PR_SetError(PR_IO_PENDING_ERROR, 0);
-	rv = -1;
+        rv = -1;
     }
-    if (rv == -1)
-    	return rv;
+    if (rv == -1) {
+        return rv;
+    }
 
-	rv = _PR_MD_READ(fd, buf, amount);
-	if (rv < 0) {
-		PR_ASSERT(rv == -1);
-	}
+    rv = _PR_MD_READ(fd, buf, amount);
+    if (rv < 0) {
+        PR_ASSERT(rv == -1);
+    }
     PR_LOG(_pr_io_lm, PR_LOG_MAX, ("read -> %d", rv));
     return rv;
 }
@@ -56,14 +57,15 @@ static PRInt32 PR_CALLBACK FileWrite(PRFileDesc *fd, const void *buf, PRInt32 am
     if (_PR_PENDING_INTERRUPT(me)) {
         me->flags &= ~_PR_INTERRUPT;
         PR_SetError(PR_PENDING_INTERRUPT_ERROR, 0);
-	    rv = -1;
+        rv = -1;
     }
     if (_PR_IO_PENDING(me)) {
         PR_SetError(PR_IO_PENDING_ERROR, 0);
-	    rv = -1;
+        rv = -1;
     }
-    if (rv != 0)
-    	return rv;
+    if (rv != 0) {
+        return rv;
+    }
 
     count = 0;
 #if !defined(_PR_HAVE_O_APPEND)  /* Bugzilla: 4090, 276330 */
@@ -74,17 +76,17 @@ static PRInt32 PR_CALLBACK FileWrite(PRFileDesc *fd, const void *buf, PRInt32 am
     } /* if (fd->secret->appendMode...) */
 #endif /* _PR_HAVE_O_APPEND */
     while (amount > 0) {
-		temp = _PR_MD_WRITE(fd, buf, amount);
-		if (temp < 0) {
-			count = -1;
-			break;
-		}
-		count += temp;
-		if (fd->secret->nonblocking) {
-			break;
-		}
-		buf = (const void*) ((const char*)buf + temp);
-		amount -= temp;
+        temp = _PR_MD_WRITE(fd, buf, amount);
+        if (temp < 0) {
+            count = -1;
+            break;
+        }
+        count += temp;
+        if (fd->secret->nonblocking) {
+            break;
+        }
+        buf = (const void*) ((const char*)buf + temp);
+        amount -= temp;
     }
     PR_LOG(_pr_io_lm, PR_LOG_MAX, ("write -> %d", count));
     return count;
@@ -112,8 +114,9 @@ static PRInt32 PR_CALLBACK FileAvailable(PRFileDesc *fd)
 
     cur = _PR_MD_LSEEK(fd, 0, PR_SEEK_CUR);
 
-	if (cur >= 0)
-    	end = _PR_MD_LSEEK(fd, 0, PR_SEEK_END);
+    if (cur >= 0) {
+        end = _PR_MD_LSEEK(fd, 0, PR_SEEK_END);
+    }
 
     if ((cur < 0) || (end < 0)) {
         return -1;
@@ -133,10 +136,13 @@ static PRInt64 PR_CALLBACK FileAvailable64(PRFileDesc *fd)
     LL_I2L(minus_one, -1);
     cur = _PR_MD_LSEEK64(fd, LL_ZERO, PR_SEEK_CUR);
 
-    if (LL_GE_ZERO(cur))
-    	end = _PR_MD_LSEEK64(fd, LL_ZERO, PR_SEEK_END);
+    if (LL_GE_ZERO(cur)) {
+        end = _PR_MD_LSEEK64(fd, LL_ZERO, PR_SEEK_END);
+    }
 
-    if (!LL_GE_ZERO(cur) || !LL_GE_ZERO(end)) return minus_one;
+    if (!LL_GE_ZERO(cur) || !LL_GE_ZERO(end)) {
+        return minus_one;
+    }
 
     LL_SUB(result, end, cur);
     (void)_PR_MD_LSEEK64(fd, cur, PR_SEEK_SET);
@@ -146,42 +152,47 @@ static PRInt64 PR_CALLBACK FileAvailable64(PRFileDesc *fd)
 
 static PRInt32 PR_CALLBACK PipeAvailable(PRFileDesc *fd)
 {
-	PRInt32 rv;
-	rv =  _PR_MD_PIPEAVAILABLE(fd);
-	return rv;
+    PRInt32 rv;
+    rv =  _PR_MD_PIPEAVAILABLE(fd);
+    return rv;
 }
 
 static PRInt64 PR_CALLBACK PipeAvailable64(PRFileDesc *fd)
 {
     PRInt64 rv;
     LL_I2L(rv, _PR_MD_PIPEAVAILABLE(fd));
-	return rv;
+    return rv;
 }
 
 static PRStatus PR_CALLBACK PipeSync(PRFileDesc *fd)
 {
-	return PR_SUCCESS;
+    return PR_SUCCESS;
 }
 
 static PRStatus PR_CALLBACK FileGetInfo(PRFileDesc *fd, PRFileInfo *info)
 {
-	PRInt32 rv;
+    PRInt32 rv;
 
     rv = _PR_MD_GETOPENFILEINFO(fd, info);
     if (rv < 0) {
-	return PR_FAILURE;
-    } else
-	return PR_SUCCESS;
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 static PRStatus PR_CALLBACK FileGetInfo64(PRFileDesc *fd, PRFileInfo64 *info)
 {
     /* $$$$ NOT YET IMPLEMENTED */
-	PRInt32 rv;
+    PRInt32 rv;
 
     rv = _PR_MD_GETOPENFILEINFO64(fd, info);
-    if (rv < 0) return PR_FAILURE;
-    else return PR_SUCCESS;
+    if (rv < 0) {
+        return PR_FAILURE;
+    }
+    else {
+        return PR_SUCCESS;
+    }
 }
 
 static PRStatus PR_CALLBACK FileSync(PRFileDesc *fd)
@@ -189,7 +200,7 @@ static PRStatus PR_CALLBACK FileSync(PRFileDesc *fd)
     PRInt32 result;
     result = _PR_MD_FSYNC(fd);
     if (result < 0) {
-		return PR_FAILURE;
+        return PR_FAILURE;
     }
     return PR_SUCCESS;
 }
@@ -197,7 +208,7 @@ static PRStatus PR_CALLBACK FileSync(PRFileDesc *fd)
 static PRStatus PR_CALLBACK FileClose(PRFileDesc *fd)
 {
     if (!fd || !fd->secret
-            || (fd->secret->state != _PR_FILEDESC_OPEN
+        || (fd->secret->state != _PR_FILEDESC_OPEN
             && fd->secret->state != _PR_FILEDESC_CLOSED)) {
         PR_SetError(PR_BAD_DESCRIPTOR_ERROR, 0);
         return PR_FAILURE;
@@ -316,7 +327,9 @@ PR_IMPLEMENT(PRFileDesc*) PR_Open(const char *name, PRIntn flags, PRIntn mode)
     PRBool  appendMode = ( PR_APPEND & flags )? PR_TRUE : PR_FALSE;
 #endif
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     /* Map pr open flags and mode to os specific flags */
 
@@ -344,7 +357,9 @@ PR_IMPLEMENT(PRFileDesc*) PR_OpenFile(
     PRBool  appendMode = ( PR_APPEND & flags )? PR_TRUE : PR_FALSE;
 #endif
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     /* Map pr open flags and mode to os specific flags */
 
@@ -369,8 +384,8 @@ PR_IMPLEMENT(PRInt32) PR_GetSysfdTableMax(void)
     struct rlimit rlim;
 
     if ( getrlimit(RLIMIT_NOFILE, &rlim) < 0) {
-       /* XXX need to call PR_SetError() */
-       return -1;
+        /* XXX need to call PR_SetError() */
+        return -1;
     }
 
     return rlim.rlim_max;
@@ -399,19 +414,23 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(int table_size)
     struct rlimit rlim;
     PRInt32 tableMax = PR_GetSysfdTableMax();
 
-    if (tableMax < 0)
+    if (tableMax < 0) {
         return -1;
+    }
 
-    if (tableMax > FD_SETSIZE)
+    if (tableMax > FD_SETSIZE) {
         tableMax = FD_SETSIZE;
+    }
 
     rlim.rlim_max = tableMax;
 
     /* Grow as much as we can; even if too big */
-    if ( rlim.rlim_max < table_size )
+    if ( rlim.rlim_max < table_size ) {
         rlim.rlim_cur = rlim.rlim_max;
-    else
+    }
+    else {
         rlim.rlim_cur = table_size;
+    }
 
     if ( setrlimit(RLIMIT_NOFILE, &rlim) < 0) {
         /* XXX need to call PR_SetError() */
@@ -422,12 +441,14 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(int table_size)
 #elif defined(XP_OS2)
     PRInt32 tableMax = PR_GetSysfdTableMax();
     if (table_size > tableMax) {
-      APIRET rc = NO_ERROR;
-      rc = DosSetMaxFH(table_size);
-      if (rc == NO_ERROR)
-        return table_size;
-      else
-        return -1;
+        APIRET rc = NO_ERROR;
+        rc = DosSetMaxFH(table_size);
+        if (rc == NO_ERROR) {
+            return table_size;
+        }
+        else {
+            return -1;
+        }
     }
     return tableMax;
 #elif defined(AIX) || defined(QNX) \
@@ -441,31 +462,35 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(int table_size)
 
 PR_IMPLEMENT(PRStatus) PR_Delete(const char *name)
 {
-	PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_DELETE(name);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_DELETE(name);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 PR_IMPLEMENT(PRStatus) PR_GetFileInfo(const char *fn, PRFileInfo *info)
 {
-	PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_GETFILEINFO(fn, info);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_GETFILEINFO(fn, info);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 PR_IMPLEMENT(PRStatus) PR_GetFileInfo64(const char *fn, PRFileInfo64 *info)
 {
     PRInt32 rv;
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
     rv = _PR_MD_GETFILEINFO64(fn, info);
     if (rv < 0) {
         return PR_FAILURE;
@@ -476,24 +501,26 @@ PR_IMPLEMENT(PRStatus) PR_GetFileInfo64(const char *fn, PRFileInfo64 *info)
 
 PR_IMPLEMENT(PRStatus) PR_Rename(const char *from, const char *to)
 {
-	PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_RENAME(from, to);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_RENAME(from, to);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 PR_IMPLEMENT(PRStatus) PR_Access(const char *name, PRAccessHow how)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_ACCESS(name, how);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_ACCESS(name, how);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 /*
@@ -503,7 +530,9 @@ PR_IMPLEMENT(PRFileDesc*) PR_ImportFile(PROsfd osfd)
 {
     PRFileDesc *fd = NULL;
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     fd = PR_AllocFileDesc(osfd, &_pr_fileMethods);
     if( !fd ) {
@@ -522,7 +551,9 @@ PR_IMPLEMENT(PRFileDesc*) PR_ImportPipe(PROsfd osfd)
 {
     PRFileDesc *fd = NULL;
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     fd = PR_AllocFileDesc(osfd, &_pr_pipeMethods);
     if( !fd ) {
@@ -571,7 +602,7 @@ PR_IMPLEMENT(PRInt32) PR_Stat(const char *name, struct stat *buf)
     PRInt32 rv;
 
     rv = _PR_MD_STAT(name, buf);
-	return rv;
+    return rv;
 }
 
 #endif /* !defined(WIN16)  */
@@ -591,8 +622,9 @@ PR_IMPLEMENT(PRStatus) PR_LockFile(PRFileDesc *fd)
 #endif
 
     PR_Lock(_pr_flock_lock);
-    while (fd->secret->lockCount == -1)
+    while (fd->secret->lockCount == -1) {
         PR_WaitCondVar(_pr_flock_cv, PR_INTERVAL_NO_TIMEOUT);
+    }
     if (fd->secret->lockCount == 0) {
         fd->secret->lockCount = -1;
         PR_Unlock(_pr_flock_lock);
@@ -625,8 +657,9 @@ PR_IMPLEMENT(PRStatus) PR_TLockFile(PRFileDesc *fd)
     if (fd->secret->lockCount == 0) {
         status = _PR_MD_TLOCKFILE(fd->secret->md.osfd);
         PR_ASSERT(status == PR_SUCCESS || fd->secret->lockCount == 0);
-        if (status == PR_SUCCESS)
+        if (status == PR_SUCCESS) {
             fd->secret->lockCount = 1;
+        }
     } else {
         fd->secret->lockCount++;
     }
@@ -642,8 +675,9 @@ PR_IMPLEMENT(PRStatus) PR_UnlockFile(PRFileDesc *fd)
     PR_Lock(_pr_flock_lock);
     if (fd->secret->lockCount == 1) {
         rv = _PR_MD_UNLOCKFILE(fd->secret->md.osfd);
-        if (rv == PR_SUCCESS)
+        if (rv == PR_SUCCESS) {
             fd->secret->lockCount = 0;
+        }
     } else {
         fd->secret->lockCount--;
     }
@@ -661,7 +695,9 @@ PR_IMPLEMENT(PRStatus) PR_CreatePipe(
     HANDLE readEnd, writeEnd;
     SECURITY_ATTRIBUTES pipeAttributes;
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     ZeroMemory(&pipeAttributes, sizeof(pipeAttributes));
     pipeAttributes.nLength = sizeof(pipeAttributes);
@@ -696,7 +732,9 @@ PR_IMPLEMENT(PRStatus) PR_CreatePipe(
     int pipefd[2];
 #endif
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
 #ifdef XP_OS2
     if (DosCreatePipe(&pipefd[0], &pipefd[1], 4096) != 0) {
@@ -741,7 +779,9 @@ PR_IMPLEMENT(PRFileDesc*) PR_OpenFileUTF16(
     PRBool  appendMode = ( PR_APPEND & flags )? PR_TRUE : PR_FALSE;
 #endif
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
 
     /* Map pr open flags and mode to os specific flags */
     osfd = _PR_MD_OPEN_FILE_UTF16(name, flags, mode);
@@ -763,7 +803,9 @@ PR_IMPLEMENT(PRStatus) PR_GetFileInfo64UTF16(const PRUnichar *fn, PRFileInfo64 *
 {
     PRInt32 rv;
 
-    if (!_pr_initialized) _PR_ImplicitInitialization();
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
     rv = _PR_MD_GETFILEINFO64_UTF16(fn, info);
     if (rv < 0) {
         return PR_FAILURE;

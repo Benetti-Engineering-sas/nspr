@@ -49,23 +49,23 @@ int main(int argc, char **argv)
     PRStatus rv;
 
     while ((in = *nexttestaddr++) != 0) {
-	expected_out = *nexttestaddr++;
-	rv = PR_StringToNetAddr(in, &addr);
-	if (rv) {
-	    printf("cannot convert %s to addr: %d\n", in, rv);
+        expected_out = *nexttestaddr++;
+        rv = PR_StringToNetAddr(in, &addr);
+        if (rv) {
+            printf("cannot convert %s to addr: %d\n", in, rv);
             failed_already = 1;
-	    continue;
-	}
-	rv = PR_NetAddrToString(&addr, buf, sizeof(buf));
-	if (rv) {
-	    printf("cannot convert %s back to string: %d\n", in, rv);
+            continue;
+        }
+        rv = PR_NetAddrToString(&addr, buf, sizeof(buf));
+        if (rv) {
+            printf("cannot convert %s back to string: %d\n", in, rv);
             failed_already = 1;
-	    continue;
-	}
-	if (strcmp(buf, expected_out)) {
+            continue;
+        }
+        if (strcmp(buf, expected_out)) {
             /* This is not necessarily an error */
-	    printf("%s expected %s got %s\n", in, expected_out, buf);
-	}
+            printf("%s expected %s got %s\n", in, expected_out, buf);
+        }
     }
     while ((in = *nextbadaddr++) != 0) {
         if (PR_StringToNetAddr(in, &addr) == PR_SUCCESS) {

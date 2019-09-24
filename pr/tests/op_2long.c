@@ -37,38 +37,38 @@ PRIntn error_code;
 
 int main(int argc, char **argv)
 {
-	char nameTooLong[TOO_LONG];
-	int i;
+    char nameTooLong[TOO_LONG];
+    int i;
 
-	/* Generate a really long pathname */
-	for (i = 0; i < TOO_LONG - 1; i++) {
-		if (i % 10 == 0) {
-			nameTooLong[i] = '/';
-		} else {
-			nameTooLong[i] = 'a';
-		}
-	}
-	nameTooLong[TOO_LONG - 1] = 0;
+    /* Generate a really long pathname */
+    for (i = 0; i < TOO_LONG - 1; i++) {
+        if (i % 10 == 0) {
+            nameTooLong[i] = '/';
+        } else {
+            nameTooLong[i] = 'a';
+        }
+    }
+    nameTooLong[TOO_LONG - 1] = 0;
 
     PR_STDIO_INIT();
-	t1 = PR_Open(nameTooLong, PR_RDWR, 0666);
-	if (t1 == NULL) {
-		if (PR_GetError() == PR_NAME_TOO_LONG_ERROR) {
+    t1 = PR_Open(nameTooLong, PR_RDWR, 0666);
+    if (t1 == NULL) {
+        if (PR_GetError() == PR_NAME_TOO_LONG_ERROR) {
             PL_PrintError("error code is");
-			printf ("PASS\n");
-			return 0;
-		}
-		else {
+            printf ("PASS\n");
+            return 0;
+        }
+        else {
             PL_PrintError("error code is");
-			printf ("FAIL\n");
-			return 1;
-		}
-	}
+            printf ("FAIL\n");
+            return 1;
+        }
+    }
 
-		else {
-			printf ("Test passed\n");
-			return 0;
-		}
+    else {
+        printf ("Test passed\n");
+        return 0;
+    }
 
 
 

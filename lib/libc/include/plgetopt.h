@@ -20,9 +20,9 @@ typedef struct PLOptionInternal PLOptionInternal;
 
 typedef enum
 {
-        PL_OPT_OK,              /* all's well with the option */
-        PL_OPT_EOL,             /* end of options list */
-        PL_OPT_BAD              /* invalid option (and value) */
+    PL_OPT_OK,              /* all's well with the option */
+    PL_OPT_EOL,             /* end of options list */
+    PL_OPT_BAD              /* invalid option (and value) */
 } PLOptStatus;
 
 typedef struct PLLongOpt
@@ -30,7 +30,7 @@ typedef struct PLLongOpt
     const char * longOptName;   /* long option name string                  */
     PRIntn       longOption;    /* value put in PLOptState for this option. */
     PRBool       valueRequired; /* If option name not followed by '=',      */
-                                /* value is the next argument from argv.    */
+    /* value is the next argument from argv.    */
 } PLLongOpt;
 
 typedef struct PLOptState
@@ -52,7 +52,7 @@ typedef struct PLOptState
  * followed immediately by a ':' character.
  */
 PR_EXTERN(PLOptState*) PL_CreateOptState(
-        PRIntn argc, char **argv, const char *options);
+    PRIntn argc, char **argv, const char *options);
 
 /*
  * PL_CreateLongOptState
@@ -66,8 +66,8 @@ PR_EXTERN(PLOptState*) PL_CreateOptState(
  * followed by '=' then the next argument from argv is taken as the value.
  */
 PR_EXTERN(PLOptState*) PL_CreateLongOptState(
-        PRIntn argc, char **argv, const char *options,
-        const PLLongOpt *longOpts);
+    PRIntn argc, char **argv, const char *options,
+    const PLLongOpt *longOpts);
 /*
  * PL_DestroyOptState
  *

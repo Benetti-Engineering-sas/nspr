@@ -158,7 +158,7 @@ NSPR_API(void) PR_LogPrint(const char *fmt, ...);
 NSPR_API(void) PR_LogFlush(void);
 
 NSPR_API(void) PR_Assert(const char *s, const char *file, PRIntn ln)
-    PR_PRETEND_NORETURN;
+PR_PRETEND_NORETURN;
 
 #if defined(DEBUG) || defined(FORCE_PR_LOG)
 #define PR_LOGGING 1

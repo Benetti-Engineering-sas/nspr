@@ -190,7 +190,7 @@ NSPR_API(PRFuncPtr) PR_FindFunctionSymbol(PRLibrary *lib, const char *name);
 ** This increments the reference count of the library.
 */
 NSPR_API(void*) PR_FindSymbolAndLibrary(const char *name,
-						      PRLibrary* *lib);
+                                        PRLibrary* *lib);
 
 /*
 ** Similar to PR_FindSymbolAndLibrary, except that the return value is
@@ -201,7 +201,7 @@ NSPR_API(void*) PR_FindSymbolAndLibrary(const char *name,
 ** This increments the reference count of the library.
 */
 NSPR_API(PRFuncPtr) PR_FindFunctionSymbolAndLibrary(const char *name,
-						      PRLibrary* *lib);
+        PRLibrary* *lib);
 
 /*
 ** Register a static link table with the runtime under the name

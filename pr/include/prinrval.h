@@ -4,8 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
-** File:		prinrval.h
-** Description:	API to interval timing functions of NSPR.
+** File:        prinrval.h
+** Description: API to interval timing functions of NSPR.
 **
 **
 ** NSPR provides interval times that are independent of network time

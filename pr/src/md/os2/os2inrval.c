@@ -23,8 +23,9 @@ _PR_MD_INTERVAL_INIT()
     APIRET rc;
 
     if ((envp = getenv("NSPR_OS2_NO_HIRES_TIMER")) != NULL) {
-        if (atoi(envp) == 1)
-           return;
+        if (atoi(envp) == 1) {
+            return;
+        }
     }
 
     timerFreq = 0; /* OS/2 high-resolution timer frequency in Hz */

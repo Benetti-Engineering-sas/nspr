@@ -18,8 +18,8 @@ PR_IMPLEMENT(PRDir*) PR_OpenDir(const char *name)
             return NULL;
         }
     } else {
-		PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
-	}
+        PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
+    }
     return dir;
 }
 
@@ -33,51 +33,57 @@ PR_IMPLEMENT(PRDirEntry*) PR_ReadDir(PRDir *dir, PRDirFlags flags)
 
 PR_IMPLEMENT(PRStatus) PR_CloseDir(PRDir *dir)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
     if (dir) {
         rv = _PR_MD_CLOSE_DIR(&dir->md);
-		PR_DELETE(dir);
-		if (rv < 0) {
-			return PR_FAILURE;
-		} else
-			return PR_SUCCESS;
+        PR_DELETE(dir);
+        if (rv < 0) {
+            return PR_FAILURE;
+        } else {
+            return PR_SUCCESS;
+        }
     }
-	return PR_SUCCESS;
+    return PR_SUCCESS;
 }
 
 PR_IMPLEMENT(PRStatus) PR_MkDir(const char *name, PRIntn mode)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_MKDIR(name, mode);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_MKDIR(name, mode);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 PR_IMPLEMENT(PRStatus) PR_MakeDir(const char *name, PRIntn mode)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
-	if (!_pr_initialized) _PR_ImplicitInitialization();
-	rv = _PR_MD_MAKE_DIR(name, mode);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    if (!_pr_initialized) {
+        _PR_ImplicitInitialization();
+    }
+    rv = _PR_MD_MAKE_DIR(name, mode);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 PR_IMPLEMENT(PRStatus) PR_RmDir(const char *name)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
-	rv = _PR_MD_RMDIR(name);
-	if (rv < 0) {
-		return PR_FAILURE;
-	} else
-		return PR_SUCCESS;
+    rv = _PR_MD_RMDIR(name);
+    if (rv < 0) {
+        return PR_FAILURE;
+    } else {
+        return PR_SUCCESS;
+    }
 }
 
 #ifdef MOZ_UNICODE
@@ -120,10 +126,12 @@ PR_IMPLEMENT(PRStatus) PR_CloseDirUTF16(PRDirUTF16 *dir)
     if (dir) {
         rv = _PR_MD_CLOSE_DIR_UTF16(&dir->md);
         PR_DELETE(dir);
-        if (rv < 0)
-	    return PR_FAILURE;
-        else
-	    return PR_SUCCESS;
+        if (rv < 0) {
+            return PR_FAILURE;
+        }
+        else {
+            return PR_SUCCESS;
+        }
     }
     return PR_SUCCESS;
 }

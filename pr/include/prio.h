@@ -54,7 +54,7 @@ struct PRFileDesc {
     PRFilePrivate *secret;              /* layer dependent data */
     PRFileDesc *lower, *higher;         /* pointers to adjacent layers */
     void (PR_CALLBACK *dtor)(PRFileDesc *fd);
-                                        /* A destructor function for layer */
+    /* A destructor function for layer */
     PRDescIdentity identity;            /* Identity of this particular layer  */
 };
 
@@ -128,17 +128,17 @@ typedef enum PRTransmitFileFlags {
 *************************************************************************/
 
 struct PRIPv6Addr {
-	union {
-		PRUint8  _S6_u8[16];
-		PRUint16 _S6_u16[8];
-		PRUint32 _S6_u32[4];
-		PRUint64 _S6_u64[2];
-	} _S6_un;
+    union {
+        PRUint8  _S6_u8[16];
+        PRUint16 _S6_u16[8];
+        PRUint32 _S6_u32[4];
+        PRUint64 _S6_u64[2];
+    } _S6_un;
 };
-#define pr_s6_addr		_S6_un._S6_u8
-#define pr_s6_addr16	_S6_un._S6_u16
-#define pr_s6_addr32	_S6_un._S6_u32
-#define pr_s6_addr64 	_S6_un._S6_u64
+#define pr_s6_addr      _S6_un._S6_u8
+#define pr_s6_addr16    _S6_un._S6_u16
+#define pr_s6_addr32    _S6_un._S6_u32
+#define pr_s6_addr64    _S6_un._S6_u64
 
 typedef struct PRIPv6Addr PRIPv6Addr;
 
@@ -165,7 +165,7 @@ union PRNetAddr {
         PRUint16 family;                /* address family (AF_UNIX) */
 #ifdef XP_OS2
         char path[108];                 /* null-terminated pathname */
-                                        /* bind fails if size is not 108. */
+        /* bind fails if size is not 108. */
 #else
         char path[104];                 /* null-terminated pathname */
 #endif
@@ -209,13 +209,13 @@ typedef enum PRSockOption
 } PRSockOption;
 
 typedef struct PRLinger {
-	PRBool polarity;		    /* Polarity of the option's setting */
-	PRIntervalTime linger;	    /* Time to linger before closing */
+    PRBool polarity;            /* Polarity of the option's setting */
+    PRIntervalTime linger;      /* Time to linger before closing */
 } PRLinger;
 
 typedef struct PRMcastRequest {
-	PRNetAddr mcaddr;			/* IP multicast address of group */
-	PRNetAddr ifaddr;			/* local IP address of interface */
+    PRNetAddr mcaddr;           /* IP multicast address of group */
+    PRNetAddr ifaddr;           /* local IP address of interface */
 } PRMcastRequest;
 
 typedef struct PRSocketOptionData
@@ -333,8 +333,8 @@ typedef PRInt32 (PR_CALLBACK *PRAcceptreadFN)(
     PRFileDesc *sd, PRFileDesc **nd, PRNetAddr **raddr,
     void *buf, PRInt32 amount, PRIntervalTime t);
 typedef PRInt32 (PR_CALLBACK *PRTransmitfileFN)(
-     PRFileDesc *sd, PRFileDesc *fd, const void *headers,
-     PRInt32 hlen, PRTransmitFileFlags flags, PRIntervalTime t);
+    PRFileDesc *sd, PRFileDesc *fd, const void *headers,
+    PRInt32 hlen, PRTransmitFileFlags flags, PRIntervalTime t);
 typedef PRStatus (PR_CALLBACK *PRGetsocknameFN)(PRFileDesc *fd, PRNetAddr *addr);
 typedef PRStatus (PR_CALLBACK *PRGetpeernameFN)(PRFileDesc *fd, PRNetAddr *addr);
 typedef PRStatus (PR_CALLBACK *PRGetsocketoptionFN)(
@@ -342,8 +342,8 @@ typedef PRStatus (PR_CALLBACK *PRGetsocketoptionFN)(
 typedef PRStatus (PR_CALLBACK *PRSetsocketoptionFN)(
     PRFileDesc *fd, const PRSocketOptionData *data);
 typedef PRInt32 (PR_CALLBACK *PRSendfileFN)(
-	PRFileDesc *networkSocket, PRSendFileData *sendData,
-	PRTransmitFileFlags flags, PRIntervalTime timeout);
+    PRFileDesc *networkSocket, PRSendFileData *sendData,
+    PRTransmitFileFlags flags, PRIntervalTime timeout);
 typedef PRStatus (PR_CALLBACK *PRConnectcontinueFN)(
     PRFileDesc *fd, PRInt16 out_flags);
 typedef PRIntn (PR_CALLBACK *PRReservedFN)(PRFileDesc *fd);
@@ -378,16 +378,16 @@ struct PRIOMethods {
     PRReservedFN reserved_fn_6;     /* reserved for future use */
     PRReservedFN reserved_fn_5;     /* reserved for future use */
     PRGetsocketoptionFN getsocketoption;
-                                    /* Get current setting of specified option  */
+    /* Get current setting of specified option  */
     PRSetsocketoptionFN setsocketoption;
-                                    /* Set value of specified option            */
-    PRSendfileFN sendfile;			/* Send a (partial) file with header/trailer*/
+    /* Set value of specified option            */
+    PRSendfileFN sendfile;          /* Send a (partial) file with header/trailer*/
     PRConnectcontinueFN connectcontinue;
-                                    /* Continue a nonblocking connect */
-    PRReservedFN reserved_fn_3;		/* reserved for future use */
-    PRReservedFN reserved_fn_2;		/* reserved for future use */
-    PRReservedFN reserved_fn_1;		/* reserved for future use */
-    PRReservedFN reserved_fn_0;		/* reserved for future use */
+    /* Continue a nonblocking connect */
+    PRReservedFN reserved_fn_3;     /* reserved for future use */
+    PRReservedFN reserved_fn_2;     /* reserved for future use */
+    PRReservedFN reserved_fn_1;     /* reserved for future use */
+    PRReservedFN reserved_fn_0;     /* reserved for future use */
 };
 
 /*
@@ -418,9 +418,9 @@ typedef enum PRSpecialFD
 
 NSPR_API(PRFileDesc*) PR_GetSpecialFD(PRSpecialFD id);
 
-#define PR_STDIN	PR_GetSpecialFD(PR_StandardInput)
-#define PR_STDOUT	PR_GetSpecialFD(PR_StandardOutput)
-#define PR_STDERR	PR_GetSpecialFD(PR_StandardError)
+#define PR_STDIN    PR_GetSpecialFD(PR_StandardInput)
+#define PR_STDOUT   PR_GetSpecialFD(PR_StandardOutput)
+#define PR_STDERR   PR_GetSpecialFD(PR_StandardError)
 
 /*
  **************************************************************************
@@ -543,16 +543,16 @@ NSPR_API(PRFileDesc*) PR_PopIOLayer(PRFileDesc *fd_stack, PRDescIdentity id);
  *         The file status flags.
  *         It is a bitwise OR of the following bit flags (only one of
  *         the first three flags below may be used):
- *		PR_RDONLY        Open for reading only.
- *		PR_WRONLY        Open for writing only.
- *		PR_RDWR          Open for reading and writing.
- *		PR_CREATE_FILE   If the file does not exist, the file is created
+ *      PR_RDONLY        Open for reading only.
+ *      PR_WRONLY        Open for writing only.
+ *      PR_RDWR          Open for reading and writing.
+ *      PR_CREATE_FILE   If the file does not exist, the file is created
  *                              If the file exists, this flag has no effect.
  *      PR_SYNC          If set, each write will wait for both the file data
  *                              and file status to be physically updated.
- *		PR_APPEND        The file pointer is set to the end of
+ *      PR_APPEND        The file pointer is set to the end of
  *                              the file prior to each write.
- *		PR_TRUNCATE      If the file exists, its length is truncated to 0.
+ *      PR_TRUNCATE      If the file exists, its length is truncated to 0.
  *      PR_EXCL          With PR_CREATE_FILE, if the file does not exist,
  *                              the file is created. If the file already
  *                              exists, no action and NULL is returned
@@ -974,7 +974,7 @@ NSPR_API(PRInt64) PR_Available64(PRFileDesc *fd);
  ************************************************************************
  */
 
-NSPR_API(PRStatus)	PR_Sync(PRFileDesc *fd);
+NSPR_API(PRStatus)  PR_Sync(PRFileDesc *fd);
 
 /************************************************************************/
 
@@ -990,7 +990,7 @@ struct PRDirEntryUTF16 {
 #endif /* MOZ_UNICODE */
 
 #if !defined(NO_NSPR_10_SUPPORT)
-#define PR_DirName(dirEntry)	(dirEntry->name)
+#define PR_DirName(dirEntry)    (dirEntry->name)
 #endif
 
 /*
@@ -1444,7 +1444,7 @@ NSPR_API(PRStatus)    PR_Shutdown(PRFileDesc *fd, PRShutdownHow how);
 #define PR_MSG_PEEK 0x2
 
 NSPR_API(PRInt32)    PR_Recv(PRFileDesc *fd, void *buf, PRInt32 amount,
-                PRIntn flags, PRIntervalTime timeout);
+                             PRIntn flags, PRIntervalTime timeout);
 
 /*
  *************************************************************************
@@ -1475,7 +1475,7 @@ NSPR_API(PRInt32)    PR_Recv(PRFileDesc *fd, void *buf, PRInt32 amount,
  */
 
 NSPR_API(PRInt32)    PR_Send(PRFileDesc *fd, const void *buf, PRInt32 amount,
-                                PRIntn flags, PRIntervalTime timeout);
+                             PRIntn flags, PRIntervalTime timeout);
 
 /*
  *************************************************************************
@@ -1593,9 +1593,9 @@ NSPR_API(PRInt32) PR_TransmitFile(
 ** DESCRIPTION:
 **    PR_SendFile sends data from a file (sendData->fd) across a socket
 **    (networkSocket).  If specified, a header and/or trailer buffer are sent
-**	  before and after the file, respectively. The file offset, number of bytes
-** 	  of file data to send, the header and trailer buffers are specified in the
-**	  sendData argument.
+**    before and after the file, respectively. The file offset, number of bytes
+**    of file data to send, the header and trailer buffers are specified in the
+**    sendData argument.
 **
 **    Optionally, if the PR_TRANSMITFILE_CLOSE_SOCKET flag is passed, the
 **    socket is closed after successfully sending the data.
@@ -1605,7 +1605,7 @@ NSPR_API(PRInt32) PR_TransmitFile(
 **        The socket to send data over
 **    PRSendFileData *sendData
 **        Contains the FD, file offset and length, header and trailer
-**		  buffer specifications.
+**        buffer specifications.
 **    PRTransmitFileFlags       flags
 **        If the flags indicate that the connection should be closed,
 **        it will be done immediately after transferring the file, unless
@@ -1622,21 +1622,21 @@ NSPR_API(PRInt32) PR_TransmitFile(
 */
 
 struct PRSendFileData {
-	PRFileDesc	*fd;			/* file to send							*/
-	PRUint32	file_offset;	/* file offset							*/
-	PRSize		file_nbytes;	/* number of bytes of file data to send	*/
-								/* if 0, send data from file_offset to	*/
-								/* end-of-file.							*/
-	const void	*header;		/* header buffer						*/
-	PRInt32		hlen;			/* header len							*/
-	const void	*trailer;		/* trailer buffer						*/
-	PRInt32		tlen;			/* trailer len							*/
+    PRFileDesc  *fd;            /* file to send                         */
+    PRUint32    file_offset;    /* file offset                          */
+    PRSize      file_nbytes;    /* number of bytes of file data to send */
+    /* if 0, send data from file_offset to  */
+    /* end-of-file.                         */
+    const void  *header;        /* header buffer                        */
+    PRInt32     hlen;           /* header len                           */
+    const void  *trailer;       /* trailer buffer                       */
+    PRInt32     tlen;           /* trailer len                          */
 };
 
 
 NSPR_API(PRInt32) PR_SendFile(
     PRFileDesc *networkSocket, PRSendFileData *sendData,
-	PRTransmitFileFlags flags, PRIntervalTime timeout);
+    PRTransmitFileFlags flags, PRIntervalTime timeout);
 
 /*
 *************************************************************************
@@ -1732,7 +1732,7 @@ NSPR_API(PRStatus) PR_NewTCPSocketPair(PRFileDesc *fds[2]);
 **     be obtained by calling PR_GetError().
 **************************************************************************
 **/
-NSPR_API(PRStatus)	PR_GetSockName(PRFileDesc *fd, PRNetAddr *addr);
+NSPR_API(PRStatus)  PR_GetSockName(PRFileDesc *fd, PRNetAddr *addr);
 
 /*
 *************************************************************************
@@ -1754,12 +1754,12 @@ NSPR_API(PRStatus)	PR_GetSockName(PRFileDesc *fd, PRNetAddr *addr);
 **     be obtained by calling PR_GetError().
 **************************************************************************
 **/
-NSPR_API(PRStatus)	PR_GetPeerName(PRFileDesc *fd, PRNetAddr *addr);
+NSPR_API(PRStatus)  PR_GetPeerName(PRFileDesc *fd, PRNetAddr *addr);
 
-NSPR_API(PRStatus)	PR_GetSocketOption(
+NSPR_API(PRStatus)  PR_GetSocketOption(
     PRFileDesc *fd, PRSocketOptionData *data);
 
-NSPR_API(PRStatus)	PR_SetSocketOption(
+NSPR_API(PRStatus)  PR_SetSocketOption(
     PRFileDesc *fd, const PRSocketOptionData *data);
 
 /*

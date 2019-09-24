@@ -28,7 +28,9 @@ private:
 TestThread::~TestThread() { }
 
 TestThread::TestThread(RCThread::State state, PRIntn count):
-    RCThread(RCThread::global, state, 0) { mydata = count; }
+    RCThread(RCThread::global, state, 0) {
+    mydata = count;
+}
 
 void TestThread::RootFunction()
 {

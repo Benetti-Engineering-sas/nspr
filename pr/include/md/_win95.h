@@ -84,14 +84,14 @@ extern struct PRLock                      *_pr_schedLock;
 typedef void (*FiberFunc)(void *);
 
 #define PR_NUM_GCREGS           8
-typedef PRInt32	                PR_CONTEXT_TYPE[PR_NUM_GCREGS];
+typedef PRInt32                 PR_CONTEXT_TYPE[PR_NUM_GCREGS];
 #define GC_VMBASE               0x40000000
 #define GC_VMLIMIT              0x00FFFFFF
 
-#define _MD_MAGIC_THREAD	0x22222222
-#define _MD_MAGIC_THREADSTACK	0x33333333
-#define _MD_MAGIC_SEGMENT	0x44444444
-#define _MD_MAGIC_DIR		0x55555555
+#define _MD_MAGIC_THREAD    0x22222222
+#define _MD_MAGIC_THREADSTACK   0x33333333
+#define _MD_MAGIC_SEGMENT   0x44444444
+#define _MD_MAGIC_DIR       0x55555555
 #define _MD_MAGIC_CV        0x66666666
 
 struct _MDCPU {
@@ -310,7 +310,7 @@ extern PRInt32 _MD_CloseSocket(PROsfd osfd);
 #define _MD_INIT_ATOMIC()
 #if defined(_M_IX86) || defined(_X86_)
 #define _MD_ATOMIC_INCREMENT          _PR_MD_ATOMIC_INCREMENT
-#define _MD_ATOMIC_ADD          	  _PR_MD_ATOMIC_ADD
+#define _MD_ATOMIC_ADD                _PR_MD_ATOMIC_ADD
 #define _MD_ATOMIC_DECREMENT          _PR_MD_ATOMIC_DECREMENT
 #else /* non-x86 processors */
 #define _MD_ATOMIC_INCREMENT(x)       InterlockedIncrement((PLONG)x)
@@ -329,7 +329,7 @@ extern PRInt32 _MD_SocketAvailable(PRFileDesc *fd);
 #define _MD_PIPEAVAILABLE             _PR_MD_PIPEAVAILABLE
 #define _MD_CONNECT                   _PR_MD_CONNECT
 extern PROsfd _MD_Accept(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
-        PRIntervalTime timeout);
+                         PRIntervalTime timeout);
 #define _MD_ACCEPT                    _MD_Accept
 #define _MD_BIND                      _PR_MD_BIND
 #define _MD_RECV                      _PR_MD_RECV
@@ -343,8 +343,8 @@ extern PROsfd _MD_Accept(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
 /* --- DIR stuff --- */
 #define PR_DIRECTORY_SEPARATOR        '\\'
 #define PR_DIRECTORY_SEPARATOR_STR    "\\"
-#define PR_PATH_SEPARATOR		';'
-#define PR_PATH_SEPARATOR_STR		";"
+#define PR_PATH_SEPARATOR       ';'
+#define PR_PATH_SEPARATOR_STR       ";"
 #define _MD_ERRNO()                   GetLastError()
 #define _MD_OPEN_DIR                  _PR_MD_OPEN_DIR
 #define _MD_CLOSE_DIR                 _PR_MD_CLOSE_DIR
@@ -396,13 +396,13 @@ extern PROsfd _MD_Accept(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
 #define _MD_WAKEUP_WAITER             _PR_MD_WAKEUP_WAITER
 
 /* --- CVar ------------------- */
-#define _MD_WAIT_CV					  _PR_MD_WAIT_CV
-#define _MD_NEW_CV					  _PR_MD_NEW_CV
-#define _MD_FREE_CV					  _PR_MD_FREE_CV
-#define _MD_NOTIFY_CV				  _PR_MD_NOTIFY_CV
-#define _MD_NOTIFYALL_CV			  _PR_MD_NOTIFYALL_CV
+#define _MD_WAIT_CV                   _PR_MD_WAIT_CV
+#define _MD_NEW_CV                    _PR_MD_NEW_CV
+#define _MD_FREE_CV                   _PR_MD_FREE_CV
+#define _MD_NOTIFY_CV                 _PR_MD_NOTIFY_CV
+#define _MD_NOTIFYALL_CV              _PR_MD_NOTIFYALL_CV
 
-   /* XXXMB- the IOQ stuff is certainly not working correctly yet. */
+/* XXXMB- the IOQ stuff is certainly not working correctly yet. */
 // extern  struct _MDLock              _pr_ioq_lock;
 #define _MD_IOQ_LOCK()
 #define _MD_IOQ_UNLOCK()
@@ -438,7 +438,7 @@ extern PRStatus _PR_DetachWindowsProcess(struct PRProcess *process);
 /* --- Wait for a child process to terminate --- */
 #define _MD_WAIT_PROCESS _PR_WaitWindowsProcess
 extern PRStatus _PR_WaitWindowsProcess(struct PRProcess *process,
-    PRInt32 *exitCode);
+                                       PRInt32 *exitCode);
 
 #define _MD_KILL_PROCESS _PR_KillWindowsProcess
 extern PRStatus _PR_KillWindowsProcess(struct PRProcess *process);
@@ -499,7 +499,7 @@ extern DWORD _pr_currentCPUIndex;
 /* --- Scheduler stuff --- */
 #define LOCK_SCHEDULER()                 0
 #define UNLOCK_SCHEDULER()               0
-#define _PR_LockSched()                	 0
+#define _PR_LockSched()                  0
 #define _PR_UnlockSched()                0
 
 /* --- Initialization stuff --- */
@@ -523,7 +523,7 @@ extern PRInt32 _MD_GetMemMapAlignment(void);
 #define _MD_GET_MEM_MAP_ALIGNMENT _MD_GetMemMapAlignment
 
 extern void * _MD_MemMap(struct PRFileMap *fmap, PRInt64 offset,
-        PRUint32 len);
+                         PRUint32 len);
 #define _MD_MEM_MAP _MD_MemMap
 
 extern PRStatus _MD_MemUnmap(void *addr, PRUint32 size);

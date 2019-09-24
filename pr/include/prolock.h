@@ -86,9 +86,9 @@ typedef PRLock PROrderedLock;
 #endif
 
 NSPR_API(PROrderedLock *)
-    PR_CreateOrderedLock(
-        PRInt32 order,
-        const char *name
+PR_CreateOrderedLock(
+    PRInt32 order,
+    const char *name
 );
 
 /* -----------------------------------------------------------------------
@@ -113,8 +113,8 @@ NSPR_API(PROrderedLock *)
 #endif
 
 NSPR_API(void)
-    PR_DestroyOrderedLock(
-        PROrderedLock *lock
+PR_DestroyOrderedLock(
+    PROrderedLock *lock
 );
 
 /* -----------------------------------------------------------------------
@@ -141,8 +141,8 @@ NSPR_API(void)
 #endif
 
 NSPR_API(void)
-    PR_LockOrderedLock(
-        PROrderedLock *lock
+PR_LockOrderedLock(
+    PROrderedLock *lock
 );
 
 /* -----------------------------------------------------------------------
@@ -169,8 +169,8 @@ NSPR_API(void)
 #endif
 
 NSPR_API(PRStatus)
-    PR_UnlockOrderedLock(
-        PROrderedLock *lock
+PR_UnlockOrderedLock(
+    PROrderedLock *lock
 );
 
 PR_END_EXTERN_C

@@ -53,8 +53,9 @@ int main(int argc, char **argv)
     {
         test = 0;
     }
-    else
+    else {
         test = atoi(argv[1]);
+    }
 
     switch (test)
     {
@@ -65,8 +66,8 @@ int main(int argc, char **argv)
             break;
 
         case 2: thread = PR_CreateThread(
-            PR_USER_THREAD, lazyEntry, NULL, PR_PRIORITY_NORMAL,
-            PR_LOCAL_THREAD, PR_JOINABLE_THREAD, 0);
+                                 PR_USER_THREAD, lazyEntry, NULL, PR_PRIORITY_NORMAL,
+                                 PR_LOCAL_THREAD, PR_JOINABLE_THREAD, 0);
             break;
 
         case 3: file = PR_Open("/usr/tmp/", PR_RDONLY, 0);

@@ -101,8 +101,9 @@ _MD_CloseSocket(PROsfd osfd)
     PRInt32 rv;
 
     rv = closesocket((SOCKET) osfd );
-    if (rv < 0)
+    if (rv < 0) {
         _PR_MD_MAP_CLOSE_ERROR(WSAGetLastError());
+    }
 
     return rv;
 }
@@ -296,7 +297,7 @@ _PR_MD_SENDTO(PRFileDesc *fd, const void *buf, PRInt32 amount, PRIntn flags,
 
     do {
         while ((rv = sendto( osfd, buf, amount, 0, (struct sockaddr *) addr,
-                addrlen)) == -1)
+                             addrlen)) == -1)
         {
             if (((err = WSAGetLastError()) == WSAEWOULDBLOCK)
                 && (!fd->secret->nonblocking))
@@ -361,8 +362,9 @@ static PRStatus PR_CALLBACK _pr_set_connectex(void)
 
     /* Dummy socket needed for WSAIoctl */
     sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock == INVALID_SOCKET)
+    if (sock == INVALID_SOCKET) {
         return PR_SUCCESS;
+    }
 
     GUID guid = WSAID_CONNECTEX;
     rc = WSAIoctl(sock, SIO_GET_EXTENSION_FUNCTION_POINTER,
@@ -446,7 +448,7 @@ _PR_MD_TCPSENDTO(PRFileDesc *fd, const void *buf, PRInt32 amount, PRIntn flags,
         if (rv != 0) {
             err = WSAGetLastError();
             PR_LOG(_pr_io_lm, PR_LOG_MIN,
-               ("_PR_MD_TCPSENDTO setting SO_UPDATE_CONNECT_CONTEXT failed %d\n", err));
+                   ("_PR_MD_TCPSENDTO setting SO_UPDATE_CONNECT_CONTEXT failed %d\n", err));
             _PR_MD_MAP_SETSOCKOPT_ERROR(err);
             return -1;
         }
@@ -472,7 +474,7 @@ _PR_MD_TCPSENDTO(PRFileDesc *fd, const void *buf, PRInt32 amount, PRIntn flags,
              * them during Fast Open or after connect. Therefore we can assumed
              * this data already send. */
             if (amount > 0) {
-              return amount;
+                return amount;
             }
 
             _PR_MD_MAP_CONNECT_ERROR(WSAEWOULDBLOCK);
@@ -510,7 +512,7 @@ _PR_MD_RECVFROM(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags,
     PRInt32 rv, err;
 
     while ((rv = recvfrom( osfd, buf, amount, 0, (struct sockaddr *) addr,
-            addrlen)) == -1)
+                           addrlen)) == -1)
     {
         if (((err = WSAGetLastError()) == WSAEWOULDBLOCK)
             && (!fd->secret->nonblocking))
@@ -540,8 +542,9 @@ _PR_MD_WRITEV(PRFileDesc *fd, const PRIOVec *iov, PRInt32 iov_size, PRIntervalTi
     for (index=0; index < iov_size; index++)
     {
         rv = _PR_MD_SEND(fd, iov[index].iov_base, iov[index].iov_len, 0, timeout);
-        if (rv > 0)
+        if (rv > 0) {
             sent += rv;
+        }
         if ( rv != iov[index].iov_len )
         {
             if (rv < 0)
@@ -568,11 +571,12 @@ _PR_MD_WRITEV(PRFileDesc *fd, const PRIOVec *iov, PRInt32 iov_size, PRIntervalTi
 PRInt32
 _PR_MD_SHUTDOWN(PRFileDesc *fd, PRIntn how)
 {
-PRInt32 rv;
+    PRInt32 rv;
 
     rv = shutdown(fd->secret->md.osfd, how);
-    if (rv < 0)
+    if (rv < 0) {
         _PR_MD_MAP_SHUTDOWN_ERROR(WSAGetLastError());
+    }
     return rv;
 }
 
@@ -709,15 +713,17 @@ static PRInt32 socket_io_wait(
                     {
                         len = sizeof(err);
                         if (getsockopt(osfd, SOL_SOCKET, SO_ERROR,
-                                (char *) &err, &len) == SOCKET_ERROR)
+                                       (char *) &err, &len) == SOCKET_ERROR)
                         {
                             _PR_MD_MAP_GETSOCKOPT_ERROR(WSAGetLastError());
                             return -1;
                         }
-                        if (err != 0)
+                        if (err != 0) {
                             _PR_MD_MAP_CONNECT_ERROR(err);
-                        else
+                        }
+                        else {
                             PR_SetError(PR_UNKNOWN_ERROR, 0);
+                        }
                         return -1;
                     }
                     if (FD_ISSET((SOCKET)osfd, &rd_wr))
@@ -754,8 +760,8 @@ static PRInt32 socket_io_wait(
                     tv.tv_usec = 0;
                 } else {
                     tv.tv_usec = PR_IntervalToMicroseconds(
-                        remaining -
-                        PR_SecondsToInterval(tv.tv_sec));
+                                     remaining -
+                                     PR_SecondsToInterval(tv.tv_sec));
                 }
                 FD_SET(osfd, &rd_wr);
                 FD_SET(osfd, &ex);
@@ -789,15 +795,17 @@ static PRInt32 socket_io_wait(
                     {
                         len = sizeof(err);
                         if (getsockopt(osfd, SOL_SOCKET, SO_ERROR,
-                                (char *) &err, &len) == SOCKET_ERROR)
+                                       (char *) &err, &len) == SOCKET_ERROR)
                         {
                             _PR_MD_MAP_GETSOCKOPT_ERROR(WSAGetLastError());
                             return -1;
                         }
-                        if (err != 0)
+                        if (err != 0) {
                             _PR_MD_MAP_CONNECT_ERROR(err);
-                        else
+                        }
+                        else {
                             PR_SetError(PR_UNKNOWN_ERROR, 0);
+                        }
                         return -1;
                     }
                     if (FD_ISSET((SOCKET)osfd, &rd_wr))
@@ -823,7 +831,7 @@ static PRInt32 socket_io_wait(
                         elapsed = remaining;
                     } else {
                         elapsed = PR_SecondsToInterval(tv.tv_sec)
-                                    + PR_MicrosecondsToInterval(tv.tv_usec);
+                                  + PR_MicrosecondsToInterval(tv.tv_usec);
                     }
                     if (elapsed >= remaining) {
                         PR_SetError(PR_IO_TIMEOUT_ERROR, 0);

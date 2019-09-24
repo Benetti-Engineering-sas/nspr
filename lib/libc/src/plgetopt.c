@@ -158,10 +158,12 @@ PR_IMPLEMENT(PLOptStatus) PL_GetNextOpt(PLOptState *opt)
 
         for (; longOpt->longOptName; ++longOpt)
         {
-            if (strncmp(longOpt->longOptName, internal->xargv, optNameLen))
-                continue;  /* not a possible match */
-            if (strlen(longOpt->longOptName) != optNameLen)
-                continue;  /* not a match */
+            if (strncmp(longOpt->longOptName, internal->xargv, optNameLen)) {
+                continue;    /* not a possible match */
+            }
+            if (strlen(longOpt->longOptName) != optNameLen) {
+                continue;    /* not a match */
+            }
             /* option name match */
             opt->longOptIndex = longOpt - internal->longOpts;
             opt->longOption   = longOpt->longOption;
@@ -227,8 +229,9 @@ PR_IMPLEMENT(PLOptStatus) PL_GetNextOpt(PLOptState *opt)
                     internal->xargv = &static_Nul;
                     internal->minus = 0;
                 }
-                else
+                else {
                     opt->value = NULL;
+                }
                 return PL_OPT_OK;
             }
         }

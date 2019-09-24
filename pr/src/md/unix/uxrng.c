@@ -20,7 +20,7 @@ GetHighResClock(void *buf, size_t maxbytes)
     hrtime_t t;
     t = gethrtime();
     if (t) {
-	    return _pr_CopyLowBits(buf, maxbytes, &t, sizeof(t));
+        return _pr_CopyLowBits(buf, maxbytes, &t, sizeof(t));
     }
     return 0;
 }

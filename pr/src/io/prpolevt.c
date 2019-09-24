@@ -147,9 +147,9 @@ PR_IMPLEMENT(PRFileDesc *) PR_NewPollableEvent(void)
         fd[0] = fd[1] = NULL;
         goto errorExit;
     }
-	/*
-	 * set the TCP_NODELAY option to reduce notification latency
-	 */
+    /*
+     * set the TCP_NODELAY option to reduce notification latency
+     */
     socket_opt.option = PR_SockOpt_NoDelay;
     socket_opt.value.no_delay = PR_TRUE;
     rv = PR_SetSocketOption(fd[1], &socket_opt);

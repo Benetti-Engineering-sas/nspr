@@ -129,21 +129,21 @@ static void NewTraceBuffer( PRInt32 size )
     logSegSize = logEntriesPerSegment * sizeof(PRTraceEntry);
     PR_ASSERT( bufSize != 0);
     PR_LOG( lm, PR_LOG_ERROR,
-        ("NewTraceBuffer: logSegments: %ld, logEntries: %ld, logEntriesPerSegment: %ld, logSegSize: %ld",
-            logSegments, logEntries, logEntriesPerSegment, logSegSize ));
+            ("NewTraceBuffer: logSegments: %ld, logEntries: %ld, logEntriesPerSegment: %ld, logSegSize: %ld",
+             logSegments, logEntries, logEntriesPerSegment, logSegSize ));
 
 
     tBuf = PR_Malloc( bufSize );
     if ( tBuf == NULL )
     {
         PR_LOG( lm, PR_LOG_ERROR,
-            ("PRTrace: Failed to get trace buffer"));
+                ("PRTrace: Failed to get trace buffer"));
         PR_ASSERT( 0 );
     }
     else
     {
         PR_LOG( lm, PR_LOG_NOTICE,
-            ("PRTrace: Got trace buffer of size: %ld, at %p", bufSize, tBuf));
+                ("PRTrace: Got trace buffer of size: %ld, at %p", bufSize, tBuf));
     }
 
     next = 0;
@@ -186,10 +186,10 @@ static void _PR_InitializeTrace( void )
 ** Create a Trace Handle
 */
 PR_IMPLEMENT(PRTraceHandle)
-	PR_CreateTrace(
-    	const char *qName,          /* QName for this trace handle */
-	    const char *rName,          /* RName for this trace handle */
-	    const char *description     /* description for this trace handle */
+PR_CreateTrace(
+    const char *qName,          /* QName for this trace handle */
+    const char *rName,          /* RName for this trace handle */
+    const char *description     /* description for this trace handle */
 )
 {
     QName   *qnp;
@@ -197,8 +197,9 @@ PR_IMPLEMENT(PRTraceHandle)
     PRBool  matchQname = PR_FALSE;
 
     /* Self initialize, if necessary */
-    if ( traceLock == NULL )
+    if ( traceLock == NULL ) {
         _PR_InitializeTrace();
+    }
 
     /* Validate input arguments */
     PR_ASSERT( strlen(qName) <= PRTRACE_NAME_MAX );
@@ -273,7 +274,7 @@ PR_IMPLEMENT(PRTraceHandle)
     /* Unlock the Facility */
     PR_Unlock( traceLock );
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: Create: QName: %s %p, RName: %s %p\n\t",
-        qName, qnp, rName, rnp ));
+                               qName, qnp, rName, rnp ));
 
     return((PRTraceHandle)rnp);
 } /* end  PR_CreateTrace() */
@@ -282,15 +283,15 @@ PR_IMPLEMENT(PRTraceHandle)
 **
 */
 PR_IMPLEMENT(void)
-	PR_DestroyTrace(
-		PRTraceHandle handle    /* Handle to be destroyed */
+PR_DestroyTrace(
+    PRTraceHandle handle    /* Handle to be destroyed */
 )
 {
     RName   *rnp = (RName *)handle;
     QName   *qnp = rnp->qName;
 
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: Deleting: QName: %s, RName: %s",
-        qnp->name, rnp->name));
+                               qnp->name, rnp->name));
 
     /* Lock the Facility */
     PR_Lock( traceLock );
@@ -300,7 +301,7 @@ PR_IMPLEMENT(void)
     ** and free RName
     */
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: Deleting RName: %s, %p",
-        rnp->name, rnp));
+                               rnp->name, rnp));
     PR_REMOVE_LINK( &rnp->link );
     PR_Free( rnp->lock );
     PR_DELETE( rnp );
@@ -312,7 +313,7 @@ PR_IMPLEMENT(void)
     if ( PR_CLIST_IS_EMPTY( &qnp->rNameList ) )
     {
         PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: Deleting unused QName: %s, %p",
-            qnp->name, qnp));
+                                   qnp->name, qnp));
         PR_REMOVE_LINK( &qnp->link );
         PR_DELETE( qnp );
     }
@@ -326,24 +327,25 @@ PR_IMPLEMENT(void)
 ** Create a TraceEntry in the trace buffer
 */
 PR_IMPLEMENT(void)
-	PR_Trace(
-    	PRTraceHandle handle,       /* use this trace handle */
-	    PRUint32    userData0,      /* User supplied data word 0 */
-	    PRUint32    userData1,      /* User supplied data word 1 */
-	    PRUint32    userData2,      /* User supplied data word 2 */
-	    PRUint32    userData3,      /* User supplied data word 3 */
-	    PRUint32    userData4,      /* User supplied data word 4 */
-	    PRUint32    userData5,      /* User supplied data word 5 */
-	    PRUint32    userData6,      /* User supplied data word 6 */
-	    PRUint32    userData7       /* User supplied data word 7 */
+PR_Trace(
+    PRTraceHandle handle,       /* use this trace handle */
+    PRUint32    userData0,      /* User supplied data word 0 */
+    PRUint32    userData1,      /* User supplied data word 1 */
+    PRUint32    userData2,      /* User supplied data word 2 */
+    PRUint32    userData3,      /* User supplied data word 3 */
+    PRUint32    userData4,      /* User supplied data word 4 */
+    PRUint32    userData5,      /* User supplied data word 5 */
+    PRUint32    userData6,      /* User supplied data word 6 */
+    PRUint32    userData7       /* User supplied data word 7 */
 )
 {
     PRTraceEntry   *tep;
     PRInt32         mark;
 
     if ( (traceState == Suspended )
-        || ( ((RName *)handle)->state == Suspended ))
+         || ( ((RName *)handle)->state == Suspended )) {
         return;
+    }
 
     /*
     ** Get the next trace entry slot w/ minimum delay
@@ -351,10 +353,12 @@ PR_IMPLEMENT(void)
     PR_Lock( traceLock );
 
     tep = &tBuf[next++];
-    if ( next > last )
+    if ( next > last ) {
         next = 0;
-    if ( fetchLostData == PR_FALSE && next == fetchLastSeen )
+    }
+    if ( fetchLostData == PR_FALSE && next == fetchLastSeen ) {
         fetchLostData = PR_TRUE;
+    }
 
     mark = next;
 
@@ -401,9 +405,9 @@ PR_IMPLEMENT(void)
 **
 */
 PR_IMPLEMENT(void)
-	PR_SetTraceOption(
-	    PRTraceOption command,  /* One of the enumerated values */
-	    void *value             /* command value or NULL */
+PR_SetTraceOption(
+    PRTraceOption command,  /* One of the enumerated values */
+    void *value             /* command value or NULL */
 )
 {
     RName * rnp;
@@ -417,33 +421,33 @@ PR_IMPLEMENT(void)
             NewTraceBuffer( bufSize );
             PR_Unlock( traceLock );
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceBufSize: %ld", bufSize));
+                    ("PRSetTraceOption: PRTraceBufSize: %ld", bufSize));
             break;
 
         case PRTraceEnable :
             rnp = *(RName **)value;
             rnp->state = Running;
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceEnable: %p", rnp));
+                    ("PRSetTraceOption: PRTraceEnable: %p", rnp));
             break;
 
         case PRTraceDisable :
             rnp = *(RName **)value;
             rnp->state = Suspended;
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceDisable: %p", rnp));
+                    ("PRSetTraceOption: PRTraceDisable: %p", rnp));
             break;
 
         case PRTraceSuspend :
             traceState = Suspended;
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceSuspend"));
+                    ("PRSetTraceOption: PRTraceSuspend"));
             break;
 
         case PRTraceResume :
             traceState = Running;
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceResume"));
+                    ("PRSetTraceOption: PRTraceResume"));
             break;
 
         case PRTraceSuspendRecording :
@@ -452,14 +456,15 @@ PR_IMPLEMENT(void)
             PR_NotifyCondVar( logCVar );
             PR_Unlock( logLock );
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceSuspendRecording"));
+                    ("PRSetTraceOption: PRTraceSuspendRecording"));
             break;
 
         case PRTraceResumeRecording :
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceResumeRecording"));
-            if ( logState != LogSuspend )
+                    ("PRSetTraceOption: PRTraceResumeRecording"));
+            if ( logState != LogSuspend ) {
                 break;
+            }
             PR_Lock( logLock );
             logOrder = LogResume;
             PR_NotifyCondVar( logCVar );
@@ -472,24 +477,24 @@ PR_IMPLEMENT(void)
             PR_NotifyCondVar( logCVar );
             PR_Unlock( logLock );
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceStopRecording"));
+                    ("PRSetTraceOption: PRTraceStopRecording"));
             break;
 
         case PRTraceLockHandles :
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceLockTraceHandles"));
+                    ("PRSetTraceOption: PRTraceLockTraceHandles"));
             PR_Lock( traceLock );
             break;
 
         case PRTraceUnLockHandles :
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRSetTraceOption: PRTraceUnLockHandles"));
+                    ("PRSetTraceOption: PRTraceUnLockHandles"));
             PR_Unlock( traceLock );
             break;
 
         default:
             PR_LOG( lm, PR_LOG_ERROR,
-                ("PRSetTraceOption: Invalid command %ld", command ));
+                    ("PRSetTraceOption: Invalid command %ld", command ));
             PR_ASSERT( 0 );
             break;
     } /* end switch() */
@@ -500,9 +505,9 @@ PR_IMPLEMENT(void)
 **
 */
 PR_IMPLEMENT(void)
-	PR_GetTraceOption(
-    	PRTraceOption command,  /* One of the enumerated values */
-	    void *value             /* command value or NULL */
+PR_GetTraceOption(
+    PRTraceOption command,  /* One of the enumerated values */
+    void *value             /* command value or NULL */
 )
 {
     switch ( command )
@@ -510,12 +515,12 @@ PR_IMPLEMENT(void)
         case PRTraceBufSize :
             *((PRInt32 *)value) = bufSize;
             PR_LOG( lm, PR_LOG_DEBUG,
-                ("PRGetTraceOption: PRTraceBufSize: %ld", bufSize ));
+                    ("PRGetTraceOption: PRTraceBufSize: %ld", bufSize ));
             break;
 
         default:
             PR_LOG( lm, PR_LOG_ERROR,
-                ("PRGetTraceOption: Invalid command %ld", command ));
+                    ("PRGetTraceOption: Invalid command %ld", command ));
             PR_ASSERT( 0 );
             break;
     } /* end switch() */
@@ -526,9 +531,9 @@ PR_IMPLEMENT(void)
 **
 */
 PR_IMPLEMENT(PRTraceHandle)
-	PR_GetTraceHandleFromName(
-    	const char *qName,      /* QName search argument */
-        const char *rName       /* RName search argument */
+PR_GetTraceHandleFromName(
+    const char *qName,      /* QName search argument */
+    const char *rName       /* RName search argument */
 )
 {
     const char    *qn, *rn, *desc;
@@ -536,7 +541,7 @@ PR_IMPLEMENT(PRTraceHandle)
     RName   *rnp = NULL;
 
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: GetTraceHandleFromName:\n\t"
-        "QName: %s, RName: %s", qName, rName ));
+                               "QName: %s, RName: %s", qName, rName ));
 
     qh = PR_FindNextTraceQname( NULL );
     while (qh != NULL)
@@ -546,7 +551,7 @@ PR_IMPLEMENT(PRTraceHandle)
         {
             PR_GetTraceNameFromHandle( rh, &qn, &rn, &desc );
             if ( (strcmp( qName, qn ) == 0)
-                && (strcmp( rName, rn ) == 0 ))
+                 && (strcmp( rName, rn ) == 0 ))
             {
                 rnp = (RName *)rh;
                 goto foundIt;
@@ -565,11 +570,11 @@ foundIt:
 **
 */
 PR_IMPLEMENT(void)
-	PR_GetTraceNameFromHandle(
-    	PRTraceHandle handle,       /* handle as search argument */
-	    const char **qName,         /* pointer to associated QName */
-	    const char **rName,         /* pointer to associated RName */
-    	const char **description    /* pointer to associated description */
+PR_GetTraceNameFromHandle(
+    PRTraceHandle handle,       /* handle as search argument */
+    const char **qName,         /* pointer to associated QName */
+    const char **rName,         /* pointer to associated RName */
+    const char **description    /* pointer to associated description */
 )
 {
     RName   *rnp = (RName *)handle;
@@ -580,8 +585,8 @@ PR_IMPLEMENT(void)
     *description = rnp->desc;
 
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: GetConterNameFromHandle: "
-        "QNp: %p, RNp: %p,\n\tQName: %s, RName: %s, Desc: %s",
-        qnp, rnp, qnp->name, rnp->name, rnp->desc ));
+                               "QNp: %p, RNp: %p,\n\tQName: %s, RName: %s, Desc: %s",
+                               qnp, rnp, qnp->name, rnp->name, rnp->desc ));
 
     return;
 } /* end PR_GetTraceNameFromHandle() */
@@ -590,23 +595,27 @@ PR_IMPLEMENT(void)
 **
 */
 PR_IMPLEMENT(PRTraceHandle)
-	PR_FindNextTraceQname(
-        PRTraceHandle handle
+PR_FindNextTraceQname(
+    PRTraceHandle handle
 )
 {
     QName *qnp = (QName *)handle;
 
-    if ( PR_CLIST_IS_EMPTY( &qNameList ))
-            qnp = NULL;
-    else if ( qnp == NULL )
-        qnp = (QName *)PR_LIST_HEAD( &qNameList );
-    else if ( PR_NEXT_LINK( &qnp->link ) ==  &qNameList )
+    if ( PR_CLIST_IS_EMPTY( &qNameList )) {
         qnp = NULL;
-    else
+    }
+    else if ( qnp == NULL ) {
+        qnp = (QName *)PR_LIST_HEAD( &qNameList );
+    }
+    else if ( PR_NEXT_LINK( &qnp->link ) ==  &qNameList ) {
+        qnp = NULL;
+    }
+    else {
         qnp = (QName *)PR_NEXT_LINK( &qnp->link );
+    }
 
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: FindNextQname: Handle: %p, Returns: %p",
-        handle, qnp ));
+                               handle, qnp ));
 
     return((PRTraceHandle)qnp);
 } /* end PR_FindNextTraceQname() */
@@ -615,26 +624,30 @@ PR_IMPLEMENT(PRTraceHandle)
 **
 */
 PR_IMPLEMENT(PRTraceHandle)
-	PR_FindNextTraceRname(
-        PRTraceHandle rhandle,
-        PRTraceHandle qhandle
+PR_FindNextTraceRname(
+    PRTraceHandle rhandle,
+    PRTraceHandle qhandle
 )
 {
     RName *rnp = (RName *)rhandle;
     QName *qnp = (QName *)qhandle;
 
 
-    if ( PR_CLIST_IS_EMPTY( &qnp->rNameList ))
+    if ( PR_CLIST_IS_EMPTY( &qnp->rNameList )) {
         rnp = NULL;
-    else if ( rnp == NULL )
+    }
+    else if ( rnp == NULL ) {
         rnp = (RName *)PR_LIST_HEAD( &qnp->rNameList );
-    else if ( PR_NEXT_LINK( &rnp->link ) ==  &qnp->rNameList )
+    }
+    else if ( PR_NEXT_LINK( &rnp->link ) ==  &qnp->rNameList ) {
         rnp = NULL;
-    else
+    }
+    else {
         rnp = (RName *)PR_NEXT_LINK( &rnp->link );
+    }
 
     PR_LOG( lm, PR_LOG_DEBUG, ("PRTrace: FindNextRname: Rhandle: %p, QHandle: %p, Returns: %p",
-        rhandle, qhandle, rnp ));
+                               rhandle, qhandle, rnp ));
 
     return((PRTraceHandle)rnp);
 } /* end PR_FindNextTraceRname() */
@@ -648,11 +661,12 @@ static PRFileDesc * InitializeRecording( void )
     PRFileDesc  *logFile;
 
     /* Self initialize, if necessary */
-    if ( traceLock == NULL )
+    if ( traceLock == NULL ) {
         _PR_InitializeTrace();
+    }
 
     PR_LOG( lm, PR_LOG_DEBUG,
-        ("PR_RecordTraceEntries: begins"));
+            ("PR_RecordTraceEntries: begins"));
 
     logLostData = 0; /* reset at entry */
     logState = LogReset;
@@ -662,7 +676,7 @@ static PRFileDesc * InitializeRecording( void )
     if ( logFileName == NULL )
     {
         PR_LOG( lm, PR_LOG_ERROR,
-            ("RecordTraceEntries: Environment variable not defined. Exiting"));
+                ("RecordTraceEntries: Environment variable not defined. Exiting"));
         return NULL;
     }
 
@@ -671,8 +685,8 @@ static PRFileDesc * InitializeRecording( void )
     if ( logFile == NULL )
     {
         PR_LOG( lm, PR_LOG_ERROR,
-            ("RecordTraceEntries: Cannot open %s as trace log file. OS error: %ld",
-		logFileName, PR_GetOSError()));
+                ("RecordTraceEntries: Cannot open %s as trace log file. OS error: %ld",
+                 logFileName, PR_GetOSError()));
         return NULL;
     }
     return logFile;
@@ -685,35 +699,35 @@ static void ProcessOrders( void )
 {
     switch ( logOrder )
     {
-    case LogReset :
-        logOrder = logState = localState;
-        PR_LOG( lm, PR_LOG_DEBUG,
-            ("RecordTraceEntries: LogReset"));
-        break;
+        case LogReset :
+            logOrder = logState = localState;
+            PR_LOG( lm, PR_LOG_DEBUG,
+                    ("RecordTraceEntries: LogReset"));
+            break;
 
-    case LogSuspend :
-        localState = logOrder = logState = LogSuspend;
-        PR_LOG( lm, PR_LOG_DEBUG,
-            ("RecordTraceEntries: LogSuspend"));
-        break;
+        case LogSuspend :
+            localState = logOrder = logState = LogSuspend;
+            PR_LOG( lm, PR_LOG_DEBUG,
+                    ("RecordTraceEntries: LogSuspend"));
+            break;
 
-    case LogResume :
-        localState = logOrder = logState = LogActive;
-        PR_LOG( lm, PR_LOG_DEBUG,
-            ("RecordTraceEntries: LogResume"));
-        break;
+        case LogResume :
+            localState = logOrder = logState = LogActive;
+            PR_LOG( lm, PR_LOG_DEBUG,
+                    ("RecordTraceEntries: LogResume"));
+            break;
 
-    case LogStop :
-        logOrder = logState = LogStop;
-        PR_LOG( lm, PR_LOG_DEBUG,
-            ("RecordTraceEntries: LogStop"));
-        break;
+        case LogStop :
+            logOrder = logState = LogStop;
+            PR_LOG( lm, PR_LOG_DEBUG,
+                    ("RecordTraceEntries: LogStop"));
+            break;
 
-    default :
-        PR_LOG( lm, PR_LOG_ERROR,
-            ("RecordTraceEntries: Invalid logOrder: %ld", logOrder ));
-        PR_ASSERT( 0 );
-        break;
+        default :
+            PR_LOG( lm, PR_LOG_ERROR,
+                    ("RecordTraceEntries: Invalid logOrder: %ld", logOrder ));
+            PR_ASSERT( 0 );
+            break;
     } /* end switch() */
     return ;
 } /* end ProcessOrders() */
@@ -727,17 +741,17 @@ static void WriteTraceSegment( PRFileDesc *logFile, void *buf, PRInt32 amount )
 
 
     PR_LOG( lm, PR_LOG_ERROR,
-        ("WriteTraceSegment: Buffer: %p, Amount: %ld", buf, amount));
-    rc = PR_Write( logFile, buf , amount );
+            ("WriteTraceSegment: Buffer: %p, Amount: %ld", buf, amount));
+    rc = PR_Write( logFile, buf, amount );
     if ( rc == -1 )
         PR_LOG( lm, PR_LOG_ERROR,
-            ("RecordTraceEntries: PR_Write() failed. Error: %ld", PR_GetError() ));
+                ("RecordTraceEntries: PR_Write() failed. Error: %ld", PR_GetError() ));
     else if ( rc != amount )
         PR_LOG( lm, PR_LOG_ERROR,
-            ("RecordTraceEntries: PR_Write() Tried to write: %ld, Wrote: %ld", amount, rc));
+                ("RecordTraceEntries: PR_Write() Tried to write: %ld, Wrote: %ld", amount, rc));
     else
         PR_LOG( lm, PR_LOG_DEBUG,
-            ("RecordTraceEntries: PR_Write(): Buffer: %p, bytes: %ld", buf, amount));
+                ("RecordTraceEntries: PR_Write(): Buffer: %p, bytes: %ld", buf, amount));
 
     return;
 } /* end WriteTraceSegment() */
@@ -746,8 +760,8 @@ static void WriteTraceSegment( PRFileDesc *logFile, void *buf, PRInt32 amount )
 **
 */
 PR_IMPLEMENT(void)
-	PR_RecordTraceEntries(
-        void
+PR_RecordTraceEntries(
+    void
 )
 {
     PRFileDesc  *logFile;
@@ -760,7 +774,7 @@ PR_IMPLEMENT(void)
     if ( logFile == NULL )
     {
         PR_LOG( lm, PR_LOG_DEBUG,
-            ("PR_RecordTraceEntries: Failed to initialize"));
+                ("PR_RecordTraceEntries: Failed to initialize"));
         return;
     }
 
@@ -770,12 +784,14 @@ PR_IMPLEMENT(void)
 
         PR_Lock( logLock );
 
-        while ( (logCount == 0) && ( logOrder == logState ) )
+        while ( (logCount == 0) && ( logOrder == logState ) ) {
             PR_WaitCondVar( logCVar, PR_INTERVAL_NO_TIMEOUT );
+        }
 
         /* Handle state transitions */
-        if ( logOrder != logState )
+        if ( logOrder != logState ) {
             ProcessOrders();
+        }
 
         /* recalculate local controls */
         if ( logCount )
@@ -787,7 +803,7 @@ PR_IMPLEMENT(void)
                 logCount = (logCount % logSegments);
                 currentSegment = logCount;
                 PR_LOG( lm, PR_LOG_DEBUG,
-                    ("PR_RecordTraceEntries: LostData segments: %ld", logLostData));
+                        ("PR_RecordTraceEntries: LostData segments: %ld", logLostData));
             }
             else
             {
@@ -795,29 +811,32 @@ PR_IMPLEMENT(void)
             }
 
             buf = tBuf + ( logEntriesPerSegment * currentSegment );
-            if (++currentSegment >= logSegments )
+            if (++currentSegment >= logSegments ) {
                 currentSegment = 0;
+            }
             doWrite = PR_TRUE;
         }
-        else
+        else {
             doWrite = PR_FALSE;
+        }
 
         PR_Unlock( logLock );
 
         if ( doWrite == PR_TRUE )
         {
-            if ( localState != LogSuspend )
+            if ( localState != LogSuspend ) {
                 WriteTraceSegment( logFile, buf, logSegSize );
+            }
             else
                 PR_LOG( lm, PR_LOG_DEBUG,
-                    ("RecordTraceEntries: PR_Write(): is suspended" ));
+                        ("RecordTraceEntries: PR_Write(): is suspended" ));
         }
 
     } /* end while(logState...) */
 
     PR_Close( logFile );
     PR_LOG( lm, PR_LOG_DEBUG,
-        ("RecordTraceEntries: exiting"));
+            ("RecordTraceEntries: exiting"));
     return;
 } /* end  PR_RecordTraceEntries() */
 
@@ -825,10 +844,10 @@ PR_IMPLEMENT(void)
 **
 */
 PR_IMPLEMENT(PRIntn)
-    PR_GetTraceEntries(
-        PRTraceEntry    *buffer,    /* where to write output */
-        PRInt32         count,      /* number to get */
-        PRInt32         *found      /* number you got */
+PR_GetTraceEntries(
+    PRTraceEntry    *buffer,    /* where to write output */
+    PRInt32         count,      /* number to get */
+    PRInt32         *found      /* number you got */
 )
 {
     PRInt32 rc;
@@ -841,7 +860,7 @@ PR_IMPLEMENT(PRIntn)
     ** copy the trace buffer in one or two pieces.
     */
     PR_LOG( lm, PR_LOG_ERROR,
-        ("PR_GetTraceEntries: Next: %ld, LastSeen: %ld", next, fetchLastSeen));
+            ("PR_GetTraceEntries: Next: %ld, LastSeen: %ld", next, fetchLastSeen));
 
     if ( fetchLastSeen <= next )
     {
@@ -850,7 +869,7 @@ PR_IMPLEMENT(PRIntn)
             *(buffer + copied++) = *(tBuf + fetchLastSeen++);
         }
         PR_LOG( lm, PR_LOG_ERROR,
-            ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
+                ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
     }
     else /* copy in 2 parts */
     {
@@ -861,14 +880,14 @@ PR_IMPLEMENT(PRIntn)
         fetchLastSeen = 0;
 
         PR_LOG( lm, PR_LOG_ERROR,
-            ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
+                ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
 
         while ( count-- > 0  && fetchLastSeen < next )
         {
             *(buffer + copied++) = *(tBuf + fetchLastSeen++);
         }
         PR_LOG( lm, PR_LOG_ERROR,
-            ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
+                ("PR_GetTraceEntries: Copied: %ld, LastSeen: %ld", copied, fetchLastSeen));
     }
 
     *found = copied;

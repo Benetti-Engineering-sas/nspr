@@ -14,8 +14,9 @@ PL_strtok_r(char *s1, const char *s2, char **lasts)
 
     if( s1 == NULL )
     {
-        if( *lasts == NULL )
+        if( *lasts == NULL ) {
             return NULL;
+        }
 
         s1 = *lasts;
     }
@@ -24,11 +25,13 @@ PL_strtok_r(char *s1, const char *s2, char **lasts)
     {
         for( sepp = s2 ; (sc = *sepp) != 0 ; sepp++ )
         {
-            if( c == sc )
+            if( c == sc ) {
                 break;
+            }
         }
-        if( sc == 0 )
+        if( sc == 0 ) {
             break;
+        }
     }
 
     if( c == 0 )

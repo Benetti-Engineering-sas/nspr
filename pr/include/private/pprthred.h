@@ -27,9 +27,9 @@ PR_BEGIN_EXTERN_C
 
 /*
 ** Associate a thread object with an existing native thread.
-** 	"type" is the type of thread object to attach
-** 	"priority" is the priority to assign to the thread
-** 	"stack" defines the shape of the threads stack
+**  "type" is the type of thread object to attach
+**  "priority" is the priority to assign to the thread
+**  "stack" defines the shape of the threads stack
 **
 ** This can return NULL if some kind of error occurs, or if memory is
 ** tight. This call invokes "start(obj,arg)" and returns when the
@@ -39,8 +39,8 @@ PR_BEGIN_EXTERN_C
 ** thread. PR_Init does this automatically for the primordial thread.
 */
 NSPR_API(PRThread*) PR_AttachThread(PRThreadType type,
-                                     PRThreadPriority priority,
-				     PRThreadStack *stack);
+                                    PRThreadPriority priority,
+                                    PRThreadStack *stack);
 
 /*
 ** Detach the nspr thread from the currently executing native thread.
@@ -120,20 +120,20 @@ NSPR_API(void) PR_SetThreadRecycleMode(PRUint32 flag);
 ** collectible.
 */
 NSPR_API(PRThread*) PR_CreateThreadGCAble(PRThreadType type,
-				     void (*start)(void *arg),
-				     void *arg,
-				     PRThreadPriority priority,
-				     PRThreadScope scope,
-				     PRThreadState state,
-				     PRUint32 stackSize);
+        void (*start)(void *arg),
+        void *arg,
+        PRThreadPriority priority,
+        PRThreadScope scope,
+        PRThreadState state,
+        PRUint32 stackSize);
 
 /*
 ** Same as PR_AttachThread except that the thread being attached is marked as
 ** garbage collectible.
 */
 NSPR_API(PRThread*) PR_AttachThreadGCAble(PRThreadType type,
-					PRThreadPriority priority,
-					PRThreadStack *stack);
+        PRThreadPriority priority,
+        PRThreadStack *stack);
 
 /*
 ** Mark the thread as garbage collectible.
@@ -206,7 +206,7 @@ NSPR_API(PRStatus) PR_EnumerateThreads(PREnumerator func, void *arg);
 */
 typedef PRStatus
 (PR_CALLBACK *PRScanStackFun)(PRThread* t,
-			      void** baseAddr, PRUword count, void* closure);
+                              void** baseAddr, PRUword count, void* closure);
 
 /*
 ** Applies scanFun to all contiguous groups of potential pointers
@@ -294,7 +294,7 @@ NSPR_API(void) PR_OS2_UnsetFloatExcpHandler(EXCEPTIONREGISTRATIONRECORD* e);
 #endif /* XP_OS2 */
 
 /* I think PR_GetMonitorEntryCount is useless. All you really want is this... */
-#define PR_InMonitor(m)		(PR_GetMonitorEntryCount(m) > 0)
+#define PR_InMonitor(m)     (PR_GetMonitorEntryCount(m) > 0)
 
 /*---------------------------------------------------------------------------
 ** Special X-Lock hack for client

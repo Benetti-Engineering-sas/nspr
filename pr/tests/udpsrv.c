@@ -98,7 +98,7 @@ void ListNetAddr( char *msg, PRNetAddr *na )
     char    mbuf[256];
 
     sprintf( mbuf, "ListNetAddr: %s family: %d, port: %d, ip: %8.8X\n",
-            msg, na->inet.family, PR_ntohs( na->inet.port), PR_ntohl(na->inet.ip) );
+             msg, na->inet.family, PR_ntohs( na->inet.port), PR_ntohl(na->inet.ip) );
 #if 0
     DPRINTF( mbuf );
 #endif
@@ -138,7 +138,7 @@ static void PR_CALLBACK UDP_Server( void *arg )
         passed = PR_FALSE;
         if (debug_mode)
             PR_fprintf(output,
-                "udpsrv: UDP_Server(): PR_NewUDPSocket() returned NULL\n" );
+                       "udpsrv: UDP_Server(): PR_NewUDPSocket() returned NULL\n" );
         return;
     }
 
@@ -167,13 +167,14 @@ static void PR_CALLBACK UDP_Server( void *arg )
                 passed = PR_FALSE;
                 if (debug_mode) PR_fprintf(output, "udpsrv: UDP_Server(): \
 						PR_Bind(): failed: %ld with error: %ld\n",
-                        rv, PR_GetError() );
+                                               rv, PR_GetError() );
                 PR_Close( svrSock );
                 return;
             }
         }
-        else
+        else {
             bound = PR_TRUE;
+        }
     }
     ListNetAddr( "UDP_Server: after bind", &netaddr );
 
@@ -187,8 +188,8 @@ static void PR_CALLBACK UDP_Server( void *arg )
             passed = PR_FALSE;
             if (debug_mode)
                 PR_fprintf(output,
-                    "udpsrv: UDP_Server(): PR_RecvFrom(): failed with error: %ld\n",
-                    PR_GetError() );
+                           "udpsrv: UDP_Server(): PR_RecvFrom(): failed with error: %ld\n",
+                           PR_GetError() );
             PR_Close( svrSock );
             return;
         }
@@ -210,8 +211,8 @@ static void PR_CALLBACK UDP_Server( void *arg )
             passed = PR_FALSE;
             if (debug_mode)
                 PR_fprintf(output,
-                    "udpsrv: UDP_Server(): PR_SendTo(): failed with error: %ld\n",
-                    PR_GetError() );
+                           "udpsrv: UDP_Server(): PR_SendTo(): failed with error: %ld\n",
+                           PR_GetError() );
             PR_Close( svrSock );
             return;
         }
@@ -226,7 +227,7 @@ static void PR_CALLBACK UDP_Server( void *arg )
         passed = PR_FALSE;
         if (debug_mode)
             PR_fprintf(output,
-                "udpsrv: UDP_Server(): PR_Close(): failed to close socket\n" );
+                       "udpsrv: UDP_Server(): PR_Close(): failed to close socket\n" );
         return;
     }
 
@@ -275,7 +276,7 @@ static void PR_CALLBACK UDP_Client( void *arg )
         passed = PR_FALSE;
         if (debug_mode)
             PR_fprintf(output,
-                "udpsrv: UDP_Client(): PR_NewUDPSocket() returned NULL\n" );
+                       "udpsrv: UDP_Client(): PR_NewUDPSocket() returned NULL\n" );
         return;
     }
 
@@ -286,8 +287,9 @@ static void PR_CALLBACK UDP_Client( void *arg )
     netaddr.inet.port   = PR_htons( UDP_CLIENT_PORT );
 
     /* --- Initialize the write buffer --- */
-    for ( i = 0; i < UDP_BUF_SIZE ; i++ )
+    for ( i = 0; i < UDP_BUF_SIZE ; i++ ) {
         cltBuf[i] = i;
+    }
 
     /* --- Bind the socket --- */
     while ( !bound )
@@ -300,7 +302,7 @@ static void PR_CALLBACK UDP_Client( void *arg )
             {
                 if (debug_mode)
                     PR_fprintf(output,
-                        "udpsrv: UDP_Client(): PR_Bind(): reports: PR_ADDRESS_IN_USE_ERROR\n");
+                               "udpsrv: UDP_Client(): PR_Bind(): reports: PR_ADDRESS_IN_USE_ERROR\n");
                 PR_Sleep( PR_MillisecondsToInterval( 2000 ));
                 continue;
             }
@@ -309,14 +311,15 @@ static void PR_CALLBACK UDP_Client( void *arg )
                 passed = PR_FALSE;
                 if (debug_mode)
                     PR_fprintf(output,
-                        "udpsrv: UDP_Client(): PR_Bind(): failed: %ld with error: %ld\n",
-                        rv, PR_GetError() );
+                               "udpsrv: UDP_Client(): PR_Bind(): failed: %ld with error: %ld\n",
+                               rv, PR_GetError() );
                 PR_Close( cltSock );
                 return;
             }
         }
-        else
+        else {
             bound = PR_TRUE;
+        }
     }
     ListNetAddr( "UDP_Client after Bind", &netaddr );
 
@@ -340,15 +343,17 @@ static void PR_CALLBACK UDP_Client( void *arg )
         }
 
         /* --- SendTo the socket --- */
-        if ( writeThisMany > UDP_DGRAM_SIZE )
+        if ( writeThisMany > UDP_DGRAM_SIZE ) {
             numBytes = UDP_DGRAM_SIZE;
-        else
+        }
+        else {
             numBytes = writeThisMany;
+        }
         writeThisMany -= numBytes;
         {
             char   mbuf[256];
             sprintf( mbuf, "udpsrv: UDP_Client(): write_this_many: %d, numbytes: %d\n",
-                writeThisMany, numBytes );
+                     writeThisMany, numBytes );
             DPRINTF( mbuf );
         }
 
@@ -359,8 +364,8 @@ static void PR_CALLBACK UDP_Client( void *arg )
             passed = PR_FALSE;
             if (debug_mode)
                 PR_fprintf(output,
-                    "udpsrv: UDP_Client(): PR_SendTo(): failed with error: %ld\n",
-                        PR_GetError() );
+                           "udpsrv: UDP_Client(): PR_SendTo(): failed with error: %ld\n",
+                           PR_GetError() );
             PR_Close( cltSock );
             return;
         }
@@ -374,8 +379,8 @@ static void PR_CALLBACK UDP_Client( void *arg )
         {
             passed = PR_FALSE;
             if (debug_mode) PR_fprintf(output,
-                "udpsrv: UDP_Client(): PR_RecvFrom(): failed with error: %ld\n",
-                   PR_GetError() );
+                                           "udpsrv: UDP_Client(): PR_RecvFrom(): failed with error: %ld\n",
+                                           PR_GetError() );
             PR_Close( cltSock );
             return;
         }
@@ -388,16 +393,19 @@ static void PR_CALLBACK UDP_Client( void *arg )
             if ( cltBufin[i] != i )
             {
                 /* --- special case, end of input --- */
-                if ( endOfInput && i == 0 && cltBufin[0] == 'E' )
+                if ( endOfInput && i == 0 && cltBufin[0] == 'E' ) {
                     continue;
+                }
                 passed = PR_FALSE;
                 if (debug_mode) PR_fprintf(output,
-                    "udpsrv: UDP_Client(): return data mismatch\n" );
+                                               "udpsrv: UDP_Client(): return data mismatch\n" );
                 PR_Close( cltSock );
                 return;
             }
         }
-        if (debug_mode) PR_fprintf(output, ".");
+        if (debug_mode) {
+            PR_fprintf(output, ".");
+        }
     }
 
     /* --- Close the socket --- */
@@ -407,7 +415,7 @@ static void PR_CALLBACK UDP_Client( void *arg )
     {
         passed = PR_FALSE;
         if (debug_mode) PR_fprintf(output,
-            "udpsrv: UDP_Client(): PR_Close(): failed to close socket\n" );
+                                       "udpsrv: UDP_Client(): PR_Close(): failed to close socket\n" );
         return;
     }
     DPRINTF("udpsrv: UDP_Client(): ending\n" );
@@ -434,30 +442,32 @@ static void PR_CALLBACK UDP_Client( void *arg )
 int main(int argc, char **argv)
 {
     PRThread    *srv, *clt;
-/* The command line argument: -d is used to determine if the test is being run
-	in debug mode. The regress tool requires only one line output:PASS or FAIL.
-	All of the printfs associated with this test has been handled with a if (debug_mode)
-	test.
-	Usage: test_name -d -v
-	*/
-	PLOptStatus os;
-	PLOptState *opt = PL_CreateOptState(argc, argv, "dv");
-	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
+    /* The command line argument: -d is used to determine if the test is being run
+        in debug mode. The regress tool requires only one line output:PASS or FAIL.
+        All of the printfs associated with this test has been handled with a if (debug_mode)
+        test.
+        Usage: test_name -d -v
+        */
+    PLOptStatus os;
+    PLOptState *opt = PL_CreateOptState(argc, argv, "dv");
+    while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
     {
-		if (PL_OPT_BAD == os) continue;
+        if (PL_OPT_BAD == os) {
+            continue;
+        }
         switch (opt->option)
         {
-        case 'd':  /* debug mode */
-			debug_mode = 1;
-            break;
-        case 'v':  /* verbose mode */
-			_debug_on = 1;
-            break;
-         default:
-            break;
+            case 'd':  /* debug mode */
+                debug_mode = 1;
+                break;
+            case 'v':  /* verbose mode */
+                _debug_on = 1;
+                break;
+            default:
+                break;
         }
     }
-	PL_DestroyOptState(opt);
+    PL_DestroyOptState(opt);
 
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
@@ -470,15 +480,17 @@ int main(int argc, char **argv)
     */
     DPRINTF( "udpsrv: Creating Server Thread\n" );
     srv =  PR_CreateThread( PR_USER_THREAD,
-            UDP_Server,
-            (void *) 0,
-            PR_PRIORITY_LOW,
-            PR_LOCAL_THREAD,
-            PR_JOINABLE_THREAD,
-            0 );
+                            UDP_Server,
+                            (void *) 0,
+                            PR_PRIORITY_LOW,
+                            PR_LOCAL_THREAD,
+                            PR_JOINABLE_THREAD,
+                            0 );
     if ( srv == NULL )
     {
-        if (debug_mode) PR_fprintf(output, "udpsrv: Cannot create server thread\n" );
+        if (debug_mode) {
+            PR_fprintf(output, "udpsrv: Cannot create server thread\n" );
+        }
         passed = PR_FALSE;
     }
 
@@ -493,15 +505,17 @@ int main(int argc, char **argv)
     */
     DPRINTF( "udpsrv: Creating Client Thread\n" );
     clt = PR_CreateThread( PR_USER_THREAD,
-            UDP_Client,
-            (void *) 0,
-            PR_PRIORITY_LOW,
-            PR_LOCAL_THREAD,
-            PR_JOINABLE_THREAD,
-            0 );
+                           UDP_Client,
+                           (void *) 0,
+                           PR_PRIORITY_LOW,
+                           PR_LOCAL_THREAD,
+                           PR_JOINABLE_THREAD,
+                           0 );
     if ( clt == NULL )
     {
-        if (debug_mode) PR_fprintf(output, "udpsrv: Cannot create server thread\n" );
+        if (debug_mode) {
+            PR_fprintf(output, "udpsrv: Cannot create server thread\n" );
+        }
         passed = PR_FALSE;
     }
 
@@ -517,14 +531,16 @@ int main(int argc, char **argv)
     */
     if (debug_mode) PR_fprintf(output, "\n\nudpsrv: main(): cltBytesRead(%ld), \
 		srvBytesRead(%ld), expected(%ld)\n",
-         cltBytesRead, srvBytesRead, UDP_AMOUNT_TO_WRITE );
+                                   cltBytesRead, srvBytesRead, UDP_AMOUNT_TO_WRITE );
     if ( cltBytesRead != srvBytesRead || cltBytesRead != UDP_AMOUNT_TO_WRITE )
     {
         passed = PR_FALSE;
     }
     PR_Cleanup();
-    if ( passed )
+    if ( passed ) {
         return 0;
-    else
-		return 1;
+    }
+    else {
+        return 1;
+    }
 } /* --- end main() --- */

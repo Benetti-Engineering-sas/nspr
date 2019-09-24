@@ -230,8 +230,8 @@ GetInt(ScanfState *state, int code)
         *p++ = ch;
         GET_IF_WITHIN_WIDTH(state, ch);
         if (WITHIN_WIDTH(state)
-                && (ch == 'x' || ch == 'X')
-                && (base == 0 || base == 16)) {
+            && (ch == 'x' || ch == 'X')
+            && (base == 0 || base == 16)) {
             base = 16;
             *p++ = ch;
             GET_IF_WITHIN_WIDTH(state, ch);
@@ -478,45 +478,45 @@ Convert(ScanfState *state, const char *fmt)
             }
             break;
         case '[':
-            {
-                PRBool complement = PR_FALSE;
-                const char *closeBracket;
-                size_t n;
+        {
+            PRBool complement = PR_FALSE;
+            const char *closeBracket;
+            size_t n;
 
-                if (*++cPtr == '^') {
-                    complement = PR_TRUE;
-                    cPtr++;
-                }
-                closeBracket = strchr(*cPtr == ']' ? cPtr + 1 : cPtr, ']');
-                if (closeBracket == NULL) {
-                    return NULL;
-                }
-                n = closeBracket - cPtr;
-                if (state->width == 0) {
-                    state->width = INT_MAX;
-                }
-                if (state->assign) {
-                    cArg = va_arg(state->ap, char *);
-                }
-                for (; state->width > 0; state->width--) {
-                    ch = GET(state);
-                    if ((ch == EOF)
-                            || (!complement && !memchr(cPtr, ch, n))
-                            || (complement && memchr(cPtr, ch, n))) {
-                        UNGET(state, ch);
-                        break;
-                    }
-                    if (state->assign) {
-                        *cArg++ = ch;
-                    }
-                }
-                if (state->assign) {
-                    *cArg = '\0';
-                    state->converted = PR_TRUE;
-                }
-                cPtr = closeBracket;
+            if (*++cPtr == '^') {
+                complement = PR_TRUE;
+                cPtr++;
             }
-            break;
+            closeBracket = strchr(*cPtr == ']' ? cPtr + 1 : cPtr, ']');
+            if (closeBracket == NULL) {
+                return NULL;
+            }
+            n = closeBracket - cPtr;
+            if (state->width == 0) {
+                state->width = INT_MAX;
+            }
+            if (state->assign) {
+                cArg = va_arg(state->ap, char *);
+            }
+            for (; state->width > 0; state->width--) {
+                ch = GET(state);
+                if ((ch == EOF)
+                    || (!complement && !memchr(cPtr, ch, n))
+                    || (complement && memchr(cPtr, ch, n))) {
+                    UNGET(state, ch);
+                    break;
+                }
+                if (state->assign) {
+                    *cArg++ = ch;
+                }
+            }
+            if (state->assign) {
+                *cArg = '\0';
+                state->converted = PR_TRUE;
+            }
+            cPtr = closeBracket;
+        }
+        break;
         default:
             return NULL;
     }

@@ -98,27 +98,36 @@ static void AcceptThread(void *arg)
     PRNetAddr   *arAddr;
 
     bytesRead = PR_AcceptRead( listenSock,
-        &arSock,
-        &arAddr,
-        dataBuf,
-        ACCEPT_READ_DATASIZE,
-        PR_SecondsToInterval(1));
+                               &arSock,
+                               &arAddr,
+                               dataBuf,
+                               ACCEPT_READ_DATASIZE,
+                               PR_SecondsToInterval(1));
 
     if ( bytesRead == -1 && PR_GetError() == PR_IO_TIMEOUT_ERROR ) {
-        if ( debug ) printf("AcceptRead timed out\n");
+        if ( debug ) {
+            printf("AcceptRead timed out\n");
+        }
     } else {
-        if ( debug ) printf("Oops! read: %d, error: %d\n", bytesRead, PR_GetError());
+        if ( debug ) {
+            printf("Oops! read: %d, error: %d\n", bytesRead, PR_GetError());
+        }
     }
 
     while( state != AllDone )  {
         PR_Lock( ml );
-        while( state != RunAcceptRead )
+        while( state != RunAcceptRead ) {
             PR_WaitCondVar( cv, PR_INTERVAL_NO_TIMEOUT );
-        if ( ++iCounter >= jitter )
+        }
+        if ( ++iCounter >= jitter ) {
             state = AllDone;
-        else
+        }
+        else {
             state = RunJitter;
-        if ( verbose ) printf(".");
+        }
+        if ( verbose ) {
+            printf(".");
+        }
         PR_NotifyCondVar( cv );
         PR_Unlock( ml );
         PR_Write( file1, ".", 1 );
@@ -131,11 +140,15 @@ static void JitterThread(void *arg)
 {
     while( state != AllDone )  {
         PR_Lock( ml );
-        while( state != RunJitter && state != AllDone )
+        while( state != RunJitter && state != AllDone ) {
             PR_WaitCondVar( cv, PR_INTERVAL_NO_TIMEOUT );
-        if ( state != AllDone)
+        }
+        if ( state != AllDone) {
             state = RunAcceptRead;
-        if ( verbose ) printf("+");
+        }
+        if ( verbose ) {
+            printf("+");
+        }
         PR_NotifyCondVar( cv );
         PR_Unlock( ml );
         PR_Write( file1, "+", 1 );
@@ -153,7 +166,9 @@ static void ConnectThread( void *arg )
     PR_ASSERT(clientSock);
 
     if ( resume ) {
-        if ( debug ) printf("pausing 3 seconds before connect\n");
+        if ( debug ) {
+            printf("pausing 3 seconds before connect\n");
+        }
         PR_Sleep( PR_SecondsToInterval(3));
     }
 
@@ -161,13 +176,14 @@ static void ConnectThread( void *arg )
     rv = PR_InitializeNetAddr(PR_IpAddrLoopback, BASE_PORT, &serverAddress);
     PR_ASSERT( PR_SUCCESS == rv );
     rv = PR_Connect( clientSock,
-        &serverAddress,
-        PR_SecondsToInterval(1));
+                     &serverAddress,
+                     PR_SecondsToInterval(1));
     PR_ASSERT( PR_SUCCESS == rv );
 
     /* that's all we do. ... Wait for the acceptread() to timeout */
-    while( state != AllDone )
+    while( state != AllDone ) {
         PR_Sleep( PR_SecondsToInterval(1));
+    }
     return;
 } /* end ConnectThread() */
 
@@ -191,35 +207,38 @@ int main(int argc, char **argv)
         PLOptStatus os;
         PLOptState *opt = PL_CreateOptState(argc, argv, "hdrvj:");
 
-	    while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
+        while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
         {
-		    if (PL_OPT_BAD == os) continue;
+            if (PL_OPT_BAD == os) {
+                continue;
+            }
             switch (opt->option)
             {
-            case 'd':  /* debug */
-                debug = 1;
-			    msgLevel = PR_LOG_ERROR;
-                break;
-            case 'v':  /* verbose mode */
-                verbose = 1;
-			    msgLevel = PR_LOG_DEBUG;
-                break;
-            case 'j':
-                jitter = atoi(opt->value);
-                if ( jitter == 0)
-                    jitter = JITTER_DEFAULT;
-                break;
-            case 'r':
-                resume = PR_TRUE;
-                break;
-            case 'h':  /* help message */
-			    Help();
-                break;
-             default:
-                break;
+                case 'd':  /* debug */
+                    debug = 1;
+                    msgLevel = PR_LOG_ERROR;
+                    break;
+                case 'v':  /* verbose mode */
+                    verbose = 1;
+                    msgLevel = PR_LOG_DEBUG;
+                    break;
+                case 'j':
+                    jitter = atoi(opt->value);
+                    if ( jitter == 0) {
+                        jitter = JITTER_DEFAULT;
+                    }
+                    break;
+                case 'r':
+                    resume = PR_TRUE;
+                    break;
+                case 'h':  /* help message */
+                    Help();
+                    break;
+                default:
+                    break;
             }
         }
-	    PL_DestroyOptState(opt);
+        PL_DestroyOptState(opt);
     }
 
     lm = PR_NewLogModule("Test");       /* Initialize logging */
@@ -250,23 +269,23 @@ int main(int argc, char **argv)
 
     /* create Connect thread */
     tConnect = PR_CreateThread(
-        PR_USER_THREAD, ConnectThread, NULL,
-        PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD,
-        PR_JOINABLE_THREAD, 0 );
+                   PR_USER_THREAD, ConnectThread, NULL,
+                   PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD,
+                   PR_JOINABLE_THREAD, 0 );
     PR_ASSERT( tConnect );
 
     /* create jitter off thread */
     tJitter = PR_CreateThread(
-        PR_USER_THREAD, JitterThread, NULL,
-        PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD,
-        PR_JOINABLE_THREAD, 0 );
+                  PR_USER_THREAD, JitterThread, NULL,
+                  PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD,
+                  PR_JOINABLE_THREAD, 0 );
     PR_ASSERT( tJitter );
 
     /* create acceptread thread */
     tAccept = PR_CreateThread(
-        PR_USER_THREAD, AcceptThread, NULL,
-        PR_PRIORITY_NORMAL, PR_LOCAL_THREAD,
-        PR_JOINABLE_THREAD, 0 );
+                  PR_USER_THREAD, AcceptThread, NULL,
+                  PR_PRIORITY_NORMAL, PR_LOCAL_THREAD,
+                  PR_JOINABLE_THREAD, 0 );
     PR_ASSERT( tAccept );
 
     /* wait for all threads to quit, then terminate gracefully */
@@ -280,7 +299,9 @@ int main(int argc, char **argv)
     PR_Delete( "xxxTestFile");
 
     /* test return and exit */
-    if (debug) printf("%s\n", (failed_already)? "FAIL" : "PASS");
+    if (debug) {
+        printf("%s\n", (failed_already)? "FAIL" : "PASS");
+    }
     return( (failed_already == PR_TRUE )? 1 : 0 );
 }  /* main() */
 /* end ntioto.c */

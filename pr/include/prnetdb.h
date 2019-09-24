@@ -55,7 +55,7 @@ typedef struct PRHostEnt {
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_GetHostByName()
+** DESCRIPTION: PR_GetHostByName()
 ** Lookup a host by name.
 **
 ** INPUTS:
@@ -79,7 +79,7 @@ NSPR_API(PRStatus) PR_GetHostByName(
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_GetIPNodeByName()
+** DESCRIPTION: PR_GetIPNodeByName()
 ** Lookup a host by name. Equivalent to getipnodebyname(AI_DEFAULT)
 ** of RFC 2553.
 **
@@ -121,7 +121,7 @@ NSPR_API(PRStatus) PR_GetIPNodeByName(
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_GetHostByAddr()
+** DESCRIPTION: PR_GetHostByAddr()
 ** Lookup a host entry by its network address.
 **
 ** INPUTS:
@@ -144,7 +144,7 @@ NSPR_API(PRStatus) PR_GetHostByAddr(
     const PRNetAddr *hostaddr, char *buf, PRIntn bufsize, PRHostEnt *hostentry);
 
 /***********************************************************************
-** FUNCTION:	PR_EnumerateHostEnt()
+** FUNCTION:    PR_EnumerateHostEnt()
 ** DESCRIPTION:
 **  A stateless enumerator over a PRHostEnt structure acquired from
 **  PR_GetHostByName() PR_GetHostByAddr() to evaluate the possible
@@ -240,7 +240,7 @@ NSPR_API(PRStatus) PR_SetNetAddr(
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_IsNetAddrType()
+** DESCRIPTION: PR_IsNetAddrType()
 ** Determine if the network address is of the specified type.
 **
 ** INPUTS:
@@ -255,11 +255,11 @@ NSPR_API(PRBool) PR_IsNetAddrType(const PRNetAddr *addr, PRNetAddrValue val);
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_ConvertIPv4AddrToIPv6()
+** DESCRIPTION: PR_ConvertIPv4AddrToIPv6()
 ** Convert an IPv4 addr to an (IPv4-mapped) IPv6 addr
 **
 ** INPUTS:
-**  PRUint32 	v4addr		IPv4 address
+**  PRUint32    v4addr      IPv4 address
 **
 ** OUTPUTS:
 **  PRIPv6Addr *v6addr      The converted IPv6 address
@@ -272,7 +272,7 @@ NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
 
 /***********************************************************************
 ** MACRO:
-** DESCRIPTION:	PR_NetAddrFamily()
+** DESCRIPTION: PR_NetAddrFamily()
 ** Get the 'family' field of a PRNetAddr union.
 **
 ** INPUTS:
@@ -285,7 +285,7 @@ NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
 
 /***********************************************************************
 ** MACRO:
-** DESCRIPTION:	PR_NetAddrInetPort()
+** DESCRIPTION: PR_NetAddrInetPort()
 ** Get the 'port' field of a PRNetAddr union.
 **
 ** INPUTS:
@@ -299,7 +299,7 @@ NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_GetProtoByName()
+** DESCRIPTION: PR_GetProtoByName()
 ** Lookup a protocol entry based on protocol's name
 **
 ** INPUTS:
@@ -334,7 +334,7 @@ NSPR_API(PRStatus) PR_GetProtoByName(
 
 /***********************************************************************
 ** FUNCTION:
-** DESCRIPTION:	PR_GetProtoByNumber()
+** DESCRIPTION: PR_GetProtoByNumber()
 ** Lookup a protocol entry based on protocol's number
 **
 ** INPUTS:

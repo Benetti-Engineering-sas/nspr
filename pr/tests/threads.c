@@ -42,7 +42,7 @@ DumbThread(void *arg)
     if (!thr) {
         if (debug_mode) {
             printf("Could not create really dumb thread (%d, %d)!\n",
-                    PR_GetError(), PR_GetOSError());
+                   PR_GetError(), PR_GetOSError());
         }
         passed = PR_FALSE;
     } else {
@@ -74,7 +74,7 @@ static void CreateThreads(PRThreadScope scope1, PRThreadScope scope2)
         if (!thr) {
             if (debug_mode) {
                 printf("Could not create dumb thread (%d, %d)!\n",
-                        PR_GetError(), PR_GetOSError());
+                       PR_GetError(), PR_GetOSError());
             }
             passed = PR_FALSE;
             alive--;
@@ -90,7 +90,7 @@ static void CreateThreads(PRThreadScope scope1, PRThreadScope scope2)
     }
 
     PR_ExitMonitor(mon);
-	PR_DestroyMonitor(mon);
+    PR_DestroyMonitor(mon);
 }
 
 static void CreateThreadsUU(void)
@@ -139,35 +139,41 @@ int main(int argc, char **argv)
     PR_Init(PR_USER_THREAD, PR_PRIORITY_HIGH, 0);
 
     {
-    	PLOptStatus os;
-    	PLOptState *opt = PL_CreateOptState(argc, argv, "dc:i:");
-    	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
+        PLOptStatus os;
+        PLOptState *opt = PL_CreateOptState(argc, argv, "dc:i:");
+        while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
         {
-    		if (PL_OPT_BAD == os) continue;
+            if (PL_OPT_BAD == os) {
+                continue;
+            }
             switch (opt->option)
             {
-            case 'd':  /* debug mode */
-    			debug_mode = PR_TRUE;
-                break;
-            case 'c':  /* loop counter */
-    			count = atoi(opt->value);
-                break;
-            case 'i':  /* loop counter */
-    			iterations = atoi(opt->value);
-                break;
-             default:
-                break;
+                case 'd':  /* debug mode */
+                    debug_mode = PR_TRUE;
+                    break;
+                case 'c':  /* loop counter */
+                    count = atoi(opt->value);
+                    break;
+                case 'i':  /* loop counter */
+                    iterations = atoi(opt->value);
+                    break;
+                default:
+                    break;
             }
         }
-    	PL_DestroyOptState(opt);
+        PL_DestroyOptState(opt);
     }
 
-    if (0 == count) count = 50;
-    if (0 == iterations) iterations = 10;
+    if (0 == count) {
+        count = 50;
+    }
+    if (0 == iterations) {
+        iterations = 10;
+    }
 
     if (debug_mode)
     {
-    printf("\
+        printf("\
 ** Tests lots of thread creations.  \n\
 ** Create %ld native threads %ld times. \n\
 ** Create %ld user threads %ld times \n", iterations,count,iterations,count);
@@ -180,7 +186,9 @@ int main(int argc, char **argv)
         Measure(CreateThreadsKK, "Create native/native threads");
     }
 
-    if (debug_mode) printf("\nNow switch to recycling threads \n\n");
+    if (debug_mode) {
+        printf("\nNow switch to recycling threads \n\n");
+    }
     PR_SetThreadRecycleMode(1);
 
     for (index=0; index<iterations; index++) {

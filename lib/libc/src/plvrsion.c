@@ -68,9 +68,9 @@ PRVersionDescription VERSION_DESC_NAME =
  * must not end in a '$' to prevent rcs keyword substitution.
  */
 static char rcsid[] = "$Header: NSPR " PR_VERSION _DEBUG_STRING
-        "  " _BUILD_STRING " $";
+                      "  " _BUILD_STRING " $";
 static char sccsid[] = "@(#)NSPR " PR_VERSION _DEBUG_STRING
-        "  " _BUILD_STRING;
+                       "  " _BUILD_STRING;
 
 #endif /* XP_UNIX */
 

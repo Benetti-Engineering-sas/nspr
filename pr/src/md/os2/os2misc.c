@@ -150,15 +150,16 @@ static int assembleEnvBlock(char **envp, char **envBlock)
         return 0;
     }
 
-    if(DosGetInfoBlocks(&ptib, &ppib) != NO_ERROR)
-       return -1;
+    if(DosGetInfoBlocks(&ptib, &ppib) != NO_ERROR) {
+        return -1;
+    }
 
     curEnv = ppib->pib_pchenv;
 
     cwdStart = curEnv;
     while (*cwdStart) {
         if (cwdStart[0] == '=' && cwdStart[1] != '\0'
-                && cwdStart[2] == ':' && cwdStart[3] == '=') {
+            && cwdStart[2] == ':' && cwdStart[3] == '=') {
             break;
         }
         cwdStart += strlen(cwdStart) + 1;
@@ -168,7 +169,7 @@ static int assembleEnvBlock(char **envp, char **envBlock)
         cwdEnd += strlen(cwdEnd) + 1;
         while (*cwdEnd) {
             if (cwdEnd[0] != '=' || cwdEnd[1] == '\0'
-                    || cwdEnd[2] != ':' || cwdEnd[3] != '=') {
+                || cwdEnd[2] != ':' || cwdEnd[3] != '=') {
                 break;
             }
             cwdEnd += strlen(cwdEnd) + 1;
@@ -290,22 +291,22 @@ PRProcess * _PR_CreateOS2Process(
 
     rc = DosQueryAppType(path, &ulAppType);
     if (rc != NO_ERROR) {
-       char *pszDot = strrchr(path, '.');
-       if (pszDot) {
-          /* If it is a CMD file, launch the users command processor */
-          if (!stricmp(pszDot, ".cmd")) {
-             rc = DosScanEnv("COMSPEC", (PSZ *)&pszComSpec);
-             if (!rc) {
-                strcpy(pszFormatString, "/C %s %s");
-                strcpy(pszEXEName, pszComSpec);
-                ulAppType = FAPPTYP_WINDOWCOMPAT;
-             }
-          }
-       }
+        char *pszDot = strrchr(path, '.');
+        if (pszDot) {
+            /* If it is a CMD file, launch the users command processor */
+            if (!stricmp(pszDot, ".cmd")) {
+                rc = DosScanEnv("COMSPEC", (PSZ *)&pszComSpec);
+                if (!rc) {
+                    strcpy(pszFormatString, "/C %s %s");
+                    strcpy(pszEXEName, pszComSpec);
+                    ulAppType = FAPPTYP_WINDOWCOMPAT;
+                }
+            }
+        }
     }
     if (ulAppType == 0) {
-       PR_SetError(PR_UNKNOWN_ERROR, 0);
-       goto errorExit;
+        PR_SetError(PR_UNKNOWN_ERROR, 0);
+        goto errorExit;
     }
 
     if ((ulAppType & FAPPTYP_WINDOWAPI) == FAPPTYP_WINDOWAPI) {
@@ -464,7 +465,7 @@ PRStatus _PR_DetachOS2Process(PRProcess *process)
  * XXX: This will currently only work on a child process.
  */
 PRStatus _PR_WaitOS2Process(PRProcess *process,
-    PRInt32 *exitCode)
+                            PRInt32 *exitCode)
 {
     ULONG ulRetVal;
     RESULTCODES results;
@@ -475,7 +476,7 @@ PRStatus _PR_WaitOS2Process(PRProcess *process,
                             &pidEnded, process->md.pid);
 
     if (ulRetVal != NO_ERROR) {
-       printf("\nDosWaitChild rc = %lu\n", ulRetVal);
+        printf("\nDosWaitChild rc = %lu\n", ulRetVal);
         PR_SetError(PR_UNKNOWN_ERROR, ulRetVal);
         return PR_FAILURE;
     }
@@ -485,9 +486,9 @@ PRStatus _PR_WaitOS2Process(PRProcess *process,
 
 PRStatus _PR_KillOS2Process(PRProcess *process)
 {
-   ULONG ulRetVal;
+    ULONG ulRetVal;
     if ((ulRetVal = DosKillProcess(DKP_PROCESS, process->md.pid)) == NO_ERROR) {
-	return PR_SUCCESS;
+        return PR_SUCCESS;
     }
     PR_SetError(PR_UNKNOWN_ERROR, ulRetVal);
     return PR_FAILURE;
@@ -501,7 +502,7 @@ PRStatus _MD_OS2GetHostName(char *name, PRUint32 namelen)
     if (0 == rv) {
         return PR_SUCCESS;
     }
-	_PR_MD_MAP_GETHOSTNAME_ERROR(sock_errno());
+    _PR_MD_MAP_GETHOSTNAME_ERROR(sock_errno());
     return PR_FAILURE;
 }
 

@@ -16,7 +16,7 @@ typedef struct PRCondVar PRCondVar;
 /*
 ** Create a new condition variable.
 **
-** 	"lock" is the lock used to protect the condition variable.
+**  "lock" is the lock used to protect the condition variable.
 **
 ** Condition variables are synchronization objects that threads can use
 ** to wait for some condition to occur.

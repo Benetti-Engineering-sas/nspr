@@ -4,8 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
-** File:		pralarm.h
-** Description:	API to periodic alarms.
+** File:        pralarm.h
+** Description: API to periodic alarms.
 **
 **
 ** Alarms are defined to invoke some client specified function at
@@ -153,7 +153,7 @@ NSPR_API(PRAlarmID*) PR_SetAlarm(
 ** ALGORITHM:   See PR_SetAlarm().
 ***********************************************************************/
 NSPR_API(PRStatus) PR_ResetAlarm(
-	PRAlarmID *id, PRIntervalTime period, PRUint32 rate);
+    PRAlarmID *id, PRIntervalTime period, PRUint32 rate);
 
 PR_END_EXTERN_C
 

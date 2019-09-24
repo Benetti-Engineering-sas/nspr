@@ -23,8 +23,8 @@ PRSize _pr_CopyLowBits(
     PRSize srclen )
 {
     if (srclen <= dstlen) {
-    	memcpy(dst, src, srclen);
-	    return srclen;
+        memcpy(dst, src, srclen);
+        return srclen;
     }
 #if defined IS_BIG_ENDIAN
     memcpy(dst, (char*)src + (srclen - dstlen), dstlen);

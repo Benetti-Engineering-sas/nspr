@@ -145,11 +145,11 @@ typedef struct PRSharedMemory PRSharedMemory;
 **
 */
 NSPR_API( PRSharedMemory * )
-    PR_OpenSharedMemory(
-        const char *name,
-        PRSize      size,
-        PRIntn      flags,
-        PRIntn      mode
+PR_OpenSharedMemory(
+    const char *name,
+    PRSize      size,
+    PRIntn      flags,
+    PRIntn      mode
 );
 /* Define values for PR_OpenShareMemory(...,create) */
 #define PR_SHM_CREATE 0x1  /* create if not exist */
@@ -179,9 +179,9 @@ NSPR_API( PRSharedMemory * )
 **
 */
 NSPR_API( void * )
-    PR_AttachSharedMemory(
-        PRSharedMemory *shm,
-        PRIntn  flags
+PR_AttachSharedMemory(
+    PRSharedMemory *shm,
+    PRIntn  flags
 );
 /* Define values for PR_AttachSharedMemory(...,flags) */
 #define PR_SHM_READONLY 0x01
@@ -205,9 +205,9 @@ NSPR_API( void * )
 **
 */
 NSPR_API( PRStatus )
-    PR_DetachSharedMemory(
-        PRSharedMemory *shm,
-        void  *addr
+PR_DetachSharedMemory(
+    PRSharedMemory *shm,
+    void  *addr
 );
 
 /*
@@ -227,8 +227,8 @@ NSPR_API( PRStatus )
 **
 */
 NSPR_API( PRStatus )
-    PR_CloseSharedMemory(
-        PRSharedMemory *shm
+PR_CloseSharedMemory(
+    PRSharedMemory *shm
 );
 
 /*
@@ -248,8 +248,8 @@ NSPR_API( PRStatus )
 **
 */
 NSPR_API( PRStatus )
-    PR_DeleteSharedMemory(
-        const char *name
+PR_DeleteSharedMemory(
+    const char *name
 );
 
 PR_END_EXTERN_C

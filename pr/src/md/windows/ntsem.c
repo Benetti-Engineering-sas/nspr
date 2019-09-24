@@ -31,10 +31,12 @@ _PR_MD_TIMED_WAIT_SEM(_MDSemaphore *md, PRIntervalTime ticks)
 
     rv = WaitForSingleObject(md->sem, PR_IntervalToMilliseconds(ticks));
 
-    if (rv == WAIT_OBJECT_0)
+    if (rv == WAIT_OBJECT_0) {
         return PR_SUCCESS;
-    else
+    }
+    else {
         return PR_FAILURE;
+    }
 }
 
 PRStatus

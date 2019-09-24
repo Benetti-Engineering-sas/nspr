@@ -4,8 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
-** File:		prlock.h
-** Description:	API to basic locking functions of NSPR.
+** File:        prlock.h
+** Description: API to basic locking functions of NSPR.
 **
 **
 ** NSPR provides basic locking mechanisms for thread synchronization.  Locks
@@ -28,7 +28,7 @@ PR_BEGIN_EXTERN_C
  * PRLock --
  *
  *     NSPR represents the lock as an opaque entity to the client of the
- *	   API.  All routines operate on a pointer to this opaque entity.
+ *     API.  All routines operate on a pointer to this opaque entity.
  */
 
 typedef struct PRLock PRLock;
