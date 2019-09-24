@@ -99,7 +99,7 @@ NowCalibrate(void)
 	PRInt64 calibrationDelta = 0;
 	/*
 	 * By wrapping a timeBegin/EndPeriod pair of calls around this loop,
-	 * the loop seems to take much less time (1 ms vs 15ms) on Vista. 
+	 * the loop seems to take much less time (1 ms vs 15ms) on Vista.
 	 */
 	timeBeginPeriod(1);
 	LowResTime(&ftStart);
@@ -108,7 +108,7 @@ NowCalibrate(void)
 	} while (memcmp(&ftStart,&ft, sizeof(ft)) == 0);
 	timeEndPeriod(1);
 
-	calibration.granularity = 
+	calibration.granularity =
 	    (FILETIME_TO_INT64(ft) - FILETIME_TO_INT64(ftStart))/10;
 
 	QueryPerformanceCounter(&now);
@@ -116,9 +116,9 @@ NowCalibrate(void)
 	calibration.offset = (long double) FILETIME_TO_INT64(ft);
 	calibration.timer_offset = (long double) now.QuadPart;
 	/*
-	 * The windows epoch is around 1600. The unix epoch is around 1970. 
+	 * The windows epoch is around 1600. The unix epoch is around 1970.
 	 * _pr_filetime_offset is the difference (in windows time units which
-	 * are 10 times more highres than the JS time unit) 
+	 * are 10 times more highres than the JS time unit)
 	 */
 	calibration.offset -= _pr_filetime_offset;
 	calibration.offset *= 0.1;
@@ -211,7 +211,7 @@ PR_Now(void)
 	    if (calibration.offset == cachedOffset) {
 		/*
 		 * Since calibration can take a while, make any other
-		 * threads immediately wait 
+		 * threads immediately wait
 		 */
 		MUTEX_SETSPINCOUNT(&calibration.data_lock, 0);
 
@@ -248,8 +248,8 @@ PR_Now(void)
 		(highresTimerValue-calibration.timer_offset)/calibration.freq;
 	    cachedOffset = calibration.offset;
 
-	    /* 
-	     * On some dual processor/core systems, we might get an earlier 
+	    /*
+	     * On some dual processor/core systems, we might get an earlier
 	     * time so we cache the last time that we returned.
 	     */
 	    calibration.last = PR_MAX(calibration.last,(PRInt64)highresTime);
@@ -261,12 +261,12 @@ PR_Now(void)
 	    /* Check for clock skew */
 	    diff = lowresTime - highresTime;
 
-	    /* 
+	    /*
 	     * For some reason that I have not determined, the skew can be
 	     * up to twice a kernel tick. This does not seem to happen by
 	     * itself, but I have only seen it triggered by another program
 	     * doing some kind of file I/O. The symptoms are a negative diff
-	     * followed by an equally large positive diff. 
+	     * followed by an equally large positive diff.
 	     */
 	    if (fabs(diff) > 2*skewThreshold) {
 		if (calibrated) {
@@ -279,13 +279,13 @@ PR_Now(void)
 		     * resolution results for anything, so let's resort to old
 		     * behavior for this call. It's possible that in the
 		     * future, the user will want the high resolution timer, so
-		     * we don't disable it entirely. 
+		     * we don't disable it entirely.
 		     */
 		    returnedTime = (PRInt64)lowresTime;
 		    needsCalibration = PR_FALSE;
 		} else {
 		    /*
-		     * It is possible that when we recalibrate, we will return 
+		     * It is possible that when we recalibrate, we will return
 		     * a value less than what we have returned before; this is
 		     * unavoidable. We cannot tell the different between a
 		     * faulty QueryPerformanceCounter implementation and user
@@ -293,7 +293,7 @@ PR_Now(void)
 		     * respect user changes to the operating system time, we
 		     * cannot maintain the invariant that Date.now() never
 		     * decreases; the old implementation has this behavior as
-		     * well. 
+		     * well.
 		     */
 		    needsCalibration = PR_TRUE;
 		}
@@ -323,7 +323,7 @@ PR_Now(void)
     GetSystemTime(&st);
     SystemTimeToFileTime(&st, &ft);
     _PR_FileTimeToPRTime(&ft, &prt);
-    return prt;       
+    return prt;
 }
 
 #endif
@@ -376,7 +376,7 @@ static int assembleCmdLine(char *const *argv, char **cmdLine)
     for (arg = argv; *arg; arg++) {
         /* Add a space to separates the arguments */
         if (arg != argv) {
-            *p++ = ' '; 
+            *p++ = ' ';
         }
         q = *arg;
         numBackslashes = 0;
@@ -442,7 +442,7 @@ static int assembleCmdLine(char *const *argv, char **cmdLine)
         if (argNeedQuotes) {
             *p++ = '"';
         }
-    } 
+    }
 
     *p = '\0';
     return 0;
@@ -827,18 +827,18 @@ PRStatus _MD_WindowsGetSysInfo(PRSysInfo cmd, char *name, PRUint32 namelen)
 			if (PR_SI_SYSNAME == cmd)
 				(void)PR_snprintf(name, namelen, "Windows_NT");
 			else if (PR_SI_RELEASE == cmd)
-				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion, 
+				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion,
             							osvi.dwMinorVersion);
 			break;
 		case VER_PLATFORM_WIN32_WINDOWS:
 			if (PR_SI_SYSNAME == cmd) {
-				if ((osvi.dwMajorVersion > 4) || 
+				if ((osvi.dwMajorVersion > 4) ||
 					((osvi.dwMajorVersion == 4) && (osvi.dwMinorVersion > 0)))
 					(void)PR_snprintf(name, namelen, "Windows_98");
 				else
 					(void)PR_snprintf(name, namelen, "Windows_95");
 			} else if (PR_SI_RELEASE == cmd) {
-				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion, 
+				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion,
             							osvi.dwMinorVersion);
 			}
 			break;
@@ -847,7 +847,7 @@ PRStatus _MD_WindowsGetSysInfo(PRSysInfo cmd, char *name, PRUint32 namelen)
 			if (PR_SI_SYSNAME == cmd)
 				(void)PR_snprintf(name, namelen, "Windows_CE");
 			else if (PR_SI_RELEASE == cmd)
-				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion, 
+				(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion,
             							osvi.dwMinorVersion);
 			break;
 #endif
@@ -876,7 +876,7 @@ PRStatus _MD_WindowsGetReleaseName(char *name, PRUint32 namelen)
 	switch (osvi.dwPlatformId) {
 		case VER_PLATFORM_WIN32_NT:
 		case VER_PLATFORM_WIN32_WINDOWS:
-			(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion, 
+			(void)PR_snprintf(name, namelen, "%d.%d",osvi.dwMajorVersion,
             							osvi.dwMinorVersion);
 			break;
    		default:
@@ -960,16 +960,16 @@ void * _MD_MemMap(
     if ((addr = MapViewOfFile(fmap->md.hFileMap, fmap->md.dwAccess,
             dwHi, dwLo, len)) == NULL) {
         {
-            LPVOID lpMsgBuf; 
-            
-            FormatMessage( 
+            LPVOID lpMsgBuf;
+
+            FormatMessage(
                 FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
                 NULL,
                 GetLastError(),
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                 (LPTSTR) &lpMsgBuf,
                 0,
-                NULL 
+                NULL
             );
             PR_LOG( _pr_shma_lm, PR_LOG_DEBUG, ("md_memmap(): %s", lpMsgBuf ));
         }
@@ -1035,10 +1035,10 @@ PRStatus _MD_SyncMemMap(
 
 #pragma warning(disable: 4035)
 PRInt32 _PR_MD_ATOMIC_INCREMENT(PRInt32 *val)
-{    
+{
 #if defined(__GNUC__)
   PRInt32 result;
-  asm volatile ("lock ; xadd %0, %1" 
+  asm volatile ("lock ; xadd %0, %1"
                 : "=r"(result), "=m"(*val)
                 : "0"(1), "m"(*val));
   return result + 1;
@@ -1059,7 +1059,7 @@ PRInt32 _PR_MD_ATOMIC_DECREMENT(PRInt32 *val)
 {
 #if defined(__GNUC__)
   PRInt32 result;
-  asm volatile ("lock ; xadd %0, %1" 
+  asm volatile ("lock ; xadd %0, %1"
                 : "=r"(result), "=m"(*val)
                 : "0"(-1), "m"(*val));
   //asm volatile("lock ; xadd %0, %1" : "=m" (val), "=a" (result) : "-1" (1));
@@ -1082,7 +1082,7 @@ PRInt32 _PR_MD_ATOMIC_ADD(PRInt32 *intp, PRInt32 val)
 #if defined(__GNUC__)
   PRInt32 result;
   //asm volatile("lock ; xadd %1, %0" : "=m" (intp), "=a" (result) : "1" (val));
-  asm volatile ("lock ; xadd %0, %1" 
+  asm volatile ("lock ; xadd %0, %1"
                 : "=r"(result), "=m"(*intp)
                 : "0"(val), "m"(*intp));
   return result + val;
@@ -1102,24 +1102,24 @@ PRInt32 _PR_MD_ATOMIC_ADD(PRInt32 *intp, PRInt32 val)
 #ifdef _PR_HAVE_ATOMIC_CAS
 
 #pragma warning(disable: 4035)
-void 
+void
 PR_StackPush(PRStack *stack, PRStackElem *stack_elem)
 {
 #if defined(__GNUC__)
   void **tos = (void **) stack;
   void *tmp;
-  
+
  retry:
   if (*tos == (void *) -1)
     goto retry;
-  
+
   __asm__("xchg %0,%1"
           : "=r" (tmp), "=m"(*tos)
           : "0" (-1), "m"(*tos));
-  
+
   if (tmp == (void *) -1)
     goto retry;
-  
+
   *(void **)stack_elem = tmp;
   __asm__("" : : : "memory");
   *tos = stack_elem;
@@ -1143,24 +1143,24 @@ retry:	mov eax,[ebx]
 #pragma warning(default: 4035)
 
 #pragma warning(disable: 4035)
-PRStackElem * 
+PRStackElem *
 PR_StackPop(PRStack *stack)
 {
 #if defined(__GNUC__)
   void **tos = (void **) stack;
   void *tmp;
-  
+
  retry:
   if (*tos == (void *) -1)
     goto retry;
-  
+
   __asm__("xchg %0,%1"
           : "=r" (tmp), "=m"(*tos)
           : "0" (-1), "m"(*tos));
 
   if (tmp == (void *) -1)
     goto retry;
-  
+
   if (tmp != (void *) 0)
     {
       void *next = *(void **)tmp;
@@ -1169,7 +1169,7 @@ PR_StackPop(PRStack *stack)
     }
   else
     *tos = tmp;
-  
+
   return tmp;
 #else
     __asm
@@ -1190,7 +1190,7 @@ retry:	mov eax,[ebx]
 	jmp done
 empty:
 	mov [ebx],eax
-done:	
+done:
 	}
 #endif /* __GNUC__ */
 }

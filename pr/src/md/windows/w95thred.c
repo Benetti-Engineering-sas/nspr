@@ -25,7 +25,7 @@ DWORD _pr_currentThreadIndex;
 DWORD _pr_lastThreadIndex;
 DWORD _pr_currentCPUIndex;
 #endif
-int                           _pr_intsOff = 0; 
+int                           _pr_intsOff = 0;
 _PRInterruptTable             _pr_interruptTable[] = { { 0 } };
 
 typedef HRESULT (WINAPI *SETTHREADDESCRIPTION)(HANDLE, PCWSTR);
@@ -138,12 +138,12 @@ pr_root(void *arg)
     return 0;
 }
 
-PRStatus 
-_PR_MD_CREATE_THREAD(PRThread *thread, 
-                  void (*start)(void *), 
-                  PRThreadPriority priority, 
-                  PRThreadScope scope, 
-                  PRThreadState state, 
+PRStatus
+_PR_MD_CREATE_THREAD(PRThread *thread,
+                  void (*start)(void *),
+                  PRThreadPriority priority,
+                  PRThreadScope scope,
+                  PRThreadState state,
                   PRUint32 stackSize)
 {
 
@@ -175,14 +175,14 @@ _PR_MD_CREATE_THREAD(PRThread *thread,
     return PR_FAILURE;
 }
 
-void    
+void
 _PR_MD_YIELD(void)
 {
     /* Can NT really yield at all? */
     Sleep(0);
 }
 
-void     
+void
 _PR_MD_SET_PRIORITY(_MDThread *thread, PRThreadPriority newPri)
 {
     int nativePri;
@@ -325,8 +325,8 @@ PRInt32 _PR_MD_GETTHREADAFFINITYMASK(PRThread *thread, PRUint32 *mask)
 #endif
 }
 
-void 
-_PR_MD_SUSPEND_CPU(_PRCPU *cpu) 
+void
+_PR_MD_SUSPEND_CPU(_PRCPU *cpu)
 {
     _PR_MD_SUSPEND_THREAD(cpu->thread);
 }

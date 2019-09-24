@@ -97,9 +97,9 @@ static PRInt32 local_io_wait(PRInt32 osfd, PRInt32 wait_flag,
 							PRIntervalTime timeout);
 
 _PRInterruptTable _pr_interruptTable[] = {
-    { 
+    {
         "clock", _PR_MISSED_CLOCK, _PR_ClockInterrupt,     },
-    { 
+    {
         0     }
 };
 
@@ -153,7 +153,7 @@ int err;
             err = _MD_ERRNO();
             _PR_MD_MAP_READDIR_ERROR(err);
             return 0;
-        }        
+        }
         if ((flags & PR_SKIP_DOT) &&
             (de->d_name[0] == '.') && (de->d_name[1] == 0))
             continue;
@@ -307,7 +307,7 @@ PRInt32 osfd = fd->secret->md.osfd;
             if (!_PR_IS_NATIVE_THREAD(me)) {
                 if ((rv = local_io_wait(osfd, _PR_UNIX_POLL_READ,
 										PR_INTERVAL_NO_TIMEOUT)) < 0)
-					goto done;								
+					goto done;
             } else {
 #ifndef _PR_USE_POLL
                 while ((rv = _MD_SELECT(osfd + 1, &rd, NULL, NULL, NULL))
@@ -1267,7 +1267,7 @@ PRStatus _MD_getsockopt(PRFileDesc *fd, PRInt32 level,
     return rv==0?PR_SUCCESS:PR_FAILURE;
 }
 
-PRStatus _MD_setsockopt(PRFileDesc *fd, PRInt32 level,   
+PRStatus _MD_setsockopt(PRFileDesc *fd, PRInt32 level,
                     PRInt32 optname, const char* optval, PRInt32 optlen)
 {
     PRInt32 rv, err;
@@ -2993,7 +2993,7 @@ PRInt32 _PR_WaitForMultipleFDs(
     }
 
     _PR_IOQ_OSFD_CNT(me->cpu) += pdcnt;
-        
+
     _PR_SLEEPQ_LOCK(me->cpu);
     _PR_ADD_SLEEPQ(me, timeout);
     me->state = _PR_IO_WAIT;
@@ -3009,7 +3009,7 @@ PRInt32 _PR_WaitForMultipleFDs(
     me->io_suspended = PR_FALSE;
 
     /*
-     * This thread should run on the same cpu on which it was blocked; when 
+     * This thread should run on the same cpu on which it was blocked; when
      * the IO request times out the fd sets and fd counts for the
      * cpu are updated below.
      */
@@ -3090,12 +3090,12 @@ void _PR_Unblock_IO_Wait(PRThread *thr)
 {
     int pri = thr->priority;
     _PRCPU *cpu = thr->cpu;
- 
+
     /*
      * GLOBAL threads wakeup periodically to check for interrupt
      */
     if (_PR_IS_NATIVE_THREAD(thr)) {
-        _PR_THREAD_UNLOCK(thr); 
+        _PR_THREAD_UNLOCK(thr);
         return;
     }
 

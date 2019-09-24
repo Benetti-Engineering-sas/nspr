@@ -107,7 +107,7 @@ struct PRJob {
 	PRIntervalTime	timeout;	/* relative value */
 	PRIntervalTime	absolute;
 #ifdef OPT_WINNT
-	NT_notifier		nt_notifier;	
+	NT_notifier		nt_notifier;
 #endif
 };
 
@@ -148,7 +148,7 @@ static void notify_timerq(PRThreadPool *tp);
  *	tp->ioq.lock,tp->timerq.lock
  *			|
  *			V
- *		tp->jobq->lock		
+ *		tp->jobq->lock
  */
 
 /*
@@ -174,7 +174,7 @@ PRCList *head;
 		PR_Unlock(tp->jobq.lock);
 		rv = GetQueuedCompletionStatus(tp->jobq.nt_completion_port,
 					&unused, &shutdown, &olp, INFINITE);
-		
+
 		PR_ASSERT(rv);
 		if (shutdown)
 			break;
@@ -190,7 +190,7 @@ PRCList *head;
 			tp->idle_threads++;
 			PR_WaitCondVar(tp->jobq.cv, PR_INTERVAL_NO_TIMEOUT);
 			tp->idle_threads--;
-		}	
+		}
 		if (tp->shutdown) {
 			PR_Unlock(tp->jobq.lock);
 			break;
@@ -396,8 +396,8 @@ PRIntervalTime now;
 
 			for(index = 1; index < (pollfds_used); index++) {
                 PRInt16 events = pollfds[index].in_flags;
-                PRInt16 revents = pollfds[index].out_flags;	
-				jobp = polljobs[index];	
+                PRInt16 revents = pollfds[index].out_flags;
+				jobp = polljobs[index];
 
                 if ((revents & PR_POLL_NVAL) ||  /* busted in all cases */
                 	(revents & PR_POLL_ERR) ||
@@ -419,7 +419,7 @@ PRIntervalTime now;
 						jobp->iod->error = PR_BAD_DESCRIPTOR_ERROR;
                     else if (PR_POLL_HUP & revents)
 						jobp->iod->error = PR_CONNECT_RESET_ERROR;
-                    else 
+                    else
 						jobp->iod->error = PR_IO_ERROR;
 
 					/*
@@ -518,7 +518,7 @@ PRIntervalTime now;
 		/*
 		 * move expired-timer jobs to jobq
 		 */
-		now = PR_IntervalNow();	
+		now = PR_IntervalNow();
 		while (!PR_CLIST_IS_EMPTY(&tp->timerq.list)) {
 			qp = tp->timerq.list.next;
 			jobp = JOB_LINKS_PTR(qp);
@@ -704,7 +704,7 @@ alloc_job(PRBool joinable, PRThreadPool *tp)
 	PRJob *jobp;
 
 	jobp = PR_NEWZAP(PRJob);
-	if (NULL == jobp) 
+	if (NULL == jobp)
 		goto failed;
 	if (joinable) {
 		jobp->join_cv = PR_NewCondVar(tp->join_lock);

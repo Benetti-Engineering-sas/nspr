@@ -86,7 +86,7 @@ _PR_MD_WAIT(PRThread *thread, PRIntervalTime ticks)
     PRUint32 msecs = (ticks == PR_INTERVAL_NO_TIMEOUT) ?
         INFINITE : PR_IntervalToMilliseconds(ticks);
     rv = WaitForSingleObject(thread->md.blocked_sema, msecs);
-    switch(rv) 
+    switch(rv)
     {
         case WAIT_OBJECT_0:
             return PR_SUCCESS;
@@ -116,7 +116,7 @@ _PR_MD_WAIT(PRThread *thread, PRIntervalTime ticks)
 PRStatus
 _PR_MD_WAKEUP_WAITER(PRThread *thread)
 {
-    if ( _PR_IS_NATIVE_THREAD(thread) ) 
+    if ( _PR_IS_NATIVE_THREAD(thread) )
     {
         if (ReleaseSemaphore(thread->md.blocked_sema, 1, NULL) == FALSE)
             return PR_FAILURE;
@@ -135,7 +135,7 @@ _PR_MD_WAKEUP_WAITER(PRThread *thread)
  *  The NSPR open flags (osflags) are translated into flags for Win95
  *
  *  Mode seems to be passed in as a unix style file permissions argument
- *  as in 0666, in the case of opening the logFile. 
+ *  as in 0666, in the case of opening the logFile.
  *
  */
 PROsfd
@@ -145,9 +145,9 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, int mode)
     PRInt32 access = 0;
     PRInt32 flags = 0;
     PRInt32 flag6 = 0;
-    
+
     if (osflags & PR_SYNC) flag6 = FILE_FLAG_WRITE_THROUGH;
- 
+
     if (osflags & PR_RDONLY || osflags & PR_RDWR)
         access |= GENERIC_READ;
     if (osflags & PR_WRONLY || osflags & PR_RDWR)
@@ -176,7 +176,7 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, int mode)
                        NULL);
     if (file == INVALID_HANDLE_VALUE) {
 		_PR_MD_MAP_OPEN_ERROR(GetLastError());
-        return -1; 
+        return -1;
 	}
 
     return (PROsfd)file;
@@ -203,9 +203,9 @@ _PR_MD_OPEN_FILE(const char *name, PRIntn osflags, int mode)
             lpSA = &sa;
         }
     }
-    
+
     if (osflags & PR_SYNC) flag6 = FILE_FLAG_WRITE_THROUGH;
- 
+
     if (osflags & PR_RDONLY || osflags & PR_RDWR)
         access |= GENERIC_READ;
     if (osflags & PR_WRONLY || osflags & PR_RDWR)
@@ -237,7 +237,7 @@ _PR_MD_OPEN_FILE(const char *name, PRIntn osflags, int mode)
     }
     if (file == INVALID_HANDLE_VALUE) {
 		_PR_MD_MAP_OPEN_ERROR(GetLastError());
-        return -1; 
+        return -1;
 	}
 
     return (PROsfd)file;
@@ -254,8 +254,8 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
             len,
             &bytes,
             NULL);
-    
-    if (rv == 0) 
+
+    if (rv == 0)
     {
         err = GetLastError();
         /* ERROR_HANDLE_EOF can only be returned by async io */
@@ -276,14 +276,14 @@ _PR_MD_WRITE(PRFileDesc *fd, const void *buf, PRInt32 len)
     PROsfd f = fd->secret->md.osfd;
     PRInt32 bytes;
     int rv;
-    
+
     rv = WriteFile((HANDLE)f,
             buf,
             len,
             &bytes,
             NULL );
-            
-    if (rv == 0) 
+
+    if (rv == 0)
     {
 		_PR_MD_MAP_WRITE_ERROR(GetLastError());
         return -1;
@@ -399,7 +399,7 @@ PRInt32
 _MD_CloseFile(PROsfd osfd)
 {
     PRInt32 rv;
-    
+
     rv = (CloseHandle((HANDLE)osfd))?0:-1;
 	if (rv == -1)
 		_PR_MD_MAP_CLOSE_ERROR(GetLastError());
@@ -723,7 +723,7 @@ _PR_MD_GETFILEINFO64(const char *fn, PRFileInfo64 *info)
 {
     WIN32_FILE_ATTRIBUTE_DATA findFileData;
     BOOL rv;
-    
+
     if (NULL == fn || '\0' == *fn) {
         PR_SetError(PR_INVALID_ARGUMENT_ERROR, 0);
         return -1;
@@ -832,7 +832,7 @@ _PR_MD_SET_FD_INHERITABLE(PRFileDesc *fd, PRBool inheritable)
         return PR_FAILURE;
     }
     return PR_SUCCESS;
-} 
+}
 
 void
 _PR_MD_INIT_FD_INHERITABLE(PRFileDesc *fd, PRBool imported)
@@ -953,7 +953,7 @@ _PR_MD_LOCKFILE(PROsfd f)
 
 	rv = LockFile( (HANDLE)f,
 		0l, 0l,
-		0x0l, 0xffffffffl ); 
+		0x0l, 0xffffffffl );
 	if ( rv == 0 ) {
         DWORD err = GetLastError();
         _PR_MD_MAP_DEFAULT_ERROR(err);
@@ -977,11 +977,11 @@ PRStatus
 _PR_MD_UNLOCKFILE(PROsfd f)
 {
 	PRInt32   rv;
-    
+
     rv = UnlockFile( (HANDLE) f,
     		0l, 0l,
-            0x0l, 0xffffffffl ); 
-            
+            0x0l, 0xffffffffl );
+
     if ( rv )
     {
     	return PR_SUCCESS;
@@ -1059,7 +1059,7 @@ _PR_MD_OPEN_FILE_UTF16(const PRUnichar *name, PRIntn osflags, int mode)
         access |= GENERIC_READ;
     if (osflags & PR_WRONLY || osflags & PR_RDWR)
         access |= GENERIC_WRITE;
- 
+
     if ( osflags & PR_CREATE_FILE && osflags & PR_EXCL )
         flags = CREATE_NEW;
     else if (osflags & PR_CREATE_FILE) {
@@ -1088,10 +1088,10 @@ _PR_MD_OPEN_FILE_UTF16(const PRUnichar *name, PRIntn osflags, int mode)
         _PR_MD_MAP_OPEN_ERROR(GetLastError());
         return -1;
     }
- 
+
     return (PROsfd)file;
 }
- 
+
 PRStatus
 _PR_MD_OPEN_DIR_UTF16(_MDDirUTF16 *d, const PRUnichar *name)
 {
@@ -1164,7 +1164,7 @@ _PR_MD_READ_DIR_UTF16(_MDDirUTF16 *d, PRIntn flags)
     PR_SetError(PR_INVALID_ARGUMENT_ERROR, 0);
     return NULL;
 }
- 
+
 PRInt32
 _PR_MD_CLOSE_DIR_UTF16(_MDDirUTF16 *d)
 {
@@ -1312,7 +1312,7 @@ _PR_MD_GETFILEINFO64_UTF16(const PRUnichar *fn, PRFileInfo64 *info)
         if (NULL == wcspbrk(fn, L".\\/")) {
             _PR_MD_MAP_OPENDIR_ERROR(GetLastError());
             return -1;
-        } 
+        }
         len = getFullPathNameW(fn, sizeof(pathbuf)/sizeof(pathbuf[0]), pathbuf,
                 &filePart);
         if (0 == len) {

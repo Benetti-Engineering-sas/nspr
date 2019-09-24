@@ -14,7 +14,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,7 +135,7 @@ t2
         l++;
 
         n = get_node(buffer);
-        if( (node_pt)0 == n ) 
+        if( (node_pt)0 == n )
         {
             printf("[%s]: Line %d: malloc failure!\n", name, l);
             continue;
@@ -268,15 +268,15 @@ int main(int argc, char **argv)
                 struct threadlist *n;
 
                 n = (struct threadlist *)malloc(sizeof(struct threadlist));
-                if( (struct threadlist *)0 == n ) 
+                if( (struct threadlist *)0 == n )
                 {
                     fprintf(stderr, "This is getting tedious. \"%s\"\n", *argv);
                     continue;
                 }
 
                 n->next = threadhead;
-                n->thread = PR_CreateThread(PR_USER_THREAD, (void (*)(void *))test, 
-                                            *argv, PR_PRIORITY_NORMAL, 
+                n->thread = PR_CreateThread(PR_USER_THREAD, (void (*)(void *))test,
+                                            *argv, PR_PRIORITY_NORMAL,
                                             PR_LOCAL_THREAD, PR_JOINABLE_THREAD,
                                             0);
                 if( (PRThread *)0 == n->thread )

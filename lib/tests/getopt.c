@@ -21,7 +21,7 @@ static const PLLongOpt optArray[] = {
 };
 
 int
-main(int argc, char **argv) 
+main(int argc, char **argv)
 {
     PLOptState *opt;
     PLOptStatus ostat;
@@ -29,7 +29,7 @@ main(int argc, char **argv)
     opt = PL_CreateLongOptState(argc, argv, "a:b:c", optArray);
 
     while (PL_OPT_OK == (ostat = PL_GetNextOpt(opt))) {
-	if (opt->option == 0 && opt->longOptIndex < 0) 
+	if (opt->option == 0 && opt->longOptIndex < 0)
 	    printf("Positional parameter: \"%s\"\n", opt->value);
 	else
 	    printf("%s option: %x (\'%c\', index %d), argument: \"%s\"\n",

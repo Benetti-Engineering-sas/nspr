@@ -12,19 +12,19 @@
 #include "primpl.h"
 
 
-void 
+void
 _PR_MD_NEW_SEM(_MDSemaphore *md, PRUintn value)
 {
     md->sem = CreateSemaphore(NULL, value, 0x7fffffff, NULL);
 }
 
-void 
+void
 _PR_MD_DESTROY_SEM(_MDSemaphore *md)
 {
     CloseHandle(md->sem);
 }
 
-PRStatus 
+PRStatus
 _PR_MD_TIMED_WAIT_SEM(_MDSemaphore *md, PRIntervalTime ticks)
 {
     int rv;
@@ -37,13 +37,13 @@ _PR_MD_TIMED_WAIT_SEM(_MDSemaphore *md, PRIntervalTime ticks)
         return PR_FAILURE;
 }
 
-PRStatus 
+PRStatus
 _PR_MD_WAIT_SEM(_MDSemaphore *md)
 {
     return _PR_MD_TIMED_WAIT_SEM(md, PR_INTERVAL_NO_TIMEOUT);
 }
 
-void 
+void
 _PR_MD_POST_SEM(_MDSemaphore *md)
 {
     ReleaseSemaphore(md->sem, 1, NULL);

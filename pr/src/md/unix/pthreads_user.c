@@ -68,7 +68,7 @@ PR_IMPLEMENT(void) _MD_FREE_LOCK(struct _MDLock *lockp)
 	PRThread *me = _PR_MD_CURRENT_THREAD();
 
 	if (me && !_PR_IS_NATIVE_THREAD(me))
-		_PR_INTSOFF(_is); 
+		_PR_INTSOFF(_is);
 	pthread_mutex_destroy(&lockp->mutex);
 	if (me && !_PR_IS_NATIVE_THREAD(me))
 		_PR_FAST_INTSON(_is);
@@ -80,7 +80,7 @@ PR_IMPLEMENT(PRStatus) _MD_NEW_LOCK(struct _MDLock *lockp)
 {
     PRStatus rv;
     PRIntn is;
-    PRThread *me = _PR_MD_CURRENT_THREAD();	
+    PRThread *me = _PR_MD_CURRENT_THREAD();
 
 	if (me && !_PR_IS_NATIVE_THREAD(me))
 		_PR_INTSOFF(is);
@@ -317,7 +317,7 @@ _MD_WakeupWaiter(PRThread *thread)
 
 		if (!_PR_IS_NATIVE_THREAD(me))
 			_PR_FAST_INTSON(is);
-    } 
+    }
     return PR_SUCCESS;
 }
 
@@ -339,7 +339,7 @@ _MD_CreateThread(
 {
     PRIntn is;
     int rv;
-	PRThread *me = _PR_MD_CURRENT_THREAD();	
+	PRThread *me = _PR_MD_CURRENT_THREAD();
 	pthread_attr_t attr;
 
 	if (!_PR_IS_NATIVE_THREAD(me))
@@ -437,7 +437,7 @@ _MD_CleanupBeforeExit(void)
         	thread = _PR_THREAD_PTR(ptr);
 		_MD_CVAR_POST_SEM(thread);
                 ptr = ptr->next;
-        } 
+        }
      }
      _PR_DEADQ_UNLOCK;
      while(_PR_NUM_DEADNATIVE > 1) {

@@ -7,17 +7,17 @@
 
 #if defined(WIN95)
 /*
-** Some local variables report warnings on Win95 because the code paths 
+** Some local variables report warnings on Win95 because the code paths
 ** using them are conditioned on HAVE_CUSTOME_USER_THREADS.
 ** The pragma suppresses the warning.
-** 
+**
 */
 #pragma warning(disable : 4101)
 #endif
 
 
 extern PRLock *_pr_sleeplock;  /* allocated and initialized in prinit */
-/* 
+/*
 ** Routines common to both native and user threads.
 **
 **
@@ -188,7 +188,7 @@ PR_IMPLEMENT(PRStatus) PR_Interrupt(PRThread *thread)
                         /*
                          * Need to hold the thread lock when calling
                          * _PR_Unblock_IO_Wait().  On return lock is
-                         * released. 
+                         * released.
                          */
 #if defined(XP_UNIX) || defined(WINNT) || defined(WIN16)
 						if (!(thread->flags & _PR_INTERRUPT_BLOCKED))
@@ -326,7 +326,7 @@ PR_IMPLEMENT(PRThread*) PR_CreateThreadGCAble(PRThreadType type,
                                      PRThreadState state,
                                      PRUint32 stackSize)
 {
-    return _PR_CreateThread(type, start, arg, priority, scope, state, 
+    return _PR_CreateThread(type, start, arg, priority, scope, state,
                             stackSize, _PR_GCABLE_THREAD);
 }
 
@@ -339,7 +339,7 @@ PR_IMPLEMENT(PRThread*) PR_CreateThreadBound(PRThreadType type,
                                      PRThreadState state,
                                      PRUint32 stackSize)
 {
-    return _PR_CreateThread(type, start, arg, priority, scope, state, 
+    return _PR_CreateThread(type, start, arg, priority, scope, state,
                             stackSize, _PR_BOUND_THREAD);
 }
 #endif
@@ -358,7 +358,7 @@ PR_IMPLEMENT(void) PR_SetThreadGCAble()
     if (!_pr_initialized) _PR_ImplicitInitialization();
     PR_Lock(_pr_activeLock);
         _PR_MD_CURRENT_THREAD()->flags |= _PR_GCABLE_THREAD;
-        PR_Unlock(_pr_activeLock);        
+        PR_Unlock(_pr_activeLock);
 }
 
 PR_IMPLEMENT(void) PR_ClearThreadGCAble()

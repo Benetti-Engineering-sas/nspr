@@ -23,7 +23,7 @@
  *             The debug mode will print all of the printfs associated with this test.
  *             The regress mode will be the default mode. Since the regress tool limits
  *           the output to a one line status:PASS or FAIL,all of the printf statements
- *             have been handled with an if (debug_mode) statement. 
+ *             have been handled with an if (debug_mode) statement.
  */
 
 #include "prclist.h"
@@ -228,7 +228,7 @@ static void PR_CALLBACK Client(void *arg)
         PRInt32 bytes, descbytes, filebytes, netbytes;
 
         (void)PR_NetAddrToString(&client->serverAddress, buffer, sizeof(buffer));
-        TEST_LOG(cltsrv_log_file, TEST_LOG_INFO, 
+        TEST_LOG(cltsrv_log_file, TEST_LOG_INFO,
             ("\tClient(0x%p): connecting to server at %s\n", me, buffer));
 
         fd = PR_Socket(domain, SOCK_STREAM, protocol);
@@ -405,7 +405,7 @@ static PRStatus ProcessRequest(PRFileDesc *fd, CSServer_t *server)
     TEST_ASSERT(sizeof(*descriptor) == bytes);
 
     TEST_LOG(
-        cltsrv_log_file, TEST_LOG_VERBOSE, 
+        cltsrv_log_file, TEST_LOG_VERBOSE,
         ("\t\tProcessRequest(0x%p): read descriptor {%d, %s}\n",
         me, descbytes, descriptor->filename));
 
@@ -569,7 +569,7 @@ static PRStatus ProcessRequest(PRFileDesc *fd, CSServer_t *server)
         }
        TEST_ASSERT(bytes > 0);
     }
-    
+
     PR_Lock(server->ml);
     server->bytesTransferred += filebytes;
     PR_Unlock(server->ml);
@@ -615,7 +615,7 @@ static PRStatus CreateWorker(CSServer_t *server, CSPool_t *pool)
         return PR_FAILURE;
     }
 
-    TEST_LOG(cltsrv_log_file, TEST_LOG_STATUS, 
+    TEST_LOG(cltsrv_log_file, TEST_LOG_STATUS,
         ("\tCreateWorker(0x%p): create new worker (0x%p)\n",
         PR_GetCurrentThread(), worker->thread));
 
@@ -657,7 +657,7 @@ static void PR_CALLBACK Worker(void *arg)
                     me, (Aborted(rv) ? "interrupted" : "stopped")));
                 goto exit;
             }
-        } 
+        }
         pool->accepting += 1;  /* how many are really in accept */
         PR_Unlock(server->ml);
 
@@ -666,7 +666,7 @@ static void PR_CALLBACK Worker(void *arg)
             ("\t\tWorker(0x%p): calling accept\n", me));
         fd = PR_Accept(server->listener, &from, PR_INTERVAL_NO_TIMEOUT);
 
-        PR_Lock(server->ml);        
+        PR_Lock(server->ml);
         pool->accepting -= 1;
         PR_NotifyCondVar(pool->acceptComplete);
 
@@ -713,7 +713,7 @@ static void PR_CALLBACK Worker(void *arg)
     }
 
 exit:
-    PR_ClearInterrupt();    
+    PR_ClearInterrupt();
     PR_Unlock(server->ml);
 
     if (NULL != fd)
@@ -848,7 +848,7 @@ static void PR_CALLBACK Server(void *arg)
 static void WaitForCompletion(PRIntn execution)
 {
     while (execution > 0)
-    { 
+    {
         PRIntn dally = (execution > 30) ? 30 : execution;
         PR_Sleep(PR_SecondsToInterval(dally));
         if (pthread_stats) PT_FPrintStats(debug_out, "\nPThread Statistics\n");
@@ -1053,7 +1053,7 @@ int main(int argc, char** argv)
             cltsrv_log_file, TEST_LOG_VERBOSE,
             ("main(0x%p): creating %d client threads\n",
             PR_GetCurrentThread(), clients));
-        
+
         if (!serverIsLocal)
         {
             rv = PR_GetHostByName(serverName, buffer, BUFFER_SIZE, &host);
@@ -1112,7 +1112,7 @@ int main(int argc, char** argv)
     {
         for (index = 0; index < clients; ++index)
         {
-            TEST_LOG(cltsrv_log_file, TEST_LOG_STATUS, 
+            TEST_LOG(cltsrv_log_file, TEST_LOG_STATUS,
                 ("main(0x%p): notifying client(0x%p) to stop\n",
                 PR_GetCurrentThread(), client[index].thread));
 
@@ -1127,7 +1127,7 @@ int main(int argc, char** argv)
             }
             PR_Unlock(client[index].ml);
 
-            TEST_LOG(cltsrv_log_file, TEST_LOG_VERBOSE, 
+            TEST_LOG(cltsrv_log_file, TEST_LOG_VERBOSE,
                 ("main(0x%p): joining client(0x%p)\n",
                 PR_GetCurrentThread(), client[index].thread));
 
@@ -1143,7 +1143,7 @@ int main(int argc, char** argv)
     {
         /* All clients joined - retrieve the server */
         TEST_LOG(
-            cltsrv_log_file, TEST_LOG_NOTICE, 
+            cltsrv_log_file, TEST_LOG_NOTICE,
             ("main(0x%p): notifying server(0x%p) to stop\n",
             PR_GetCurrentThread(), server->thread));
 
@@ -1155,7 +1155,7 @@ int main(int argc, char** argv)
         PR_Unlock(server->ml);
 
         TEST_LOG(
-            cltsrv_log_file, TEST_LOG_NOTICE, 
+            cltsrv_log_file, TEST_LOG_NOTICE,
             ("main(0x%p): joining server(0x%p)\n",
             PR_GetCurrentThread(), server->thread));
         joinStatus = PR_JoinThread(server->thread);
@@ -1169,7 +1169,7 @@ int main(int argc, char** argv)
     }
 
     TEST_LOG(
-        cltsrv_log_file, TEST_LOG_ALWAYS, 
+        cltsrv_log_file, TEST_LOG_ALWAYS,
         ("main(0x%p): test complete\n", PR_GetCurrentThread()));
 
     PT_FPrintStats(debug_out, "\nPThread Statistics\n");

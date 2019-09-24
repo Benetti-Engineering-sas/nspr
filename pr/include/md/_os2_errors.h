@@ -9,7 +9,7 @@
 #include "md/_os2.h"
 #ifndef assert
   #include <assert.h>
-#endif  
+#endif
 
 NSPR_API(void) _MD_os2_map_default_error(PRInt32 err);
 #define	_PR_MD_MAP_DEFAULT_ERROR	_MD_os2_map_default_error

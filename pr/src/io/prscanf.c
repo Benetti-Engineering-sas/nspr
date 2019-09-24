@@ -30,7 +30,7 @@ typedef int (*_PRGetCharFN)(void *stream);
 /*
  * A function that pushes the character 'ch' back to 'stream'.
  */
-typedef void (*_PRUngetCharFN)(void *stream, int ch); 
+typedef void (*_PRUngetCharFN)(void *stream, int ch);
 
 /*
  * The size specifier for the integer and floating point number
@@ -89,7 +89,7 @@ typedef struct {
  *     'str' is assumed to be a representation of the integer in
  *     base 'base'.
  *
- * Warning: 
+ * Warning:
  *     - Only handle base 8, 10, and 16.
  *     - No overflow checking.
  */
@@ -139,7 +139,7 @@ _pr_strtoull(const char *str, char **endptr, int base)
             cPtr += 2;
         } else {
             base = 8;
-        } 
+        }
     }
     PR_ASSERT(base != 0);
     LL_I2L(base64, base);
@@ -500,7 +500,7 @@ Convert(ScanfState *state, const char *fmt)
                 }
                 for (; state->width > 0; state->width--) {
                     ch = GET(state);
-                    if ((ch == EOF) 
+                    if ((ch == EOF)
                             || (!complement && !memchr(cPtr, ch, n))
                             || (complement && memchr(cPtr, ch, n))) {
                         UNGET(state, ch);

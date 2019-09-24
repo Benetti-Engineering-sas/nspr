@@ -5,7 +5,7 @@
 
 /*
 ** File: anonfm.c
-** Description: Test anonymous file map 
+** Description: Test anonymous file map
 **
 ** Synopsis: anonfm [options] [dirName]
 **
@@ -13,7 +13,7 @@
 ** -d   enable debug mode
 ** -h   display a help message
 ** -s <n>  size of the anonymous memory map, in KBytes. default: 100KBytes.
-** -C 1 Operate this process as ClientOne() 
+** -C 1 Operate this process as ClientOne()
 ** -C 2 Operate this process as ClientTwo()
 **
 ** anonfn.c contains two tests, corresponding to the two protocols for
@@ -28,8 +28,8 @@
 ** PRProcessAttr structure.
 **
 */
-#include <plgetopt.h> 
-#include <nspr.h> 
+#include <plgetopt.h>
+#include <nspr.h>
 #include <private/primpl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,10 +74,10 @@ static void ClientOne( void )
 
     PR_LOG(lm, msgLevel,
         ("ClientOne() starting"));
-    
+
     fmString = PR_GetEnv( fmEnvName );
     if ( NULL == fmString ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
                 ("ClientOne(): PR_Getenv() failed"));
         return;
@@ -87,7 +87,7 @@ static void ClientOne( void )
 
     fm = PR_ImportFileMapFromString( fmString );
     if ( NULL == fm ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
                 ("ClientOne(): PR_ImportFileMapFromString() failed"));
         return;
@@ -97,7 +97,7 @@ static void ClientOne( void )
 
     addr = PR_MemMap( fm, LL_ZERO, fmSize );
     if ( NULL == addr ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("ClientOne(): PR_MemMap() failed, OSError: %d", PR_GetOSError() ));
         return;
@@ -115,7 +115,7 @@ static void ClientOne( void )
 
     rc = PR_CloseFileMap( fm );
     if ( PR_FAILURE == rc ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("ClientOne(): PR_MemUnap() failed, OSError: %d", PR_GetOSError() ));
         return;
@@ -151,20 +151,20 @@ static void ServerOne( void )
 
     PR_LOG(lm, msgLevel,
         ("ServerOne() starting"));
-    
+
     fm = PR_OpenAnonFileMap( dirName, fmSize, fmProt );
     if ( NULL == fm )      {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
                 ("PR_OpenAnonFileMap() failed"));
         return;
     }
     PR_LOG(lm, msgLevel,
         ("ServerOne(): FileMap: %p", fm ));
-    
+
     rc = PR_ExportFileMapAsString( fm, sizeof(fmString), fmString );
     if ( PR_FAILURE == rc )  {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("PR_ExportFileMap() failed"));
         return;
@@ -175,10 +175,10 @@ static void ServerOne( void )
     */
     PR_snprintf( envBuf, sizeof(envBuf), "%s=%s", fmEnvName, fmString);
     putenv( envBuf );
-    
+
     addr = PR_MemMap( fm, LL_ZERO, fmSize );
     if ( NULL == addr ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("PR_MemMap() failed"));
         return;
@@ -186,11 +186,11 @@ static void ServerOne( void )
 
     /* set initial value for client */
     for (i = 0; i < (PRIntn)fmSize ; i++ )
-        *(addr+i) = 0x00;  
+        *(addr+i) = 0x00;
 
     PR_LOG(lm, msgLevel,
         ("ServerOne(): PR_MemMap(): addr: %p", addr ));
-    
+
     /*
     ** set arguments for child process
     */
@@ -224,7 +224,7 @@ static void ServerOne( void )
 
     rc = PR_MemUnmap( addr, fmSize);
     if ( PR_FAILURE == rc ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("PR_MemUnmap() failed"));
         return;
@@ -234,7 +234,7 @@ static void ServerOne( void )
 
     rc = PR_CloseFileMap(fm);
     if ( PR_FAILURE == rc ) {
-        failed_already = 1;    
+        failed_already = 1;
         PR_LOG(lm, msgLevel,
             ("PR_CloseFileMap() failed"));
         return;

@@ -89,7 +89,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_GetSpecialFD(PRSpecialFD osfd)
     PR_ASSERT((int) osfd >= PR_StandardInput && osfd <= PR_StandardError);
 
     if (!_pr_initialized) _PR_ImplicitInitialization();
-    
+
     switch (osfd)
     {
         case PR_StandardInput: result = _pr_stdin; break;

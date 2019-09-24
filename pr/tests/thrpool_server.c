@@ -66,7 +66,7 @@ char *getcwd(char *buf, size_t size)
     _wgetcwd(wpath, MAX_PATH);
     WideCharToMultiByte(CP_ACP, 0, wpath, -1, buf, size, 0, 0);
 }
- 
+
 #define perror(s)
 #endif
 
@@ -384,7 +384,7 @@ TCP_Server(void *arg)
 			argv[index++] = NULL;
 		}
 		PR_ASSERT(MAX_ARGS >= (index - 1));
-        
+
         DPRINTF(("creating client process %s ...\n", path));
         if (PR_FAILURE == PR_CreateProcessDetached(path, argv, NULL, NULL)) {
         	fprintf(stderr,
@@ -557,7 +557,7 @@ int main(int argc, char **argv)
         goto done;
 	}
 	jobp = PR_QueueJob(tp, TCP_Server, tp, PR_TRUE);
-	rv = PR_JoinJob(jobp);		
+	rv = PR_JoinJob(jobp);
 	PR_ASSERT(PR_SUCCESS == rv);
 
 	DPRINTF(("%s: calling PR_JoinThreadPool\n", program_name));

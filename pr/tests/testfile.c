@@ -137,14 +137,14 @@ PRInt32 native_thread = 0;
 #else
 		HANDLE thandle;
 		unsigned tid;
-		
+
 		thandle = (HANDLE) _beginthreadex(
 						NULL,
 						stackSize,
 						(unsigned (__stdcall *)(void *))start,
 						arg,
 						STACK_SIZE_PARAM_IS_A_RESERVATION,
-						&tid);		
+						&tid);
 		return((PRThread *) thandle);
 #endif
 	} else {
@@ -167,7 +167,7 @@ int offset, len;
 	buf = fp->buf;
 	offset = fp->offset;
 	len = fp->len;
-	
+
 	fd_file = PR_Open(name, PR_RDWR | PR_CREATE_FILE, 0777);
 	if (fd_file == NULL) {
 		printf("testfile failed to create/open file %s\n",name);
@@ -176,11 +176,11 @@ int offset, len;
 	if (PR_Seek(fd_file, offset, PR_SEEK_SET) < 0) {
 		printf("testfile failed to seek in file %s\n",name);
 		return;
-	}	
+	}
 	if ((PR_Write(fd_file, buf, len)) < 0) {
 		printf("testfile failed to write to file %s\n",name);
 		return;
-	}	
+	}
 	DPRINTF(("Write out_buf[0] = 0x%x\n",(*((int *) buf))));
 	PR_Close(fd_file);
 	PR_DELETE(fp);
@@ -203,7 +203,7 @@ int offset, len;
 	buf = fp->buf;
 	offset = fp->offset;
 	len = fp->len;
-	
+
 	fd_file = PR_Open(name, PR_RDONLY, 0);
 	if (fd_file == NULL) {
 		printf("testfile failed to open file %s\n",name);
@@ -212,11 +212,11 @@ int offset, len;
 	if (PR_Seek(fd_file, offset, PR_SEEK_SET) < 0) {
 		printf("testfile failed to seek in file %s\n",name);
 		return;
-	}	
+	}
 	if ((PR_Read(fd_file, buf, len)) < 0) {
 		printf("testfile failed to read to file %s\n",name);
 		return;
-	}	
+	}
 	DPRINTF(("Read in_buf[0] = 0x%x\n",(*((int *) buf))));
 	PR_Close(fd_file);
 	PR_DELETE(fp);
@@ -353,7 +353,7 @@ char tmpname[1024];
 		rv = -1;
 		goto cleanup;
 	}
-	
+
 	PR_Seek(fd_file, 0, PR_SEEK_SET);
 	len = PR_Available(fd_file);
 	if (len < 0) {
@@ -417,7 +417,7 @@ File_Rdwr_Param *fparamp;
 	if (fd_dir == NULL) {
 		printf("testfile failed to open dir %s\n",TEST_DIR);
 		rv =  -1;
-		goto cleanup;	
+		goto cleanup;
 	}
 
     PR_CloseDir(fd_dir);
@@ -431,14 +431,14 @@ File_Rdwr_Param *fparamp;
 		printf(
 		"testfile failed to alloc buffer struct\n");
 		rv =  -1;
-		goto cleanup;	
+		goto cleanup;
 	}
 	out_buf = PR_NEW(buffer);
 	if (out_buf == NULL) {
 		printf(
 		"testfile failed to alloc buffer struct\n");
 		rv =  -1;
-		goto cleanup;	
+		goto cleanup;
 	}
 
 	/*
@@ -453,7 +453,7 @@ File_Rdwr_Param *fparamp;
 			printf(
 			"testfile failed to alloc File_Rdwr_Param struct\n");
 			rv =  -1;
-			goto cleanup;	
+			goto cleanup;
 		}
 		fparamp->pathname = pathname;
 		fparamp->buf = out_buf->data + offset;
@@ -462,7 +462,7 @@ File_Rdwr_Param *fparamp;
 		memset(fparamp->buf, i, len);
 
 		t = create_new_thread(PR_USER_THREAD,
-			      File_Write, (void *)fparamp, 
+			      File_Write, (void *)fparamp,
 			      PR_PRIORITY_NORMAL,
 			      scope,
 			      PR_UNJOINABLE_THREAD,
@@ -489,7 +489,7 @@ File_Rdwr_Param *fparamp;
 			printf(
 			"testfile failed to alloc File_Rdwr_Param struct\n");
 			rv =  -1;
-			goto cleanup;	
+			goto cleanup;
 		}
 		fparamp->pathname = pathname;
 		fparamp->buf = in_buf->data + offset;
@@ -497,7 +497,7 @@ File_Rdwr_Param *fparamp;
 		fparamp->len = len;
 
 		t = create_new_thread(PR_USER_THREAD,
-			      File_Read, (void *)fparamp, 
+			      File_Read, (void *)fparamp,
 			      PR_PRIORITY_NORMAL,
 			      scope,
 			      PR_UNJOINABLE_THREAD,
@@ -517,13 +517,13 @@ File_Rdwr_Param *fparamp;
 	if (memcmp(in_buf->data, out_buf->data, offset) != 0) {
 		printf("File Test failed: file data corrupted\n");
 		rv =  -1;
-		goto cleanup;	
+		goto cleanup;
 	}
 
 	if ((PR_Delete(pathname)) < 0) {
 		printf("testfile failed to unlink file %s\n",pathname);
 		rv =  -1;
-		goto cleanup;	
+		goto cleanup;
 	}
 
 	/*
@@ -565,7 +565,7 @@ struct dirtest_arg thrarg;
 
 		thrarg.done= 0;
 		t = create_new_thread(PR_USER_THREAD,
-			      DirTest, &thrarg, 
+			      DirTest, &thrarg,
 			      PR_PRIORITY_NORMAL,
 			      PR_LOCAL_THREAD,
 			      PR_UNJOINABLE_THREAD,
@@ -623,7 +623,7 @@ HANDLE hfile;
 	strcat(pathname, "/");
 	strcat(pathname, FILE_NAME);
 	path_len = strlen(pathname);
-	
+
 	for (i = 0; i < FILES_IN_DIR; i++) {
 
 		sprintf(pathname + path_len,"%d%s",i,"");
@@ -662,7 +662,7 @@ HANDLE hfile;
 
 #elif defined(WINCE)
 	DPRINTF(("Creating hidden test file %s\n",pathname));
-    MultiByteToWideChar(CP_ACP, 0, pathname, -1, wPathname, 256); 
+    MultiByteToWideChar(CP_ACP, 0, pathname, -1, wPathname, 256);
 	hfile = CreateFile(wPathname, GENERIC_READ,
 						FILE_SHARE_READ|FILE_SHARE_WRITE,
 						NULL,
@@ -675,7 +675,7 @@ HANDLE hfile;
 		return -1;
 	}
 	CloseHandle(hfile);
-						
+
 #elif defined(XP_PC) && defined(WIN32)
 	DPRINTF(("Creating hidden test file %s\n",pathname));
 	hfile = CreateFile(pathname, GENERIC_READ,
@@ -690,7 +690,7 @@ HANDLE hfile;
 		return -1;
 	}
 	CloseHandle(hfile);
-						
+
 #elif defined(OS2)
 	DPRINTF(("Creating hidden test file %s\n",pathname));
 	fd_file = PR_Open(pathname, PR_RDWR | PR_CREATE_FILE, (int)FILE_HIDDEN);
@@ -720,7 +720,7 @@ HANDLE hfile;
 			TEST_DIR, PR_GetError(), PR_GetOSError());
 		return -1;
 	}
-  
+
 	/*
 	 * List all files, including hidden files
 	 */
@@ -743,7 +743,7 @@ HANDLE hfile;
 				pathname, PR_GetError(), PR_GetOSError());
 			return -1;
 		}
-		
+
 		if (info.type != PR_FILE_FILE) {
 			printf(
 				"testfile incorrect fileinfo for file %s [%d, %d]\n",
@@ -774,7 +774,7 @@ HANDLE hfile;
 			TEST_DIR, PR_GetError(), PR_GetOSError());
 		return -1;
 	}
-  
+
 	DPRINTF(("Listing non-hidden files in directory %s\n",TEST_DIR));
 	while ((dirEntry = PR_ReadDir(fd_dir, PR_SKIP_HIDDEN)) != NULL) {
 		DPRINTF(("\t%s\n",dirEntry->name));
@@ -808,7 +808,7 @@ HANDLE hfile;
 			TEST_DIR, PR_GetError(), PR_GetOSError());
 		return -1;
 	}
-    
+
 	if (PR_FAILURE == PR_MkDir(TEST_DIR, 0777)) {
 		printf(
 			"testfile failed to recreate dir %s [%d, %d]\n",
@@ -847,7 +847,7 @@ HANDLE hfile;
 	strcat(pathname, "/");
 	strcat(pathname, FILE_NAME);
 	path_len = strlen(pathname);
-	
+
 	for (i = 0; i < FILES_IN_DIR; i++) {
 
 		sprintf(pathname + path_len,"%d%s",i,"");
@@ -920,7 +920,7 @@ int main(int argc, char **argv)
             /*
              * enough space for prdir
              */
-            WideCharToMultiByte(CP_ACP, 0, tdir, -1, testdir, TMPDIR_LEN, 0, 0); 
+            WideCharToMultiByte(CP_ACP, 0, tdir, -1, testdir, TMPDIR_LEN, 0, 0);
         }
     }
 #else

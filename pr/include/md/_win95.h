@@ -237,12 +237,12 @@ extern PRInt32 _MD_CloseFile(PROsfd osfd);
 #define _MD_GETOPENFILEINFO           _PR_MD_GETOPENFILEINFO
 #define _MD_GETOPENFILEINFO64         _PR_MD_GETOPENFILEINFO64
 #define _MD_STAT                      _PR_MD_STAT
-#define _MD_RENAME                    _PR_MD_RENAME     
-#define _MD_ACCESS                    _PR_MD_ACCESS     
-#define _MD_DELETE                    _PR_MD_DELETE     
-#define _MD_MKDIR                     _PR_MD_MKDIR      
+#define _MD_RENAME                    _PR_MD_RENAME
+#define _MD_ACCESS                    _PR_MD_ACCESS
+#define _MD_DELETE                    _PR_MD_DELETE
+#define _MD_MKDIR                     _PR_MD_MKDIR
 #define _MD_MAKE_DIR                  _PR_MD_MAKE_DIR
-#define _MD_RMDIR                     _PR_MD_RMDIR      
+#define _MD_RMDIR                     _PR_MD_RMDIR
 #define _MD_LOCKFILE                  _PR_MD_LOCKFILE
 #define _MD_TLOCKFILE                 _PR_MD_TLOCKFILE
 #define _MD_UNLOCKFILE                _PR_MD_UNLOCKFILE
@@ -399,13 +399,13 @@ extern PROsfd _MD_Accept(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
 #define _MD_WAIT_CV					  _PR_MD_WAIT_CV
 #define _MD_NEW_CV					  _PR_MD_NEW_CV
 #define _MD_FREE_CV					  _PR_MD_FREE_CV
-#define _MD_NOTIFY_CV				  _PR_MD_NOTIFY_CV	
+#define _MD_NOTIFY_CV				  _PR_MD_NOTIFY_CV
 #define _MD_NOTIFYALL_CV			  _PR_MD_NOTIFYALL_CV
 
    /* XXXMB- the IOQ stuff is certainly not working correctly yet. */
 // extern  struct _MDLock              _pr_ioq_lock;
-#define _MD_IOQ_LOCK()                
-#define _MD_IOQ_UNLOCK()              
+#define _MD_IOQ_LOCK()
+#define _MD_IOQ_UNLOCK()
 
 
 /* --- Initialization stuff --- */
@@ -437,7 +437,7 @@ extern PRStatus _PR_DetachWindowsProcess(struct PRProcess *process);
 
 /* --- Wait for a child process to terminate --- */
 #define _MD_WAIT_PROCESS _PR_WaitWindowsProcess
-extern PRStatus _PR_WaitWindowsProcess(struct PRProcess *process, 
+extern PRStatus _PR_WaitWindowsProcess(struct PRProcess *process,
     PRInt32 *exitCode);
 
 #define _MD_KILL_PROCESS _PR_KillWindowsProcess

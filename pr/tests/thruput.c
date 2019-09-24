@@ -363,11 +363,11 @@ int main(int argc, char **argv)
         (PR_GLOBAL_THREAD == thread_scope) ? "GLOBAL" : "LOCAL");
 
     PR_fprintf(err, "Client buffer size will be %u\n", buffer_size);
-   
+
     if (-1 != xport_buffer)
     PR_fprintf(
         err, "Transport send & receive buffer size will be %u\n", xport_buffer);
-    
+
 
     if (NULL == server_name) Server();
     else Client(server_name);

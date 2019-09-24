@@ -16,10 +16,10 @@
 #include <string.h>
 #endif
 
-PRSize _pr_CopyLowBits( 
-    void *dst, 
-    PRSize dstlen, 
-    void *src, 
+PRSize _pr_CopyLowBits(
+    void *dst,
+    PRSize dstlen,
+    void *src,
     PRSize srclen )
 {
     if (srclen <= dstlen) {
@@ -32,9 +32,9 @@ PRSize _pr_CopyLowBits(
     memcpy(dst, src, dstlen);
 #endif
     return dstlen;
-}    
+}
 
-PR_IMPLEMENT(PRSize) PR_GetRandomNoise( 
+PR_IMPLEMENT(PRSize) PR_GetRandomNoise(
     void    *buf,
     PRSize  size
 )

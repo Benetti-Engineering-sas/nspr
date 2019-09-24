@@ -182,7 +182,7 @@ static void PR_CALLBACK Client(void *arg)
 
     if (verbosity > quiet)
         PR_fprintf(logFile, "Client shutting down stack\n");
-    
+
     rv = PR_Shutdown(stack, PR_SHUTDOWN_BOTH); PR_ASSERT(PR_SUCCESS == rv);
 }  /* Client */
 
@@ -217,7 +217,7 @@ static void PR_CALLBACK Server(void *arg)
         }
     } while (NULL == service);
     PR_ASSERT(NULL != service);
-        
+
     if (verbosity > quiet)
         PR_fprintf(logFile, "Server accepting connection\n");
 

@@ -12,7 +12,7 @@
 **
 ** Modification History:
 ** 04-Jun-97 AGarcia - Reconvert test file to return a 0 for PASS and a 1 for FAIL
-** 13-May-97 AGarcia- Converted the test to accomodate the debug_mode 
+** 13-May-97 AGarcia- Converted the test to accomodate the debug_mode
 **             The debug mode will print all of the printfs associated with this test.
 **             The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
@@ -122,7 +122,7 @@ ClientThread(void *_action)
         if (!sock) {
             if (!debug_mode)
                 failed_already=1;
-            else    
+            else
                 PR_fprintf(output, "client: unable to create socket\n");
             return;
         }
@@ -133,8 +133,8 @@ ClientThread(void *_action)
                 timeoutTime)) < 0) {
                 if (!debug_mode)
                     failed_already=1;
-                else    
-                    PR_fprintf(output, 
+                else
+                    PR_fprintf(output,
                         "client: unable to connect to server (%ld, %ld, %ld, %ld)\n",
                         iterations, rv, PR_GetError(), PR_GetOSError());
                 goto ErrorExit;
@@ -172,7 +172,7 @@ ErrorExit:
 }
 
 
-static void 
+static void
 RunTest(PRInt32 acceptType, PRInt32 clientAction)
 {
 int i;
@@ -353,58 +353,58 @@ int i;
 
 
 void AcceptUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_NORMAL, CLIENT_NORMAL); 
+{
+    RunTest(ACCEPT_NORMAL, CLIENT_NORMAL);
 }
 void AcceptNotUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_FAST, CLIENT_NORMAL); 
+{
+    RunTest(ACCEPT_FAST, CLIENT_NORMAL);
 }
 void AcceptReadTest(void)
-{ 
-    RunTest(ACCEPT_READ, CLIENT_NORMAL); 
+{
+    RunTest(ACCEPT_READ, CLIENT_NORMAL);
 }
 void AcceptReadNotUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_READ_FAST, CLIENT_NORMAL); 
+{
+    RunTest(ACCEPT_READ_FAST, CLIENT_NORMAL);
 }
 void AcceptReadCallbackTest(void)
-{ 
-    RunTest(ACCEPT_READ_FAST_CB, CLIENT_NORMAL); 
+{
+    RunTest(ACCEPT_READ_FAST_CB, CLIENT_NORMAL);
 }
 
 void TimeoutAcceptUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_NORMAL, CLIENT_TIMEOUT_ACCEPT); 
+{
+    RunTest(ACCEPT_NORMAL, CLIENT_TIMEOUT_ACCEPT);
 }
 void TimeoutAcceptNotUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_FAST, CLIENT_TIMEOUT_ACCEPT); 
+{
+    RunTest(ACCEPT_FAST, CLIENT_TIMEOUT_ACCEPT);
 }
 void TimeoutAcceptReadCallbackTest(void)
-{ 
-    RunTest(ACCEPT_READ_FAST_CB, CLIENT_TIMEOUT_ACCEPT); 
+{
+    RunTest(ACCEPT_READ_FAST_CB, CLIENT_TIMEOUT_ACCEPT);
 }
 
 void TimeoutReadUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_NORMAL, CLIENT_TIMEOUT_SEND); 
+{
+    RunTest(ACCEPT_NORMAL, CLIENT_TIMEOUT_SEND);
 }
 void TimeoutReadNotUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_FAST, CLIENT_TIMEOUT_SEND); 
+{
+    RunTest(ACCEPT_FAST, CLIENT_TIMEOUT_SEND);
 }
 void TimeoutReadReadTest(void)
-{ 
-    RunTest(ACCEPT_READ, CLIENT_TIMEOUT_SEND); 
+{
+    RunTest(ACCEPT_READ, CLIENT_TIMEOUT_SEND);
 }
 void TimeoutReadReadNotUpdatedTest(void)
-{ 
-    RunTest(ACCEPT_READ_FAST, CLIENT_TIMEOUT_SEND); 
+{
+    RunTest(ACCEPT_READ_FAST, CLIENT_TIMEOUT_SEND);
 }
 void TimeoutReadReadCallbackTest(void)
-{ 
-    RunTest(ACCEPT_READ_FAST_CB, CLIENT_TIMEOUT_SEND); 
+{
+    RunTest(ACCEPT_READ_FAST_CB, CLIENT_TIMEOUT_SEND);
 }
 
 /************************************************************************/

@@ -59,7 +59,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "PR_DeleteSemaphore failed\n");
         exit(1);
     }
-    
+
     /*
      * Opening an existing semaphore with PR_SEM_CREATE|PR_SEM_EXCL.
      * should fail with PR_FILE_EXISTS_ERROR.

@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     PR_Cleanup();
 
 exit_now:
-	if(failed_already)	
+	if(failed_already)
 		return 1;
 	else
 		return 0;

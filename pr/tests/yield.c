@@ -17,7 +17,7 @@
 #define THREADS 10
 
 
-void 
+void
 threadmain(void *_id)
 {
     int id = (int)_id;

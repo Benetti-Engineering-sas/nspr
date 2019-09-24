@@ -47,7 +47,7 @@ pt_pthread_mutex_is_locked(pthread_mutex_t *m)
 void _PR_InitLocks(void)
 {
     int rv;
-    rv = _PT_PTHREAD_MUTEXATTR_INIT(&_pt_mattr); 
+    rv = _PT_PTHREAD_MUTEXATTR_INIT(&_pt_mattr);
     PR_ASSERT(0 == rv);
 
 #if (defined(LINUX) && (__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 2)) || \
@@ -136,7 +136,7 @@ PR_IMPLEMENT(PRLock*) PR_NewLock(void)
     lock = PR_NEWZAP(PRLock);
     if (lock != NULL)
     {
-        rv = _PT_PTHREAD_MUTEX_INIT(lock->mutex, _pt_mattr); 
+        rv = _PT_PTHREAD_MUTEX_INIT(lock->mutex, _pt_mattr);
         PR_ASSERT(0 == rv);
     }
 #if defined(DEBUG)
@@ -174,7 +174,7 @@ PR_IMPLEMENT(void) PR_Lock(PRLock *lock)
     PR_ASSERT(NULL == lock->notified.link);
     PR_ASSERT(PR_FALSE == lock->locked);
     /* Nb: the order of the next two statements is not critical to
-     * the correctness of PR_AssertCurrentThreadOwnsLock(), but 
+     * the correctness of PR_AssertCurrentThreadOwnsLock(), but
      * this particular order makes the assertion more likely to
      * catch errors. */
     lock->owner = pthread_self();
@@ -213,8 +213,8 @@ PR_IMPLEMENT(PRStatus) PR_Unlock(PRLock *lock)
 
 PR_IMPLEMENT(void) PR_AssertCurrentThreadOwnsLock(PRLock *lock)
 {
-    /* Nb: the order of the |locked| and |owner==me| checks is not critical 
-     * to the correctness of PR_AssertCurrentThreadOwnsLock(), but 
+    /* Nb: the order of the |locked| and |owner==me| checks is not critical
+     * to the correctness of PR_AssertCurrentThreadOwnsLock(), but
      * this particular order makes the assertion more likely to
      * catch errors. */
     PR_ASSERT(lock->locked && pthread_equal(lock->owner, pthread_self()));
@@ -409,7 +409,7 @@ aborted:
 
 PR_IMPLEMENT(PRStatus) PR_NotifyCondVar(PRCondVar *cvar)
 {
-    PR_ASSERT(cvar != NULL);   
+    PR_ASSERT(cvar != NULL);
     pt_PostNotifyToCvar(cvar, PR_FALSE);
     return PR_SUCCESS;
 }  /* PR_NotifyCondVar */
@@ -543,7 +543,7 @@ PR_IMPLEMENT(void) PR_DestroyMonitor(PRMonitor *mon)
     }
 }  /* PR_DestroyMonitor */
 
-/* The GC uses this; it is quite arguably a bad interface.  I'm just 
+/* The GC uses this; it is quite arguably a bad interface.  I'm just
  * duplicating it for now - XXXMB
  */
 PR_IMPLEMENT(PRIntn) PR_GetMonitorEntryCount(PRMonitor *mon)
@@ -667,7 +667,7 @@ PR_IMPLEMENT(PRStatus) PR_Wait(PRMonitor *mon, PRIntervalTime timeout)
     PR_ASSERT(pthread_equal(mon->owner, pthread_self()));
 
     /* tuck these away 'till later */
-    saved_entries = mon->entryCount; 
+    saved_entries = mon->entryCount;
     mon->entryCount = 0;
     _PT_PTHREAD_COPY_THR_HANDLE(mon->owner, saved_owner);
     _PT_PTHREAD_INVALIDATE_THR_HANDLE(mon->owner);
@@ -901,7 +901,7 @@ PR_IMPLEMENT(PRStatus) PR_DeleteSemaphore(const char *name)
     }
     return PR_SUCCESS;
 }
-    
+
 #elif defined(_PR_HAVE_SYSV_SEMAPHORES)
 
 #include <fcntl.h>
@@ -1106,7 +1106,7 @@ PR_IMPLEMENT(PRStatus) PR_DeleteSemaphore(const char *name)
     }
     unused.val = 0;
     if (semctl(semid, 0, IPC_RMID, unused) == -1)
-    { 
+    {
         _PR_MD_MAP_DEFAULT_ERROR(errno);
         return PR_FAILURE;
     }

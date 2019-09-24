@@ -8,7 +8,7 @@
 
 /* Need to force service-pack 3 extensions to be defined by
 ** setting _WIN32_WINNT to NT 4.0 for winsock.h, winbase.h, winnt.h.
-*/ 
+*/
 #ifndef  _WIN32_WINNT
     #define _WIN32_WINNT 0x0400
 #elif   (_WIN32_WINNT < 0x0400)
@@ -277,12 +277,12 @@ extern PRInt32 _PR_MD_CLOSE(PROsfd osfd, PRBool socket);
 #define _MD_GETOPENFILEINFO           _PR_MD_GETOPENFILEINFO
 #define _MD_GETOPENFILEINFO64         _PR_MD_GETOPENFILEINFO64
 #define _MD_STAT                      _PR_MD_STAT
-#define _MD_RENAME                    _PR_MD_RENAME     
-#define _MD_ACCESS                    _PR_MD_ACCESS     
-#define _MD_DELETE                    _PR_MD_DELETE     
-#define _MD_MKDIR                     _PR_MD_MKDIR      
+#define _MD_RENAME                    _PR_MD_RENAME
+#define _MD_ACCESS                    _PR_MD_ACCESS
+#define _MD_DELETE                    _PR_MD_DELETE
+#define _MD_MKDIR                     _PR_MD_MKDIR
 #define _MD_MAKE_DIR                  _PR_MD_MAKE_DIR
-#define _MD_RMDIR                     _PR_MD_RMDIR      
+#define _MD_RMDIR                     _PR_MD_RMDIR
 #define _MD_LOCKFILE                  _PR_MD_LOCKFILE
 #define _MD_TLOCKFILE                 _PR_MD_TLOCKFILE
 #define _MD_UNLOCKFILE                _PR_MD_UNLOCKFILE
@@ -456,7 +456,7 @@ extern PRStatus _PR_DetachWindowsProcess(struct PRProcess *process);
 
 /* --- Wait for a child process to terminate --- */
 #define _MD_WAIT_PROCESS _PR_WaitWindowsProcess
-extern PRStatus _PR_WaitWindowsProcess(struct PRProcess *process, 
+extern PRStatus _PR_WaitWindowsProcess(struct PRProcess *process,
     PRInt32 *exitCode);
 
 #define _MD_KILL_PROCESS _PR_KillWindowsProcess

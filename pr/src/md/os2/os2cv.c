@@ -16,7 +16,7 @@
  *  until right after we unlock the lock.  This way the awakened threads
  *  have a better chance to reaquire the lock.
  */
- 
+
 #include "primpl.h"
 
 /*
@@ -78,7 +78,7 @@ md_UnlockAndPostNotifies(
     lock->notified.link = NULL;
 #endif
 
-    /* 
+    /*
      * Figure out how many threads we need to wake up.
      */
     notified = &post;  /* this is where we start */
@@ -87,7 +87,7 @@ md_UnlockAndPostNotifies(
             _MDCVar *cv = notified->cv[index].cv;
             PRThread *thred;
             int i;
-            
+
             /* Fast special case: no waiting threads */
             if (cv->waitHead == NULL) {
                 notified->cv[index].notifyHead = NULL;
@@ -215,7 +215,7 @@ _PR_MD_NEW_CV(_MDCVar *cv)
      * when the PRCondVar structure is created.
      */
     return 0;
-} 
+}
 
 void _PR_MD_FREE_CV(_MDCVar *cv)
 {
@@ -241,7 +241,7 @@ _PR_MD_WAIT_CV(_MDCVar *cv, _MDLock *lock, PRIntervalTime timeout )
         md_UnlockAndPostNotifies(lock, thred, cv);
     } else {
         AddThreadToCVWaitQueueInternal(thred, cv);
-        DosReleaseMutexSem(lock->mutex); 
+        DosReleaseMutexSem(lock->mutex);
     }
 
     /* Wait for notification or timeout; don't really care which */

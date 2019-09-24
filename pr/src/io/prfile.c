@@ -148,14 +148,14 @@ static PRInt32 PR_CALLBACK PipeAvailable(PRFileDesc *fd)
 {
 	PRInt32 rv;
 	rv =  _PR_MD_PIPEAVAILABLE(fd);
-	return rv;		
+	return rv;
 }
 
 static PRInt64 PR_CALLBACK PipeAvailable64(PRFileDesc *fd)
 {
     PRInt64 rv;
     LL_I2L(rv, _PR_MD_PIPEAVAILABLE(fd));
-	return rv;		
+	return rv;
 }
 
 static PRStatus PR_CALLBACK PipeSync(PRFileDesc *fd)
@@ -232,30 +232,30 @@ static PRIOMethods _pr_fileMethods = {
     FileSeek64,
     FileGetInfo,
     FileGetInfo64,
-    (PRWritevFN)_PR_InvalidInt,		
-    (PRConnectFN)_PR_InvalidStatus,		
-    (PRAcceptFN)_PR_InvalidDesc,		
-    (PRBindFN)_PR_InvalidStatus,		
-    (PRListenFN)_PR_InvalidStatus,		
-    (PRShutdownFN)_PR_InvalidStatus,	
-    (PRRecvFN)_PR_InvalidInt,		
-    (PRSendFN)_PR_InvalidInt,		
-    (PRRecvfromFN)_PR_InvalidInt,	
-    (PRSendtoFN)_PR_InvalidInt,		
-    FilePoll,         
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,	
-    (PRGetpeernameFN)_PR_InvalidStatus,	
-    (PRReservedFN)_PR_InvalidInt,	
-    (PRReservedFN)_PR_InvalidInt,	
-    (PRGetsocketoptionFN)_PR_InvalidStatus,	
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
+    FilePoll,
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -276,30 +276,30 @@ static PRIOMethods _pr_pipeMethods = {
     (PRSeek64FN)_PR_InvalidInt64,
     (PRFileInfoFN)_PR_InvalidStatus,
     (PRFileInfo64FN)_PR_InvalidStatus,
-    (PRWritevFN)_PR_InvalidInt,		
-    (PRConnectFN)_PR_InvalidStatus,		
-    (PRAcceptFN)_PR_InvalidDesc,		
-    (PRBindFN)_PR_InvalidStatus,		
-    (PRListenFN)_PR_InvalidStatus,		
-    (PRShutdownFN)_PR_InvalidStatus,	
-    (PRRecvFN)_PR_InvalidInt,		
-    (PRSendFN)_PR_InvalidInt,		
-    (PRRecvfromFN)_PR_InvalidInt,	
-    (PRSendtoFN)_PR_InvalidInt,		
-    FilePoll,         
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,	
-    (PRGetpeernameFN)_PR_InvalidStatus,	
-    (PRReservedFN)_PR_InvalidInt,	
-    (PRReservedFN)_PR_InvalidInt,	
-    (PRGetsocketoptionFN)_PR_InvalidStatus,	
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
+    FilePoll,
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -399,7 +399,7 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(int table_size)
     struct rlimit rlim;
     PRInt32 tableMax = PR_GetSysfdTableMax();
 
-    if (tableMax < 0) 
+    if (tableMax < 0)
         return -1;
 
     if (tableMax > FD_SETSIZE)
@@ -428,7 +428,7 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(int table_size)
         return table_size;
       else
         return -1;
-    } 
+    }
     return tableMax;
 #elif defined(AIX) || defined(QNX) \
         || defined(WIN32) || defined(WIN16)
@@ -497,7 +497,7 @@ PRInt32 rv;
 }
 
 /*
-** Import an existing OS file to NSPR 
+** Import an existing OS file to NSPR
 */
 PR_IMPLEMENT(PRFileDesc*) PR_ImportFile(PROsfd osfd)
 {
@@ -516,7 +516,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_ImportFile(PROsfd osfd)
 }
 
 /*
-** Import an existing OS pipe to NSPR 
+** Import an existing OS pipe to NSPR
 */
 PR_IMPLEMENT(PRFileDesc*) PR_ImportPipe(PROsfd osfd)
 {
@@ -549,7 +549,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_ImportPipe(PROsfd osfd)
  * nspr 1.0.  Therefore, it still uses the nspr 1.0 error-reporting
  * mechanism -- returns a PRInt32, which is the error code when the call
  * fails.
- * 
+ *
  * If we need this function in nspr 2.0, it should be changed to
  * return PRStatus, as follows:
  *
@@ -604,7 +604,7 @@ PR_IMPLEMENT(PRStatus) PR_LockFile(PRFileDesc *fd)
         fd->secret->lockCount++;
     }
     PR_Unlock(_pr_flock_lock);
- 
+
     return status;
 }
 
@@ -642,7 +642,7 @@ PR_IMPLEMENT(PRStatus) PR_UnlockFile(PRFileDesc *fd)
     PR_Lock(_pr_flock_lock);
     if (fd->secret->lockCount == 1) {
         rv = _PR_MD_UNLOCKFILE(fd->secret->md.osfd);
-        if (rv == PR_SUCCESS) 
+        if (rv == PR_SUCCESS)
             fd->secret->lockCount = 0;
     } else {
         fd->secret->lockCount--;
@@ -734,15 +734,15 @@ PR_IMPLEMENT(PRStatus) PR_CreatePipe(
 /* ================ UTF16 Interfaces ================================ */
 PR_IMPLEMENT(PRFileDesc*) PR_OpenFileUTF16(
     const PRUnichar *name, PRIntn flags, PRIntn mode)
-{ 
+{
     PROsfd osfd;
     PRFileDesc *fd = 0;
 #if !defined(_PR_HAVE_O_APPEND)
     PRBool  appendMode = ( PR_APPEND & flags )? PR_TRUE : PR_FALSE;
 #endif
-   
+
     if (!_pr_initialized) _PR_ImplicitInitialization();
-  
+
     /* Map pr open flags and mode to os specific flags */
     osfd = _PR_MD_OPEN_FILE_UTF16(name, flags, mode);
     if (osfd != -1) {
@@ -758,7 +758,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_OpenFileUTF16(
     }
     return fd;
 }
- 
+
 PR_IMPLEMENT(PRStatus) PR_GetFileInfo64UTF16(const PRUnichar *fn, PRFileInfo64 *info)
 {
     PRInt32 rv;

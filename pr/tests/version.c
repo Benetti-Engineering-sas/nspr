@@ -57,7 +57,7 @@ int main(int argc, char **argv)
             if (NULL == versionPoint) {
 				PL_FPrintError(err, "PR_FindSymbol");
 				return 4;
-			}	
+			}
 			version_info = versionPoint();
 		}
 	} else

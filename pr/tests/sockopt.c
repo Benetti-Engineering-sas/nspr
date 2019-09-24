@@ -86,49 +86,49 @@ int main(int argc, char **argv)
             {
                 case PR_SockOpt_Nonblocking:
                     data.value.non_blocking = PR_TRUE;
-                    break;    
+                    break;
                 case PR_SockOpt_Linger:
                     data.value.linger.polarity = PR_TRUE;
-                    data.value.linger.linger = PR_SecondsToInterval(2);          
-                    break;    
+                    data.value.linger.linger = PR_SecondsToInterval(2);
+                    break;
                 case PR_SockOpt_Reuseaddr:
-                    data.value.reuse_addr = PR_TRUE;      
-                    break;    
-                case PR_SockOpt_Keepalive:       
-                    data.value.keep_alive = PR_TRUE;      
-                    break;    
+                    data.value.reuse_addr = PR_TRUE;
+                    break;
+                case PR_SockOpt_Keepalive:
+                    data.value.keep_alive = PR_TRUE;
+                    break;
                 case PR_SockOpt_RecvBufferSize:
-                    data.value.recv_buffer_size = segment;  
-                    break;    
-                case PR_SockOpt_SendBufferSize:  
-                    data.value.send_buffer_size = segment;  
-                    break;    
+                    data.value.recv_buffer_size = segment;
+                    break;
+                case PR_SockOpt_SendBufferSize:
+                    data.value.send_buffer_size = segment;
+                    break;
                 case PR_SockOpt_IpTimeToLive:
-                    data.value.ip_ttl = 64;  
-                    break;    
+                    data.value.ip_ttl = 64;
+                    break;
                 case PR_SockOpt_IpTypeOfService:
-                    data.value.tos = 0; 
-                    break;    
+                    data.value.tos = 0;
+                    break;
                 case PR_SockOpt_McastTimeToLive:
-                    fd = udp; 
-                    data.value.mcast_ttl = 4; 
-                    break;    
+                    fd = udp;
+                    data.value.mcast_ttl = 4;
+                    break;
                 case PR_SockOpt_McastLoopback:
-                    fd = udp; 
-                    data.value.mcast_loopback = PR_TRUE; 
-                    break;    
+                    fd = udp;
+                    data.value.mcast_loopback = PR_TRUE;
+                    break;
                 case PR_SockOpt_NoDelay:
-                    data.value.no_delay = PR_TRUE;         
-                    break;    
+                    data.value.no_delay = PR_TRUE;
+                    break;
 #ifndef WIN32
                 case PR_SockOpt_MaxSegment:
-                    data.value.max_segment = segment;      
-                    break;    
+                    data.value.max_segment = segment;
+                    break;
 #endif
                 case PR_SockOpt_Broadcast:
-                    fd = udp; 
-                    data.value.broadcast = PR_TRUE;         
-                    break;    
+                    fd = udp;
+                    data.value.broadcast = PR_TRUE;
+                    break;
 #ifdef SO_REUSEPORT
                 case PR_SockOpt_Reuseport:
                     data.value.reuse_port = PR_TRUE;

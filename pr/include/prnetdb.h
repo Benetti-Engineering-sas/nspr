@@ -54,7 +54,7 @@ typedef struct PRHostEnt {
 #endif
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_GetHostByName()
 ** Lookup a host by name.
 **
@@ -78,7 +78,7 @@ NSPR_API(PRStatus) PR_GetHostByName(
     const char *hostname, char *buf, PRIntn bufsize, PRHostEnt *hostentry);
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_GetIPNodeByName()
 ** Lookup a host by name. Equivalent to getipnodebyname(AI_DEFAULT)
 ** of RFC 2553.
@@ -120,7 +120,7 @@ NSPR_API(PRStatus) PR_GetIPNodeByName(
     PRHostEnt *hostentry);
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_GetHostByAddr()
 ** Lookup a host entry by its network address.
 **
@@ -144,7 +144,7 @@ NSPR_API(PRStatus) PR_GetHostByAddr(
     const PRNetAddr *hostaddr, char *buf, PRIntn bufsize, PRHostEnt *hostentry);
 
 /***********************************************************************
-** FUNCTION:	PR_EnumerateHostEnt()	
+** FUNCTION:	PR_EnumerateHostEnt()
 ** DESCRIPTION:
 **  A stateless enumerator over a PRHostEnt structure acquired from
 **  PR_GetHostByName() PR_GetHostByAddr() to evaluate the possible
@@ -178,7 +178,7 @@ NSPR_API(PRIntn) PR_EnumerateHostEnt(
     PRIntn enumIndex, const PRHostEnt *hostEnt, PRUint16 port, PRNetAddr *address);
 
 /***********************************************************************
-** FUNCTION: PR_InitializeNetAddr(), 
+** FUNCTION: PR_InitializeNetAddr(),
 ** DESCRIPTION:
 **  Initialize the fields of a PRNetAddr, assigning well known values as
 **  appropriate.
@@ -211,7 +211,7 @@ NSPR_API(PRStatus) PR_InitializeNetAddr(
     PRNetAddrValue val, PRUint16 port, PRNetAddr *addr);
 
 /***********************************************************************
-** FUNCTION: PR_SetNetAddr(), 
+** FUNCTION: PR_SetNetAddr(),
 ** DESCRIPTION:
 **  Set the fields of a PRNetAddr, assigning well known values as
 **  appropriate. This function is similar to PR_InitializeNetAddr
@@ -239,13 +239,13 @@ NSPR_API(PRStatus) PR_SetNetAddr(
     PRNetAddrValue val, PRUint16 af, PRUint16 port, PRNetAddr *addr);
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_IsNetAddrType()
 ** Determine if the network address is of the specified type.
 **
 ** INPUTS:
 **  const PRNetAddr *addr   A network address.
-**  PRNetAddrValue          The type of network address 
+**  PRNetAddrValue          The type of network address
 **
 ** RETURN:
 **  PRBool                  PR_TRUE if the network address is of the
@@ -254,7 +254,7 @@ NSPR_API(PRStatus) PR_SetNetAddr(
 NSPR_API(PRBool) PR_IsNetAddrType(const PRNetAddr *addr, PRNetAddrValue val);
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_ConvertIPv4AddrToIPv6()
 ** Convert an IPv4 addr to an (IPv4-mapped) IPv6 addr
 **
@@ -266,12 +266,12 @@ NSPR_API(PRBool) PR_IsNetAddrType(const PRNetAddr *addr, PRNetAddrValue val);
 **
 ** RETURN:
 **  void
-**                       
+**
 ***********************************************************************/
 NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
 
 /***********************************************************************
-** MACRO:	
+** MACRO:
 ** DESCRIPTION:	PR_NetAddrFamily()
 ** Get the 'family' field of a PRNetAddr union.
 **
@@ -284,7 +284,7 @@ NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
 #define PR_NetAddrFamily(addr) ((addr)->raw.family)
 
 /***********************************************************************
-** MACRO:	
+** MACRO:
 ** DESCRIPTION:	PR_NetAddrInetPort()
 ** Get the 'port' field of a PRNetAddr union.
 **
@@ -298,7 +298,7 @@ NSPR_API(void) PR_ConvertIPv4AddrToIPv6(PRUint32 v4addr, PRIPv6Addr *v6addr);
     ((addr)->raw.family == PR_AF_INET6 ? (addr)->ipv6.port : (addr)->inet.port)
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_GetProtoByName()
 ** Lookup a protocol entry based on protocol's name
 **
@@ -333,7 +333,7 @@ NSPR_API(PRStatus) PR_GetProtoByName(
     const char* protocolname, char* buffer, PRInt32 bufsize, PRProtoEnt* result);
 
 /***********************************************************************
-** FUNCTION:	
+** FUNCTION:
 ** DESCRIPTION:	PR_GetProtoByNumber()
 ** Lookup a protocol entry based on protocol's number
 **
@@ -430,7 +430,7 @@ NSPR_API(void *) PR_EnumerateAddrInfo(
 **  PR_GetAddrInfoByName().
 **
 ** INPUTS:
-**  const PRAddrInfo *addrInfo 
+**  const PRAddrInfo *addrInfo
 **                      The PRAddrInfo handle returned by a successful
 **                      call to PR_GetAddrInfoByName().
 ** RETURN:

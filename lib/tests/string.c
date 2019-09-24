@@ -32,7 +32,7 @@ PRBool test_001(void)
     {
         if( PL_strlen(array[i].str) != array[i].len )
         {
-            printf("FAIL (%d: %s->%d, %d)\n", i, 
+            printf("FAIL (%d: %s->%d, %d)\n", i,
                    array[i].str ? array[i].str : "(null)",
                    PL_strlen(array[i].str), array[i].len);
             return PR_FALSE;
@@ -138,8 +138,8 @@ PRBool test_003(void)
             {
                 if( *a != *b )
                 {
-                    printf("FAIL %d: %s->%.32s\n", i, 
-                           array[i].str ? array[i].str : "(null)", 
+                    printf("FAIL %d: %s->%.32s\n", i,
+                           array[i].str ? array[i].str : "(null)",
                            array[i].dest ? array[i].dest : "(null)");
                     return PR_FALSE;
                 }
@@ -251,7 +251,7 @@ PRBool test_004(void)
             {
                 if( *a != *b )
                 {
-                    printf("FAIL %d: %s != %.32s\n", i, 
+                    printf("FAIL %d: %s != %.32s\n", i,
                            array[i].result, array[i].dest);
                     return PR_FALSE;
                 }
@@ -278,7 +278,7 @@ PRBool test_004(void)
             }
         }
     }
-                
+
     printf("PASS\n");
     return PR_TRUE;
 }
@@ -377,7 +377,7 @@ PRBool test_005(void)
             {
                 if( *a != *b )
                 {
-                    printf("FAIL %d: %s != %.32s\n", i, 
+                    printf("FAIL %d: %s != %.32s\n", i,
                            array[i].result, array[i].dest);
                     return PR_FALSE;
                 }
@@ -389,7 +389,7 @@ PRBool test_005(void)
             }
         }
     }
-                
+
     printf("PASS\n");
     return PR_TRUE;
 }
@@ -499,7 +499,7 @@ PRBool test_007(void)
 
         if( (char *)0 == rv )
         {
-            printf("FAIL %d: %s,%lu -> 0\n", i, 
+            printf("FAIL %d: %s,%lu -> 0\n", i,
                    array[i].str ? array[i].str : "(null)", array[i].len);
             return PR_FALSE;
         }
@@ -630,7 +630,7 @@ PRBool test_009(void)
         PRUint32    length;
         PRBool      nulled;
         const char *result;
-    } array[] = 
+    } array[] =
       {
           { (const char *)0, (const char *)0, 0, PR_FALSE, (const char *)0 },
           { (const char *)0, (const char *)0, 1, PR_FALSE, (const char *)0 },
@@ -760,7 +760,7 @@ PRBool test_010(void)
         const char *second;
         PRUint32    length;
         const char *result;
-    } array[] = 
+    } array[] =
       {
           { (const char *)0, (const char *)0, 0, (const char *)0 },
           { (const char *)0, (const char *)0, 1, (const char *)0 },
@@ -1691,9 +1691,9 @@ PRBool test_019(void)
         {
             if( (char *)0 != rv )
             {
-                printf("FAIL %d: %s,%s -> %.32s, not null\n", i, 
+                printf("FAIL %d: %s,%s -> %.32s, not null\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        rv);
                 return PR_FALSE;
             }
@@ -1704,7 +1704,7 @@ PRBool test_019(void)
             {
                 printf("FAIL %d: %s,%s -> null, not +%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].off);
                 return PR_FALSE;
             }
@@ -1713,7 +1713,7 @@ PRBool test_019(void)
             {
                 printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        rv, array[i].str, array[i].off);
                 return PR_FALSE;
             }
@@ -1782,9 +1782,9 @@ PRBool test_020(void)
         {
             if( (char *)0 != rv )
             {
-                printf("FAIL %d: %s,%s -> %.32s, not null\n", i, 
+                printf("FAIL %d: %s,%s -> %.32s, not null\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        rv);
                 return PR_FALSE;
             }
@@ -1795,7 +1795,7 @@ PRBool test_020(void)
             {
                 printf("FAIL %d: %s,%s -> null, not +%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].off);
                 return PR_FALSE;
             }
@@ -1804,7 +1804,7 @@ PRBool test_020(void)
             {
                 printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        rv, array[i].str, array[i].off);
                 return PR_FALSE;
             }
@@ -1814,7 +1814,7 @@ PRBool test_020(void)
     printf("PASS\n");
     return PR_TRUE;
 }
-                       
+
 /* PL_strnpbrk */
 PRBool test_021(void)
 {
@@ -1879,9 +1879,9 @@ PRBool test_021(void)
         {
             if( (char *)0 != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> %.32s, not null\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> %.32s, not null\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, rv);
                 return PR_FALSE;
             }
@@ -1892,7 +1892,7 @@ PRBool test_021(void)
             {
                 printf("FAIL %d: %s,%s/%lu -> null, not +%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, array[i].off);
                 return PR_FALSE;
             }
@@ -1901,7 +1901,7 @@ PRBool test_021(void)
             {
                 printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
                 return PR_FALSE;
             }
@@ -1985,9 +1985,9 @@ PRBool test_022(void)
         {
             if( (char *)0 != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> %.32s, not null\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> %.32s, not null\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, rv);
                 return PR_FALSE;
             }
@@ -1998,7 +1998,7 @@ PRBool test_022(void)
             {
                 printf("FAIL %d: %s,%s/%lu -> null, not +%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, array[i].off);
                 return PR_FALSE;
             }
@@ -2007,7 +2007,7 @@ PRBool test_022(void)
             {
                 printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
-                       array[i].chrs ? array[i].chrs : "(null)", 
+                       array[i].chrs ? array[i].chrs : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
                 return PR_FALSE;
             }
@@ -2113,7 +2113,7 @@ PRBool test_023(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        rv, array[i].str, array[i].off);
@@ -2221,7 +2221,7 @@ PRBool test_024(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        rv, array[i].str, array[i].off);
@@ -2351,7 +2351,7 @@ PRBool test_025(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
@@ -2483,7 +2483,7 @@ PRBool test_026(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
@@ -2591,7 +2591,7 @@ PRBool test_027(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        rv, array[i].str, array[i].off);
@@ -2699,7 +2699,7 @@ PRBool test_028(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        rv, array[i].str, array[i].off);
@@ -2829,7 +2829,7 @@ PRBool test_029(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
@@ -2961,7 +2961,7 @@ PRBool test_030(void)
 
             if( &array[i].str[ array[i].off ] != rv )
             {
-                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i, 
+                printf("FAIL %d: %s,%s/%lu -> 0x%x, not 0x%x+%lu\n", i,
                        array[i].str ? array[i].str : "(null)",
                        array[i].sub ? array[i].sub : "(null)",
                        array[i].max, rv, array[i].str, array[i].off);
@@ -3003,7 +3003,7 @@ PRBool test_031(void)
         PL_strcat(string, tokens[i]);
         PL_strcat(string, seps[i]);
     }
-    
+
     /* Scan the string for tokens. */
     i = 0;
     s1 = string;

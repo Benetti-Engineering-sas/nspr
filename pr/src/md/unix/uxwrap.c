@@ -32,11 +32,11 @@
 
 /* see comments in ns/cmd/xfe/mozilla.c (look for "PR_XGetXtHackFD") */
 static int _pr_xt_hack_fd = -1;
- 
+
 int PR_XGetXtHackFD(void)
 {
     int fds[2];
- 
+
     if (_pr_xt_hack_fd == -1) {
         if (!pipe(fds)) {
             _pr_xt_hack_fd = fds[0];
@@ -49,7 +49,7 @@ static int (*_pr_xt_hack_okayToReleaseXLock)(void) = 0;
 
 void PR_SetXtHackOkayToReleaseXLockFn(int (*fn)(void))
 {
-    _pr_xt_hack_okayToReleaseXLock = fn; 
+    _pr_xt_hack_okayToReleaseXLock = fn;
 }
 
 
@@ -103,10 +103,10 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
     if (!_pr_initialized) {
         _PR_ImplicitInitialization();
     }
-		
+
 #ifndef _PR_LOCAL_THREADS_ONLY
     if (_PR_IS_NATIVE_THREAD(_PR_MD_CURRENT_THREAD())) {
-        return _MD_SELECT(width, rd, wr, ex, tv);	
+        return _MD_SELECT(width, rd, wr, ex, tv);
     }
 #endif
 
@@ -184,7 +184,7 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
      */
    {
      int needToLockXAgain;
- 
+
      needToLockXAgain = 0;
      if (rd && (_pr_xt_hack_fd != -1)
              && FD_ISSET(_pr_xt_hack_fd, rd) && PR_XIsLocked()
@@ -281,7 +281,7 @@ int select(int width, fd_set *rd, fd_set *wr, fd_set *ex, struct timeval *tv)
  *-----------------------------------------------------------------------
  * poll() --
  *
- * RETURN VALUES: 
+ * RETURN VALUES:
  *     -1:  fails, errno indicates the error.
  *      0:  timed out, the revents bitmasks are not set.
  *      positive value: the number of file descriptors for which poll()

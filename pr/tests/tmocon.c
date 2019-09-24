@@ -14,7 +14,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 
 /***********************************************************************
@@ -285,7 +285,7 @@ int Tmocon(int argc, char **argv)
     memset(&shared->serverAddress, 0, sizeof(shared->serverAddress));
     rv = PR_InitializeNetAddr(PR_IpAddrLoopback, BASE_PORT, &shared->serverAddress);
     PR_ASSERT(PR_SUCCESS == rv);
-    
+
     while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
     {
         if (PL_OPT_BAD == os) continue;

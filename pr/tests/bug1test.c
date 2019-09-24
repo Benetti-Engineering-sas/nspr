@@ -48,7 +48,7 @@ void spin (PRInt32 aDelay)
   for (index = 0; index < delay * 10; index++)
 	  // consume a bunch of cpu cycles
     ;
-  PR_Sleep(0); 
+  PR_Sleep(0);
 }
 
 void  doWriteThread (void* arg)
@@ -83,7 +83,7 @@ void  doWriteThread (void* arg)
 
     PR_ASSERT (gCounter == (last + 1)); // test invariance
 
-    // -- exit write lock        
+    // -- exit write lock
 //    if (0 < gReadWaiting)   // notify waiting reads (do it anyway to show off the CondWait bug)
       PR_NotifyAll (gMonitor);
 
@@ -104,7 +104,7 @@ void  doReadThread (void* arg)
   while (1)
   {
     // -- enter read lock
-    PR_EnterMonitor (gMonitor); 
+    PR_EnterMonitor (gMonitor);
 
     if (0 < gWriteWaiting)  // give up the monitor to waiting writes
     {
@@ -186,7 +186,7 @@ int pseudoMain (int argc, char** argv, char *pad)
   fireThread ("W4", doWriteThread,  &a5);
   fireThread ("W5", doWriteThread,  &a6);
   fireThread ("W6", doWriteThread,  &a7);
-  
+
   while (1)
   {
 	PRInt32 writeCount, readCount;
@@ -196,9 +196,9 @@ int pseudoMain (int argc, char** argv, char *pad)
     // print some stats, not threadsafe, informative only
     writeCount = gCounter;
     readCount   = gReads;
-    printf ("\ntick %d writes (+%d), %d reads (+%d) [max %d, %d, %d]", 
+    printf ("\ntick %d writes (+%d), %d reads (+%d) [max %d, %d, %d]",
             writeCount, writeCount - lastWriteCount,
-            readCount, readCount - lastReadCount, 
+            readCount, readCount - lastReadCount,
             gMaxReads, gMaxWriteWaits, gMaxReadWaits);
     lastWriteCount = writeCount;
     lastReadCount = readCount;

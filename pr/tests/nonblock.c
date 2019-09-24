@@ -198,7 +198,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 	retVal = PR_Recv(sock, buf, sizeof(buf), 0, PR_INTERVAL_NO_TIMEOUT);
 	if (retVal != CHUNK_SIZE) {
         PL_PrintError("Second Receive:\n");
-	    fprintf(stderr, "Second PR_Recv: retVal: %ld, Error: %ld\n", 
+	    fprintf(stderr, "Second PR_Recv: retVal: %ld, Error: %ld\n",
             retVal, PR_GetError());
 	    exit(1);
         }
@@ -215,7 +215,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

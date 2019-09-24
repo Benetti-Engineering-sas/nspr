@@ -81,7 +81,7 @@ purpose.  It is provided "as is" without express or implied warranty.
 /*
  * NOTE:
  *		The interfaces for error-code-translation described in the rest of
- *		this file are preliminary in the 3.1 release of nspr and are subject 
+ *		this file are preliminary in the 3.1 release of nspr and are subject
  *		to change in future releases.
  */
 
@@ -171,7 +171,7 @@ struct PRErrorTable {
 /*
  * struct PRErrorCallbackPrivate --
  *
- *    A private structure for the localization plugin 
+ *    A private structure for the localization plugin
  */
 struct PRErrorCallbackPrivate;
 
@@ -194,7 +194,7 @@ struct PRErrorCallbackTablePrivate;
  *    if no description can be found.
  */
 typedef const char *
-PRErrorCallbackLookupFn(PRErrorCode code, PRLanguageCode language, 
+PRErrorCallbackLookupFn(PRErrorCode code, PRLanguageCode language,
 		   const struct PRErrorTable *table,
 		   struct PRErrorCallbackPrivate *cb_private,
 		   struct PRErrorCallbackTablePrivate *table_private);
@@ -266,7 +266,7 @@ NSPR_API(const char * const *) PR_ErrorLanguages(void);
 **  of the process.
 **
 **  NOT THREAD SAFE!
-**  
+**
 ***********************************************************************/
 NSPR_API(PRErrorCode) PR_ErrorInstallTable(const struct PRErrorTable *table);
 
@@ -285,7 +285,7 @@ NSPR_API(PRErrorCode) PR_ErrorInstallTable(const struct PRErrorTable *table);
 **
 ***********************************************************************/
 NSPR_API(void) PR_ErrorInstallCallback(const char * const * languages,
-			      PRErrorCallbackLookupFn *lookup, 
+			      PRErrorCallbackLookupFn *lookup,
 			      PRErrorCallbackNewTableFn *newtable,
 			      struct PRErrorCallbackPrivate *cb_private);
 

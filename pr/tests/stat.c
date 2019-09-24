@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
- * Program to test different ways to get file info; right now it 
+ * Program to test different ways to get file info; right now it
  * only works for solaris and OS/2.
  *
  */
@@ -35,7 +35,7 @@ static void statPRStat(void)
 {
     PRFileInfo finfo;
     PRInt32 index = count;
- 
+
     for (;index--;) {
          PR_GetFileInfo(filename, &finfo);
     }
@@ -45,7 +45,7 @@ static void statStat(void)
 {
     struct stat finfo;
     PRInt32 index = count;
- 
+
     for (;index--;) {
         stat(filename, &finfo);
     }

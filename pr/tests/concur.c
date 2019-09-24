@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
-** File:            concur.c 
+** File:            concur.c
 ** Description:     test of adding and removing concurrency options
 */
 
@@ -127,7 +127,7 @@ PRIntn PR_CALLBACK Concur(PRIntn argc, char **argv)
 		}
     }
 
-    
+
     if (debug)
         PR_fprintf(
             PR_STDERR, "Waiting for %d thread(s) to exit\n", context.have);

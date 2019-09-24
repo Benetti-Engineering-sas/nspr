@@ -17,7 +17,7 @@
 #endif
 #endif
 
-#if defined(__alpha) 
+#if defined(__alpha)
 #if !(defined(_WIN32)) && !(defined(__linux)) && !(defined(__FreeBSD__))
 	error - None of _WIN32, __linux, or __FreeBSD__ is defined
 #endif
@@ -222,20 +222,20 @@ int main(int argc, char **argv)
     fprintf(stream, "#define PR_BITS_PER_INT64   %d\n", bpb * 8);
     fprintf(stream, "#define PR_BITS_PER_LONG    %d\n", bpb * sizeof(long));
     fprintf(stream, "#define PR_BITS_PER_FLOAT   %d\n", bpb * sizeof(float));
-    fprintf(stream, "#define PR_BITS_PER_DOUBLE  %d\n\n", 
+    fprintf(stream, "#define PR_BITS_PER_DOUBLE  %d\n\n",
             bpb * sizeof(double));
 
     fprintf(stream, "#define PR_BITS_PER_BYTE_LOG2   %d\n", Log2(bpb));
-    fprintf(stream, "#define PR_BITS_PER_SHORT_LOG2  %d\n", 
+    fprintf(stream, "#define PR_BITS_PER_SHORT_LOG2  %d\n",
             Log2(bpb * sizeof(short)));
-    fprintf(stream, "#define PR_BITS_PER_INT_LOG2    %d\n", 
+    fprintf(stream, "#define PR_BITS_PER_INT_LOG2    %d\n",
             Log2(bpb * sizeof(int)));
     fprintf(stream, "#define PR_BITS_PER_INT64_LOG2  %d\n", 6);
-    fprintf(stream, "#define PR_BITS_PER_LONG_LOG2   %d\n", 
+    fprintf(stream, "#define PR_BITS_PER_LONG_LOG2   %d\n",
             Log2(bpb * sizeof(long)));
-    fprintf(stream, "#define PR_BITS_PER_FLOAT_LOG2  %d\n", 
+    fprintf(stream, "#define PR_BITS_PER_FLOAT_LOG2  %d\n",
             Log2(bpb * sizeof(float)));
-    fprintf(stream, "#define PR_BITS_PER_DOUBLE_LOG2 %d\n\n", 
+    fprintf(stream, "#define PR_BITS_PER_DOUBLE_LOG2 %d\n\n",
             Log2(bpb * sizeof(double)));
 
     fprintf(stream, "#define PR_ALIGN_OF_SHORT   %d\n", ALIGN_OF(short));
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     fprintf(stream, "#define PR_ALIGN_OF_LONG    %d\n", ALIGN_OF(long));
     if (sizeof(INT64) < 8) {
 	/* this machine doesn't actually support PRInt64's */
-	fprintf(stream, "#define PR_ALIGN_OF_INT64   %d\n", 
+	fprintf(stream, "#define PR_ALIGN_OF_INT64   %d\n",
                 ALIGN_OF(fakelonglong));
     } else {
 	fprintf(stream, "#define PR_ALIGN_OF_INT64   %d\n", ALIGN_OF(PRInt64));

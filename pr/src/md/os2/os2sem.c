@@ -55,7 +55,7 @@ _PR_MD_POST_SEM(_MDSemaphore *md)
 {
    int rv;
    rv = DosPostEventSem(md->sem);
-   PR_ASSERT(rv == NO_ERROR); 
+   PR_ASSERT(rv == NO_ERROR);
 }
 
 

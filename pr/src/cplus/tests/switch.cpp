@@ -207,7 +207,7 @@ PRIntn main(PRIntn argc, char **argv)
             if (debug_mode)
 			    PL_FPrintError(debug_out, "Failed to interrupt");
         }
-		link = link->next; 
+		link = link->next;
     }
 
     for (thread_count = 1; thread_count <= thread_limit; ++thread_count)

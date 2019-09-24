@@ -15,9 +15,9 @@
  *	Each one of the threads acquires a read lock to verify that the sum of
  *	the arrays A and B is equal to array C, and acquires a write lock to
  *	consistently update arrays A and B so that their is equal to array C.
- *		
+ *
  */
- 
+
 #include "nspr.h"
 #include "plgetopt.h"
 #include "prrwlock.h"
@@ -145,13 +145,13 @@ int main(int argc, char **argv)
 	PR_DELETE(threads);
 	PR_DELETE(params);
 
-	PR_DELETE(array_A);	
-	PR_DELETE(array_B);	
-	PR_DELETE(array_C);	
+	PR_DELETE(array_A);
+	PR_DELETE(array_B);
+	PR_DELETE(array_C);
 
 	PR_DestroyRWLock(rwlock1);
 
-	
+
 	printf("PASS\n");
 	return 0;
 }

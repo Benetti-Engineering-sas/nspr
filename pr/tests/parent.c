@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     PR_DELETE(child);
     PR_Cleanup();
     return test_status;
-    
+
 }  /* main */
 
 /* parent.c */

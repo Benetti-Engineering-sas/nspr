@@ -166,7 +166,7 @@ PRIntn strcasecmp(const char *a, const char *b)
     const unsigned char *ua = (const unsigned char *)a;
     const unsigned char *ub = (const unsigned char *)b;
 
-    if( ((const char *)0 == a) || (const char *)0 == b ) 
+    if( ((const char *)0 == a) || (const char *)0 == b )
         return (PRIntn)(a-b);
 
     while( (uc[*ua] == uc[*ub]) && ('\0' != *a) )

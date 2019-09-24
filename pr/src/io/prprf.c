@@ -362,7 +362,7 @@ static int cvt_s(SprintfState *ss, const char *str, int width, int prec,
     /* Limit string length by precision value */
     if (!str) {
     	str = "(null)";
-    } 
+    }
     if (prec > 0) {
 	/* this is:  slen = strnlen(str, prec); */
 	register const char *s;
@@ -391,7 +391,7 @@ static struct NumArg* BuildArgArray( const char *fmt, va_list ap, int* rv, struc
     const char* p;
     char  c;
     struct NumArg* nas;
-    
+
 
     /*
     **	first pass:
@@ -433,7 +433,7 @@ static struct NumArg* BuildArgArray( const char *fmt, va_list ap, int* rv, struc
 	return NULL;
     }
 
-    
+
     if( number > NAS_DEFAULT_NUM ){
 	nas = (struct NumArg*)PR_MALLOC( number * sizeof( struct NumArg ) );
 	if( !nas ){
@@ -1075,7 +1075,7 @@ static int FuncStuff(SprintfState *ss, const char *sp, PRUint32 len)
     return 0;
 }
 
-PR_IMPLEMENT(PRUint32) PR_sxprintf(PRStuffFunc func, void *arg, 
+PR_IMPLEMENT(PRUint32) PR_sxprintf(PRStuffFunc func, void *arg,
                                  const char *fmt, ...)
 {
     va_list ap;
@@ -1087,7 +1087,7 @@ PR_IMPLEMENT(PRUint32) PR_sxprintf(PRStuffFunc func, void *arg,
     return rv;
 }
 
-PR_IMPLEMENT(PRUint32) PR_vsxprintf(PRStuffFunc func, void *arg, 
+PR_IMPLEMENT(PRUint32) PR_vsxprintf(PRStuffFunc func, void *arg,
                                   const char *fmt, va_list ap)
 {
     SprintfState ss;

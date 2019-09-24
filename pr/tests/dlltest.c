@@ -163,7 +163,7 @@ int main(int argc, char** argv)
     {
         PRStaticLinkTable   slt[10];
         PRLibrary           *lib;
-        
+
         lib = PR_LoadStaticLibrary( "my.dll", slt );
         if ( lib == NULL )
         {
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
     }
 
     goto exit_now;
-exit_now: 
+exit_now:
     PR_Cleanup();
 
     if (failed_already) {

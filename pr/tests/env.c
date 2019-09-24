@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	    PL_DestroyOptState(opt);
     } /* end block "Get command line options" */
 
-#if 0 
+#if 0
     {
         /*
         ** This uses Windows native environment manipulation
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         }
         if (verbose) printf("env: SetEnvironmentVariable() worked\n");
 
-        size = GetEnvironmentVariable( ENVNAME, envBuf, ENVBUFSIZE );    
+        size = GetEnvironmentVariable( ENVNAME, envBuf, ENVBUFSIZE );
         if ( size == 0 )  {
             if (debug) printf("env: Shit! GetEnvironmentVariable() failed. Found: %s\n", envBuf );
             failedAlready = PR_TRUE;
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
     } else {
         if (verbose) printf( "env: PR_GetEnv() after RAW un-set found: %s\n", value );
     }
-    
+
 /* ---------------------------------------------------------------------- */
     /* set it again ... */
     envBuf = NewBuffer( ENVBUFSIZE );

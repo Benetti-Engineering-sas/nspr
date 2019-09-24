@@ -5,17 +5,17 @@
 
 /*
 ** File: rngseed.c
-** Description: 
+** Description:
 ** Test NSPR's Random Number Seed generator
 **
 ** Initial test: Just make sure it outputs some data.
-** 
+**
 ** ... more? ... check some iterations to ensure it is random (no dupes)
 ** ... more? ... histogram distribution of random numbers
 */
 
 #include "plgetopt.h"
-#include "nspr.h" 
+#include "nspr.h"
 #include "prrng.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,22 +55,22 @@ static void PrintRand( void *buf, PRIntn size )
         switch( size )  {
             case 1 :
                 printf("%2.2X\n", *(rp++) );
-                size -= 4;    
+                size -= 4;
                 break;
             case 2 :
                 printf("%4.4X\n", *(rp++) );
-                size -= 4;    
+                size -= 4;
                 break;
             case 3 :
                 printf("%6.6X\n", *(rp++) );
-                size -= 4;    
+                size -= 4;
                 break;
             default:
                 while ( size >= 4) {
                     PRIntn i = 3;
                     do {
                         printf("%8.8X ", *(rp++) );
-                        size -= 4;    
+                        size -= 4;
                     } while( i-- );
                     i = 3;
                     printf("\n");

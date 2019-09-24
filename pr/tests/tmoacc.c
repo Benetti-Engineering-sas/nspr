@@ -148,7 +148,7 @@ static void Accept(void *arg)
                 if (NULL != shared->debug) PL_PrintError("Accept");
                 shared->passed = PR_FALSE;
             }
-        }        
+        }
     } while (running == shared->status);
     if (NULL != buffer) PR_DELETE(buffer);
 }  /* Accept */
@@ -210,7 +210,7 @@ PRIntn Tmoacc(PRIntn argc, char **argv)
     if (0 == threads) threads = DEFAULT_THREADS;
     if (0 == backlog) backlog = DEFAULT_BACKLOG;
     if (0 == timeout) timeout = DEFAULT_TIMEOUT;
-    
+
     PR_STDIO_INIT();
     memset(&listenAddr, 0, sizeof(listenAddr));
     rv = PR_InitializeNetAddr(PR_IpAddrAny, BASE_PORT, &listenAddr);

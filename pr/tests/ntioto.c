@@ -5,7 +5,7 @@
 
 /*
 ** File: ntioto.c
-** Description: 
+** Description:
 ** This test, ntioto.c, was designed to reproduce a bug reported by NES
 ** on WindowsNT (fibers implementation). NSPR was asserting in ntio.c
 ** after PR_AcceptRead() had timed out. I/O performed subsequent to the
@@ -16,12 +16,12 @@
 ** Design:
 ** This test will fail with an assert in ntio.c if the problem it was
 ** designed to catch occurs. It returns 0 otherwise.
-** 
+**
 ** The main() thread initializes and tears things down. A file is
 ** opened for writing; this file will be written to by AcceptThread()
 ** and JitterThread().  Main() creates a socket for reading, listens
 ** and binds the socket.
-** 
+**
 ** ConnectThread() connects to the socket created by main, then polls
 ** the "state" variable. When state is AllDone, ConnectThread() exits.
 **
@@ -36,11 +36,11 @@
 ** AcceptThread() and JitterThread() or may take a while. The default
 ** iteration count, jitter, is set by DEFAULT_JITTER. This may be
 ** modified at the command line with the -j option.
-** 
+**
 */
 
-#include <plgetopt.h> 
-#include <nspr.h> 
+#include <plgetopt.h>
+#include <nspr.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,7 +97,7 @@ static void AcceptThread(void *arg)
     PRFileDesc  *arSock;
     PRNetAddr   *arAddr;
 
-    bytesRead = PR_AcceptRead( listenSock, 
+    bytesRead = PR_AcceptRead( listenSock,
         &arSock,
         &arAddr,
         dataBuf,
@@ -160,8 +160,8 @@ static void ConnectThread( void *arg )
     memset(&serverAddress, 0, sizeof(serverAddress));
     rv = PR_InitializeNetAddr(PR_IpAddrLoopback, BASE_PORT, &serverAddress);
     PR_ASSERT( PR_SUCCESS == rv );
-    rv = PR_Connect( clientSock, 
-        &serverAddress, 
+    rv = PR_Connect( clientSock,
+        &serverAddress,
         PR_SecondsToInterval(1));
     PR_ASSERT( PR_SUCCESS == rv );
 

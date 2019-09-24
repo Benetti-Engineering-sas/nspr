@@ -39,7 +39,7 @@ public:
     virtual ~RCTime();
 
     /* assignment operators */
-    void operator=(const RCTime&); 
+    void operator=(const RCTime&);
     void operator=(const PRExplodedTime&);
 
     /* comparitive operators */

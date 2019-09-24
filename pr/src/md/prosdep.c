@@ -11,7 +11,7 @@
 #endif
 #ifdef _WIN32
 #include <windows.h>
-#endif 
+#endif
 
 PRInt32 _pr_pageShift;
 PRInt32 _pr_pageSize;

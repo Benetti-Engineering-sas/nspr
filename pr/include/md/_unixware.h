@@ -75,7 +75,7 @@
 }
 
 /* Machine-dependent (MD) data structures.
- * Don't use SVR4 native threads (yet). 
+ * Don't use SVR4 native threads (yet).
  */
 
 struct _MDThread {

@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     printf("Threads terminated in %d milliseconds\n",
             PR_IntervalToMilliseconds(elapsed));
     fflush(stdout);
-    
+
     /* We are being very generous and allow 10 seconds. */
     if (elapsed >= PR_SecondsToInterval(10)) {
         fprintf(stderr, "Interrupting threads took longer than 10 seconds!!\n");

@@ -28,7 +28,7 @@ typedef struct threadarg {
 
 void threadwork(threadarg *arg);
 
-void 
+void
 threadmain(void *mytag)
 {
     threadarg arg;
@@ -143,22 +143,22 @@ main()
 {
 	PR_Init(PR_SYSTEM_THREAD, PR_PRIORITY_NORMAL, 256);
 	threadmain(const_cast<char *>("TestFile"));
-	PRThread *thr1 = PR_CreateThread(PR_SYSTEM_THREAD, 
-					 threadmain, 
+	PRThread *thr1 = PR_CreateThread(PR_SYSTEM_THREAD,
+					 threadmain,
 					 const_cast<char *>("TestFile1"),
 					 PR_PRIORITY_NORMAL,
 					 PR_GLOBAL_THREAD,
 					 PR_JOINABLE_THREAD,
 					 STACKSIZE);
-	PRThread *thr2 = PR_CreateThread(PR_SYSTEM_THREAD, 
-					 threadmain, 
+	PRThread *thr2 = PR_CreateThread(PR_SYSTEM_THREAD,
+					 threadmain,
 					 const_cast<char *>("TestFile2"),
 					 PR_PRIORITY_NORMAL,
 					 PR_GLOBAL_THREAD,
 					 PR_JOINABLE_THREAD,
 					 STACKSIZE);
-	PRThread *thr3 = PR_CreateThread(PR_SYSTEM_THREAD, 
-					 threadmain, 
+	PRThread *thr3 = PR_CreateThread(PR_SYSTEM_THREAD,
+					 threadmain,
 					 const_cast<char *>("TestFile3"),
 					 PR_PRIORITY_NORMAL,
 					 PR_GLOBAL_THREAD,

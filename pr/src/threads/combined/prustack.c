@@ -141,7 +141,7 @@ PRThreadStack *_PR_NewStack(PRUint32 stackSize)
 	    ts->allocBase, ts->allocBase + ts->allocSize - 1,
 	    ts->allocBase + REDZONE,
 	    ts->allocBase + REDZONE + stackSize - 1));
-	    
+
     _PR_MD_INIT_STACK(ts,REDZONE);
 
     return ts;

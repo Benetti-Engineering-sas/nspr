@@ -13,8 +13,8 @@
 ** 27-Oct-1999 lth. Initial version
 ***********************************************************************/
 
-#include <plgetopt.h> 
-#include <nspr.h> 
+#include <plgetopt.h>
+#include <nspr.h>
 #include <stdio.h>
 #include <stdlib.h>
 

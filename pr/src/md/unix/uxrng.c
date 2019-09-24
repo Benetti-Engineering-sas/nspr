@@ -100,7 +100,7 @@ static size_t GetDevURandom( void *buf, size_t size )
 
 static size_t
 GetHighResClock(void *buf, size_t maxbytes)
-{             
+{
     return(GetDevURandom( buf, maxbytes ));
 }
 

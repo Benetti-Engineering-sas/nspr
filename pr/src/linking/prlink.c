@@ -85,8 +85,8 @@ struct PRLibrary {
     NSModule                    dlh;
 #else
     void*                       dlh;
-#endif 
-#endif 
+#endif
+#endif
 
 };
 
@@ -157,7 +157,7 @@ void _PR_InitLinker(void)
     h = dlopen(0, RTLD_LAZY);
     if (!h) {
         char *error;
-        
+
         DLLErrorInternal(_MD_ERRNO());
         error = (char*)PR_MALLOC(PR_GetErrorTextLength());
         (void) PR_GetErrorText(error);
@@ -205,7 +205,7 @@ void _PR_InitLinker(void)
 void _PR_ShutdownLinker(void)
 {
     /* FIXME: pr_exe_loadmap should be destroyed. */
-    
+
     PR_DestroyMonitor(pr_linker_lock);
     pr_linker_lock = NULL;
 
@@ -242,7 +242,7 @@ PR_IMPLEMENT(PRStatus) PR_SetLibraryPath(const char *path)
 /*
 ** Return the library path for finding shared libraries.
 */
-PR_IMPLEMENT(char *) 
+PR_IMPLEMENT(char *)
 PR_GetLibraryPath(void)
 {
     char *ev;
@@ -309,7 +309,7 @@ PR_GetLibraryPath(void)
 /*
 ** Build library name from path, lib and extensions
 */
-PR_IMPLEMENT(char*) 
+PR_IMPLEMENT(char*)
 PR_GetLibraryName(const char *path, const char *lib)
 {
     char *fullname;
@@ -352,13 +352,13 @@ PR_GetLibraryName(const char *path, const char *lib)
 /*
 ** Free the memory allocated, for the caller, by PR_GetLibraryName
 */
-PR_IMPLEMENT(void) 
+PR_IMPLEMENT(void)
 PR_FreeLibraryName(char *mem)
 {
     PR_smprintf_free(mem);
 }
 
-static PRLibrary* 
+static PRLibrary*
 pr_UnlockedFindLibrary(const char *name)
 {
     PRLibrary* lm = pr_loadmap;
@@ -369,11 +369,11 @@ pr_UnlockedFindLibrary(const char *name)
     cp = cp ? cp + 1 : lm->name;
 #ifdef WIN32
         /* Windows DLL names are case insensitive... */
-    if (strcmpi(np, cp) == 0) 
+    if (strcmpi(np, cp) == 0)
 #elif defined(XP_OS2)
     if (stricmp(np, cp) == 0)
 #else
-    if (strcmp(np, cp)  == 0) 
+    if (strcmp(np, cp)  == 0)
 #endif
     {
         /* found */
@@ -403,8 +403,8 @@ PR_LoadLibraryWithFlags(PRLibSpec libSpec, PRIntn flags)
              * cast to |char *| and set PR_LD_PATHW flag so that
              * it can be cast back to PRUnichar* in the callee.
              */
-            return pr_LoadLibraryByPathname((const char*) 
-                                            libSpec.value.pathname_u, 
+            return pr_LoadLibraryByPathname((const char*)
+                                            libSpec.value.pathname_u,
                                             flags | PR_LD_PATHW);
 #endif
         default:
@@ -412,8 +412,8 @@ PR_LoadLibraryWithFlags(PRLibSpec libSpec, PRIntn flags)
             return NULL;
     }
 }
-            
-PR_IMPLEMENT(PRLibrary*) 
+
+PR_IMPLEMENT(PRLibrary*)
 PR_LoadLibrary(const char *name)
 {
     PRLibSpec libSpec;
@@ -439,7 +439,7 @@ pr_LoadMachDyldModule(const char *name)
             const char *fileName;
             const char *errorString;
             NSLinkEditError(&linkEditError, &errorNum, &fileName, &errorString);
-            PR_LOG(_pr_linker_lm, PR_LOG_MIN, 
+            PR_LOG(_pr_linker_lm, PR_LOG_MIN,
                    ("LoadMachDyldModule error %d:%d for file %s:\n%s",
                     linkEditError, errorNum, fileName, errorString));
         }
@@ -503,7 +503,7 @@ static void* TV2FP(CFMutableDictionaryRef dict, const char* name, void *tvp)
             CFRelease(nameRef);
         }
     }
-    
+
     return newGlue;
 }
 
@@ -576,7 +576,7 @@ pr_LoadCFBundle(const char *name, PRLibrary *lm)
     resolvedPath = realpath(name, pathBuf);
     if (!resolvedPath)
         return PR_FAILURE;
-        
+
     pathRef = CFStringCreateWithCString(NULL, pathBuf, kCFStringEncodingUTF8);
     if (pathRef) {
         bundleURL = CFURLCreateWithFileSystemPath(NULL, pathRef,
@@ -605,7 +605,7 @@ pr_LoadViaDyld(const char *name, PRLibrary *lm)
             const char *fileName;
             const char *errorString;
             NSLinkEditError(&linkEditError, &errorNum, &fileName, &errorString);
-            PR_LOG(_pr_linker_lm, PR_LOG_MIN, 
+            PR_LOG(_pr_linker_lm, PR_LOG_MIN,
                    ("LoadMachDyldModule error %d:%d for file %s:\n%s",
                     linkEditError, errorNum, fileName, errorString));
         }
@@ -663,7 +663,7 @@ pr_LoadLibraryByPathname(const char *name, PRIntn flags)
         oserr = _MD_ERRNO();
         goto unlock;
     }
-    /* the list of loaded library names are always kept in UTF-8 
+    /* the list of loaded library names are always kept in UTF-8
      * on Win32 platforms */
     result = pr_UnlockedFindLibrary(utf8name);
 #else
@@ -737,7 +737,7 @@ pr_LoadLibraryByPathname(const char *name, PRIntn flags)
     if (status != PR_SUCCESS) {
         oserr = cfragNoLibraryErr;
         PR_DELETE(lm);
-        goto unlock;        
+        goto unlock;
     }
     lm->name = strdup(name);
     lm->next = pr_loadmap;
@@ -832,7 +832,7 @@ pr_LoadLibraryByPathname(const char *name, PRIntn flags)
         DLLErrorInternal(oserr);  /* sets error text */
     }
 #ifdef WIN32
-    if (utf8name_malloc) 
+    if (utf8name_malloc)
         PR_Free(utf8name_malloc);
     if (wname_malloc)
         PR_Free(wname_malloc);
@@ -844,7 +844,7 @@ pr_LoadLibraryByPathname(const char *name, PRIntn flags)
 /*
 ** Unload a shared library which was loaded via PR_LoadLibrary
 */
-PR_IMPLEMENT(PRStatus) 
+PR_IMPLEMENT(PRStatus)
 PR_UnloadLibrary(PRLibrary *lib)
 {
     int result = 0;
@@ -947,7 +947,7 @@ done:
     return status;
 }
 
-static void* 
+static void*
 pr_FindSymbolInLib(PRLibrary *lm, const char *name)
 {
     void *f = NULL;
@@ -962,7 +962,7 @@ pr_FindSymbolInLib(PRLibrary *lm, const char *name)
                 return (void*) tp->fp;
             }
         }
-        /* 
+        /*
         ** If the symbol was not found in the static table then check if
         ** the symbol was exported in the DLL... Win16 only!!
         */
@@ -971,7 +971,7 @@ pr_FindSymbolInLib(PRLibrary *lm, const char *name)
         return (void*)NULL;
 #endif
     }
-    
+
 #ifdef XP_OS2
     rc = DosQueryProcAddr(lm->dlh, 0, (PSZ) name, (PFN *) &f);
 #if defined(NEED_LEADING_UNDERSCORE)
@@ -1004,20 +1004,20 @@ pr_FindSymbolInLib(PRLibrary *lm, const char *name)
         Ptr                 symAddr;
         CFragSymbolClass    symClass;
         Str255              pName;
-        
+
         PR_LOG(_pr_linker_lm, PR_LOG_MIN, ("Looking up symbol: %s", name + SYM_OFFSET));
-        
+
         c2pstrcpy(pName, name + SYM_OFFSET);
-        
+
         f = (FindSymbol(lm->connection, pName, &symAddr, &symClass) == noErr) ? symAddr : NULL;
-        
+
 #ifdef __ppc__
         /* callers expect mach-o function pointers, so must wrap tvectors with glue. */
         if (f && symClass == kTVectorCFragSymbol) {
             f = TV2FP(lm->wrappers, name + SYM_OFFSET, f);
         }
 #endif /* __ppc__ */
-        
+
         if (f == NULL && strcmp(name + SYM_OFFSET, "main") == 0) f = lm->main;
     }
     if (lm->image) {
@@ -1063,7 +1063,7 @@ pr_FindSymbolInLib(PRLibrary *lm, const char *name)
 /*
 ** Called by class loader to resolve missing native's
 */
-PR_IMPLEMENT(void*) 
+PR_IMPLEMENT(void*)
 PR_FindSymbol(PRLibrary *lib, const char *raw_name)
 {
     void *f = NULL;
@@ -1104,13 +1104,13 @@ PR_FindSymbol(PRLibrary *lib, const char *raw_name)
 /*
 ** Return the address of the function 'raw_name' in the library 'lib'
 */
-PR_IMPLEMENT(PRFuncPtr) 
+PR_IMPLEMENT(PRFuncPtr)
 PR_FindFunctionSymbol(PRLibrary *lib, const char *raw_name)
 {
     return ((PRFuncPtr) PR_FindSymbol(lib, raw_name));
 }
 
-PR_IMPLEMENT(void*) 
+PR_IMPLEMENT(void*)
 PR_FindSymbolAndLibrary(const char *raw_name, PRLibrary* *lib)
 {
     void *f = NULL;
@@ -1161,7 +1161,7 @@ PR_FindSymbolAndLibrary(const char *raw_name, PRLibrary* *lib)
     return f;
 }
 
-PR_IMPLEMENT(PRFuncPtr) 
+PR_IMPLEMENT(PRFuncPtr)
 PR_FindFunctionSymbolAndLibrary(const char *raw_name, PRLibrary* *lib)
 {
     return ((PRFuncPtr) PR_FindSymbolAndLibrary(raw_name, lib));
@@ -1171,7 +1171,7 @@ PR_FindFunctionSymbolAndLibrary(const char *raw_name, PRLibrary* *lib)
 ** Add a static library to the list of loaded libraries. If LoadLibrary
 ** is called with the name then we will pretend it was already loaded
 */
-PR_IMPLEMENT(PRLibrary*) 
+PR_IMPLEMENT(PRLibrary*)
 PR_LoadStaticLibrary(const char *name, const PRStaticLinkTable *slt)
 {
     PRLibrary *lm=NULL;

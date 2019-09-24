@@ -89,16 +89,16 @@ int main(int argc, char **argv)
 {
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
     r2();
 
-    if(failed_already)    
+    if(failed_already)
         return 1;
     else
         return 0;
 
-    
+
 }
 

@@ -116,7 +116,7 @@ static void CDThread(void)
 
     for (i = 0; i < num_threads; i++) {
         PRThread *t = PR_CreateThread(PR_USER_THREAD,
-                      dull, 0, 
+                      dull, 0,
                       PR_PRIORITY_NORMAL,
                       PR_LOCAL_THREAD,
                       PR_UNJOINABLE_THREAD,
@@ -190,7 +190,7 @@ static void ContextSwitch(PRThreadScope scope1, PRThreadScope scope2)
     cxq = 0;
 
     t1 = PR_CreateThread(PR_USER_THREAD,
-                      CXReader, 0, 
+                      CXReader, 0,
                       PR_PRIORITY_NORMAL,
                       scope1,
                       PR_UNJOINABLE_THREAD,
@@ -204,7 +204,7 @@ static void ContextSwitch(PRThreadScope scope1, PRThreadScope scope2)
                             t1));
     }
     t2 = PR_CreateThread(PR_USER_THREAD,
-                      CXWriter, 0, 
+                      CXWriter, 0,
                       PR_PRIORITY_NORMAL,
                       scope2,
                       PR_UNJOINABLE_THREAD,
@@ -285,8 +285,8 @@ static void SemaContextSwitch(PRThreadScope scope1, PRThreadScope scope2)
     cxq = 0;
 
     t1 = PR_CreateThread(PR_USER_THREAD,
-                      SemaThread, 
-                      sem_set1, 
+                      SemaThread,
+                      sem_set1,
                       PR_PRIORITY_NORMAL,
                       scope1,
                       PR_UNJOINABLE_THREAD,
@@ -300,8 +300,8 @@ static void SemaContextSwitch(PRThreadScope scope1, PRThreadScope scope2)
                             t1));
     }
     t2 = PR_CreateThread(PR_USER_THREAD,
-                      SemaThread, 
-                      sem_set2, 
+                      SemaThread,
+                      sem_set2,
                       PR_PRIORITY_NORMAL,
                       scope2,
                       PR_UNJOINABLE_THREAD,
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
     if (0 == count) count = DEFAULT_COUNT;
-    
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
 	PR_BlockClockInterrupts();
 	PR_UnblockClockInterrupts();

@@ -67,7 +67,7 @@ static PRIntn PR_CALLBACK RealMain(PRIntn argc, char **argv)
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

@@ -371,7 +371,7 @@ static PRThread* _PR_CreateThread(
 
         if (PR_LOCAL_THREAD == scope)
         	scope = PR_GLOBAL_THREAD;
-			
+
         if (PR_GLOBAL_BOUND_THREAD == scope) {
 #if _POSIX_THREAD_PRIORITY_SCHEDULING > 0
     		rv = pthread_attr_setscope(&tattr, PTHREAD_SCOPE_SYSTEM);
@@ -505,7 +505,7 @@ PR_IMPLEMENT(PRThread*) PR_CreateThread(
 } /* PR_CreateThread */
 
 PR_IMPLEMENT(PRThread*) PR_CreateThreadGCAble(
-    PRThreadType type, void (*start)(void *arg), void *arg, 
+    PRThreadType type, void (*start)(void *arg), void *arg,
     PRThreadPriority priority, PRThreadScope scope,
     PRThreadState state, PRUint32 stackSize)
 {
@@ -517,7 +517,7 @@ PR_IMPLEMENT(void*) GetExecutionEnvironment(PRThread *thred)
 {
     return thred->environment;
 }  /* GetExecutionEnvironment */
- 
+
 PR_IMPLEMENT(void) SetExecutionEnvironment(PRThread *thred, void *env)
 {
     thred->environment = env;
@@ -809,7 +809,7 @@ static void _pt_thread_death(void *arg)
         PR_ASSERT(0 == rv);
     }
 
-    /* PR_TRUE for: call destructors */ 
+    /* PR_TRUE for: call destructors */
     _pt_thread_death_internal(arg, PR_TRUE);
 
     if (NULL == thred)
@@ -898,7 +898,7 @@ void _PR_InitThreads(
     pt_book.maxPrio = PT_PRIO_MAX;
 #endif
 #endif
-    
+
     PR_ASSERT(NULL == pt_book.ml);
     pt_book.ml = PR_NewLock();
     PR_ASSERT(NULL != pt_book.ml);
@@ -1032,7 +1032,7 @@ void _PR_Fini(void)
     int rv;
 
     if (!_pr_initialized) {
-        /* Either NSPR was never successfully initialized or 
+        /* Either NSPR was never successfully initialized or
          * PR_Cleanup has been called already. */
         if (pt_book.keyCreated)
         {
@@ -1047,7 +1047,7 @@ void _PR_Fini(void)
     if (NULL != thred)
     {
         /*
-         * PR_FALSE, because it is unsafe to call back to the 
+         * PR_FALSE, because it is unsafe to call back to the
          * thread private data destructors at final cleanup.
          */
         _pt_thread_death_internal(thred, PR_FALSE);
@@ -1153,7 +1153,7 @@ PR_SetThreadDumpProc(PRThread* thread, PRThreadDumpProc dump, void *arg)
     thread->dumpArg = arg;
 }
 
-/* 
+/*
  * Garbage collection support follows.
  */
 
@@ -1205,7 +1205,7 @@ static void init_pthread_gc_support(void)
 	    sigact_null.sa_flags = SA_RESTART;
 	    sigemptyset (&sigact_null.sa_mask);
         rv = sigaction (SIGUSR1, &sigact_null, NULL);
-	    PR_ASSERT(0 ==rv); 
+	    PR_ASSERT(0 ==rv);
     }
 #endif  /* defined(PT_NO_SIGTIMEDWAIT) */
 }
@@ -1267,8 +1267,8 @@ PR_IMPLEMENT(PRStatus) PR_EnumerateThreads(PREnumerator func, void *arg)
         if (_PT_IS_GCABLE_THREAD(thred))
         {
             PR_ASSERT((thred == me) || (thred->suspend & PT_THREAD_SUSPENDED));
-            PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
-                   ("In PR_EnumerateThreads callback thread %p thid = %X\n", 
+            PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
+                   ("In PR_EnumerateThreads callback thread %p thid = %X\n",
                     thred, thred->id));
 
             rv = func(thred, count++, arg);
@@ -1277,13 +1277,13 @@ PR_IMPLEMENT(PRStatus) PR_EnumerateThreads(PREnumerator func, void *arg)
         }
         thred = next;
     }
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("End PR_EnumerateThreads count = %d \n", count));
     return rv;
 }  /* PR_EnumerateThreads */
 
 /*
- * PR_SuspendAll and PR_ResumeAll are called during garbage collection.  The strategy 
+ * PR_SuspendAll and PR_ResumeAll are called during garbage collection.  The strategy
  * we use is to send a SIGUSR2 signal to every gc able thread that we intend to suspend.
  * The signal handler will record the stack pointer and will block until resumed by
  * the resume call.  Since the signal handler is the last routine called for the
@@ -1296,20 +1296,20 @@ PR_IMPLEMENT(PRStatus) PR_EnumerateThreads(PREnumerator func, void *arg)
 
 /*
  * In the signal handler, we can not use condition variable notify or wait.
- * This does not work consistently across all pthread platforms.  We also can not 
+ * This does not work consistently across all pthread platforms.  We also can not
  * use locking since that does not seem to work reliably across platforms.
  * Only thing we can do is yielding while testing for a global condition
  * to change.  This does work on pthread supported platforms.  We may have
  * to play with priortities if there are any problems detected.
  */
 
- /* 
+ /*
   * In AIX, you cannot use ANY pthread calls in the signal handler except perhaps
   * pthread_yield. But that is horribly inefficient. Hence we use only sigwait, no
   * sigtimedwait is available. We need to use another user signal, SIGUSR1. Actually
   * SIGUSR1 is also used by exec in Java. So our usage here breaks the exec in Java,
   * for AIX. You cannot use pthread_cond_wait or pthread_delay_np in the signal
-  * handler as all synchronization mechanisms just break down. 
+  * handler as all synchronization mechanisms just break down.
   */
 
 #if defined(PT_NO_SIGTIMEDWAIT)
@@ -1327,8 +1327,8 @@ static void suspend_signal_handler(PRIntn sig)
 	PR_ASSERT(_PT_IS_GCABLE_THREAD(me));
 	PR_ASSERT((me->suspend & PT_THREAD_SUSPENDED) == 0);
 
-	PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
-        ("Begin suspend_signal_handler thred %p thread id = %X\n", 
+	PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
+        ("Begin suspend_signal_handler thred %p thread id = %X\n",
 		me, me->id));
 
 	/*
@@ -1336,10 +1336,10 @@ static void suspend_signal_handler(PRIntn sig)
 	 */
 	me->sp = &me;
 
-	/* 
+	/*
 	   At this point, the thread's stack pointer has been saved,
 	   And it is going to enter a wait loop until it is resumed.
-	   So it is _really_ suspended 
+	   So it is _really_ suspended
 	*/
 
 	me->suspend |= PT_THREAD_SUSPENDED;
@@ -1371,12 +1371,12 @@ static void suspend_signal_handler(PRIntn sig)
 
     /*
      * At this point, thread has been resumed, so set a global condition.
-     * The ResumeAll needs to know that this has really been resumed. 
-     * So the signal handler sets a flag which PR_ResumeAll will reset. 
+     * The ResumeAll needs to know that this has really been resumed.
+     * So the signal handler sets a flag which PR_ResumeAll will reset.
      * The PR_ResumeAll must reset this flag ...
      */
 
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
         ("End suspend_signal_handler thred = %p tid = %X\n", me, me->id));
 }  /* suspend_signal_handler */
 
@@ -1384,7 +1384,7 @@ static void pt_SuspendSet(PRThread *thred)
 {
     PRIntn rv;
 
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("pt_SuspendSet thred %p thread id = %X\n", thred, thred->id));
 
 
@@ -1394,7 +1394,7 @@ static void pt_SuspendSet(PRThread *thred)
 
     PR_ASSERT((thred->suspend & PT_THREAD_SUSPENDED) == 0);
 
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("doing pthread_kill in pt_SuspendSet thred %p tid = %X\n",
 	   thred, thred->id));
     rv = pthread_kill (thred->id, SIGUSR2);
@@ -1403,14 +1403,14 @@ static void pt_SuspendSet(PRThread *thred)
 
 static void pt_SuspendTest(PRThread *thred)
 {
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("Begin pt_SuspendTest thred %p thread id = %X\n", thred, thred->id));
 
 
     /*
      * Wait for the thread to be really suspended. This happens when the
      * suspend signal handler stores the stack pointer and sets the state
-     * to suspended. 
+     * to suspended.
      */
 
 #if defined(PT_NO_SIGTIMEDWAIT)
@@ -1435,7 +1435,7 @@ static void pt_SuspendTest(PRThread *thred)
 
 static void pt_ResumeSet(PRThread *thred)
 {
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("pt_ResumeSet thred %p thread id = %X\n", thred, thred->id));
 
     /*
@@ -1456,12 +1456,12 @@ static void pt_ResumeSet(PRThread *thred)
 
 static void pt_ResumeTest(PRThread *thred)
 {
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
 	   ("Begin pt_ResumeTest thred %p thread id = %X\n", thred, thred->id));
 
     /*
      * Wait for the threads resume state to change
-     * to indicate it is really resumed 
+     * to indicate it is really resumed
      */
 #if defined(PT_NO_SIGTIMEDWAIT)
     pthread_mutex_lock(&thred->suspendResumeMutex);
@@ -1576,8 +1576,8 @@ PR_IMPLEMENT(void) PR_ResumeAll(void)
 /* Return the stack pointer for the given thread- used by the GC */
 PR_IMPLEMENT(void *)PR_GetSP(PRThread *thred)
 {
-    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, 
-	    ("in PR_GetSP thred %p thid = %X, sp = %p\n", 
+    PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS,
+	    ("in PR_GetSP thred %p thid = %X, sp = %p\n",
 	    thred, thred->id, thred->sp));
     return thred->sp;
 }  /* PR_GetSP */

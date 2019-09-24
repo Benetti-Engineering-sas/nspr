@@ -66,7 +66,7 @@ public:
 
 private:
     PRIntervalTime interval;
-    
+
 };  /* RCInterval */
 
 

@@ -22,26 +22,26 @@ PRIOMethods _pr_faulty_methods = {
     (PRSeek64FN)_PR_InvalidInt64,
     (PRFileInfoFN)_PR_InvalidStatus,
     (PRFileInfo64FN)_PR_InvalidStatus,
-    (PRWritevFN)_PR_InvalidInt,        
-    (PRConnectFN)_PR_InvalidStatus,        
-    (PRAcceptFN)_PR_InvalidDesc,        
-    (PRBindFN)_PR_InvalidStatus,        
-    (PRListenFN)_PR_InvalidStatus,        
-    (PRShutdownFN)_PR_InvalidStatus,    
-    (PRRecvFN)_PR_InvalidInt,        
-    (PRSendFN)_PR_InvalidInt,        
-    (PRRecvfromFN)_PR_InvalidInt,    
-    (PRSendtoFN)_PR_InvalidInt,        
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
     (PRPollFN)_PR_InvalidInt16,
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,    
-    (PRGetpeernameFN)_PR_InvalidStatus,    
-    (PRReservedFN)_PR_InvalidInt,    
-    (PRReservedFN)_PR_InvalidInt,    
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
     (PRConnectcontinueFN)_PR_InvalidStatus,
     (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt,
@@ -299,7 +299,7 @@ PR_IMPLEMENT(PRInt32) PR_EmulateAcceptRead(
  *    they are sent before and after the file, respectively.
  *
  *    PR_TRANSMITFILE_CLOSE_SOCKET flag - close socket after sending file
- *    
+ *
  *    return number of bytes sent or -1 on error
  *
  */

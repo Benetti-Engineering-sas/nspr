@@ -39,19 +39,19 @@
 #include <plstr.h>
 #include <prclist.h>
 #include <prmem.h>
-#include <plgetopt.h> 
-#include <prlog.h> 
-#include <prmon.h> 
-#include <pratom.h> 
-#include <prtrace.h> 
-#include <prcountr.h> 
-#include <prolock.h> 
+#include <plgetopt.h>
+#include <prlog.h>
+#include <prmon.h>
+#include <pratom.h>
+#include <prtrace.h>
+#include <prcountr.h>
+#include <prolock.h>
 
 #define COUNT_LIMIT  (10 * ( 1024))
 
 #define SMALL_TRACE_BUFSIZE  ( 60 * 1024 )
 
-typedef enum 
+typedef enum
 {
     CountLoop = 1,
     TraceLoop = 2,
@@ -74,7 +74,7 @@ PR_DEFINE_TRACE( hTrace );
 static void Help(void)
 {
     printf("Help? ... Ha!\n");
-}    
+}
 
 static void ListCounters(void)
 {
@@ -95,13 +95,13 @@ static void ListCounters(void)
             PR_GET_COUNTER_NAME_FROM_HANDLE( rh, qname, rname, desc );
             PR_GET_COUNTER(tCtr, rh);
             PR_LOG( lm, msgLevel,
-                ( "QName: %s  RName: %s  Desc: %s  Value: %ld\n", 
+                ( "QName: %s  RName: %s  Desc: %s  Value: %ld\n",
                 qn, rn, dn, tCtr ));
             PR_FIND_NEXT_COUNTER_RNAME(rh, rh, qh );
-        } 
+        }
         PR_FIND_NEXT_COUNTER_QNAME(qh, qh);
     }
-    return;    
+    return;
 } /* end ListCounters() */
 
 static void ListTraces(void)
@@ -121,13 +121,13 @@ static void ListTraces(void)
         {
             PR_GET_TRACE_NAME_FROM_HANDLE( rh, qname, rname, desc );
             PR_LOG( lm, msgLevel,
-                ( "QName: %s  RName: %s  Desc: %s", 
+                ( "QName: %s  RName: %s  Desc: %s",
                 qn, rn, dn ));
             PR_FIND_NEXT_TRACE_RNAME(rh, rh, qh );
-        } 
+        }
         PR_FIND_NEXT_TRACE_QNAME(qh, qh);
     }
-    return;    
+    return;
 } /* end ListCounters() */
 
 
@@ -146,7 +146,7 @@ static void PR_CALLBACK CountSomething( void *arg )
 
     PR_LOG( lm, msgLevel,
         ("CountSomething: begin thread %ld", switchVar ));
-    
+
     for ( i = 0; i < COUNT_LIMIT ; i++)
     {
         switch ( switchVar )
@@ -172,13 +172,13 @@ static void PR_CALLBACK CountSomething( void *arg )
 
     PR_LOG( lm, msgLevel,
         ("CounterSomething: end thread %ld", switchVar ));
-    
+
     PR_EnterMonitor(mon);
     --activeThreads;
     PR_Notify( mon );
     PR_ExitMonitor(mon);
 
-    return;    
+    return;
 } /* end CountSomething() */
 
 /*
@@ -193,7 +193,7 @@ static void CounterTest( void )
 
     PR_LOG( lm, msgLevel,
         ("Begin CounterTest"));
-    
+
     /*
     ** Test Get and Set of a counter.
     **
@@ -215,7 +215,7 @@ static void CounterTest( void )
     PR_ASSERT( tc == hCounter );
 
 	t1 = PR_CreateThread(PR_USER_THREAD,
-	        CountSomething, &one, 
+	        CountSomething, &one,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
@@ -223,23 +223,23 @@ static void CounterTest( void )
 	PR_ASSERT(t1);
 
 	t2 = PR_CreateThread(PR_USER_THREAD,
-			CountSomething, &two, 
+			CountSomething, &two,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
 			0);
 	PR_ASSERT(t2);
-        
+
 	t3 = PR_CreateThread(PR_USER_THREAD,
-			CountSomething, &three, 
+			CountSomething, &three,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
 			0);
 	PR_ASSERT(t3);
-        
+
 	t4 = PR_CreateThread(PR_USER_THREAD,
-			CountSomething, &four, 
+			CountSomething, &four,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
@@ -265,7 +265,7 @@ static void PR_CALLBACK RecordTrace(void *arg )
     PR_Notify( mon );
     PR_ExitMonitor(mon);
 
-    return;    
+    return;
 } /* end RecordTrace() */
 
 
@@ -280,7 +280,7 @@ static void PR_CALLBACK SampleTrace( void *arg )
     PRInt32 found, rc;
     PRTraceEntry    *foundEntries;
     PRInt32 i;
-    
+
     foundEntries = (PRTraceEntry *)PR_Malloc( NUM_TRACE_RECORDS * sizeof(PRTraceEntry));
     PR_ASSERT(foundEntries != NULL );
 
@@ -298,9 +298,9 @@ static void PR_CALLBACK SampleTrace( void *arg )
                     ("SampleTrace, detail: Thread: %p, Time: %llX, UD0: %ld, UD1: %ld, UD2: %8.8ld",
                         (foundEntries +i)->thread,
                         (foundEntries +i)->time,
-                        (foundEntries +i)->userData[0], 
-                        (foundEntries +i)->userData[1], 
-                        (foundEntries +i)->userData[2] )); 
+                        (foundEntries +i)->userData[0],
+                        (foundEntries +i)->userData[1],
+                        (foundEntries +i)->userData[2] ));
             }
         }
         PR_Sleep(PR_MillisecondsToInterval(50));
@@ -318,7 +318,7 @@ static void PR_CALLBACK SampleTrace( void *arg )
         ("SampleTrace(): exiting"));
 
 #endif
-    return;    
+    return;
 } /* end RecordTrace() */
 
 /*
@@ -330,14 +330,14 @@ static void TraceTest( void )
     PRInt32 size;
     PR_DEFINE_TRACE( th );
     PRThread *t1, *t2;
-    
+
     PR_LOG( lm, msgLevel,
-        ("Begin TraceTest"));    
+        ("Begin TraceTest"));
 
     size = SMALL_TRACE_BUFSIZE;
     PR_SET_TRACE_OPTION( PRTraceBufSize, &size );
     PR_GET_TRACE_OPTION( PRTraceBufSize, &i );
-    
+
     PR_CREATE_TRACE( th, "TraceTest", "tt2", "A description for the trace test" );
     PR_CREATE_TRACE( th, "TraceTest", "tt3", "A description for the trace test" );
     PR_CREATE_TRACE( th, "TraceTest", "tt4", "A description for the trace test" );
@@ -362,7 +362,7 @@ static void TraceTest( void )
 
     activeThreads += 2;
 	t1 = PR_CreateThread(PR_USER_THREAD,
-			RecordTrace, NULL, 
+			RecordTrace, NULL,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
@@ -370,20 +370,20 @@ static void TraceTest( void )
 	PR_ASSERT(t1);
 
 	t2 = PR_CreateThread(PR_USER_THREAD,
-			SampleTrace, 0, 
+			SampleTrace, 0,
 			PR_PRIORITY_NORMAL,
 			PR_GLOBAL_THREAD,
     		PR_UNJOINABLE_THREAD,
 			0);
 	PR_ASSERT(t2);
-        
+
     ListTraces();
 
     PR_GET_TRACE_HANDLE_FROM_NAME( th, "TraceTest","tt1" );
     PR_ASSERT( th == hTrace );
 
     PR_LOG( lm, msgLevel,
-        ("End TraceTest"));    
+        ("End TraceTest"));
     return;
 } /* end TraceTest() */
 
@@ -394,9 +394,9 @@ static void TraceTest( void )
 static void OrderedLockTest( void )
 {
     PR_LOG( lm, msgLevel,
-        ("Begin OrderedLockTest"));    
+        ("Begin OrderedLockTest"));
 
-    
+
 } /* end OrderedLockTest() */
 
 

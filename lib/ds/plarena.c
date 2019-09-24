@@ -74,15 +74,15 @@ PR_IMPLEMENT(void) PL_InitArenaPool(
 
 /*
 ** PL_ArenaAllocate() -- allocate space from an arena pool
-** 
+**
 ** Description: PL_ArenaAllocate() allocates space from an arena
-** pool. 
+** pool.
 **
 ** First, try to satisfy the request from arenas starting at
 ** pool->current. Then try to allocate a new arena from the heap.
 **
 ** Returns: pointer to allocated space or NULL
-** 
+**
 ** Notes: The original implementation had some difficult to
 ** solve bugs; the code was difficult to read. Sometimes it's
 ** just easier to rewrite it. I did that. larryh.
@@ -93,12 +93,12 @@ PR_IMPLEMENT(void) PL_InitArenaPool(
 
 PR_IMPLEMENT(void *) PL_ArenaAllocate(PLArenaPool *pool, PRUint32 nb)
 {
-    PLArena *a;   
+    PLArena *a;
     char *rp;     /* returned pointer */
     PRUint32 nbOld;
 
     PR_ASSERT((nb & pool->mask) == 0);
-    
+
     nbOld = nb;
     nb = (PRUword)PL_ARENA_ALIGN(pool, nb); /* force alignment */
     if (nb < nbOld)
@@ -117,8 +117,8 @@ PR_IMPLEMENT(void *) PL_ArenaAllocate(PLArenaPool *pool, PRUint32 nb)
         } while( NULL != (a = a->next) );
     }
 
-    /* attempt to allocate from the heap */ 
-    {  
+    /* attempt to allocate from the heap */
+    {
         PRUint32 sz = PR_MAX(pool->arenasize, nb);
         if (PR_UINT32_MAX - sz < sizeof *a + pool->mask) {
             a = NULL;
@@ -133,7 +133,7 @@ PR_IMPLEMENT(void *) PL_ArenaAllocate(PLArenaPool *pool, PRUint32 nb)
             rp = (char *)a->avail;
             a->avail += nb;
             PR_ASSERT(a->avail <= a->limit);
-            /* the newly allocated arena is linked after pool->current 
+            /* the newly allocated arena is linked after pool->current
             *  and becomes pool->current */
             a->next = pool->current->next;
             pool->current->next = a;

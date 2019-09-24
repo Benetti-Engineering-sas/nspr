@@ -46,7 +46,7 @@ static void PrintExplodedTime(const PRExplodedTime *et) {
         }
         hourOffset = totalOffset / 3600;
         minOffset = (totalOffset % 3600) / 60;
-        if (debug_mode) 
+        if (debug_mode)
             printf("%s%02ld%02ld ", sign, hourOffset, minOffset);
     }
 

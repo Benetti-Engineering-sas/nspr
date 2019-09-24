@@ -119,7 +119,7 @@ static _PRCPUQueue *_PR_CreateCPUQueue(void)
     PRInt32 index;
     _PRCPUQueue *cpuQueue;
     cpuQueue = PR_NEWZAP(_PRCPUQueue);
- 
+
     _MD_NEW_LOCK( &cpuQueue->runQLock );
     _MD_NEW_LOCK( &cpuQueue->sleepQLock );
     _MD_NEW_LOCK( &cpuQueue->miscQLock );
@@ -191,7 +191,7 @@ static PRStatus _PR_StartCPU(_PRCPU *cpu, PRThread *thread)
     cpu->last_clock = PR_IntervalNow();
 
     /* Before we create any threads on this CPU we have to
-     * set the current CPU 
+     * set the current CPU
      */
     _PR_MD_SET_CURRENT_CPU(cpu);
     _PR_MD_INIT_RUNNING_CPU(cpu);
@@ -210,7 +210,7 @@ static PRStatus _PR_StartCPU(_PRCPU *cpu, PRThread *thread)
         /* didn't clean up CPU queue XXXMB */
         PR_DELETE(cpu);
         return PR_FAILURE;
-    } 
+    }
     PR_ASSERT(cpu->idle_thread->cpu == cpu);
 
     cpu->idle_thread->no_sched = 0;
@@ -374,7 +374,7 @@ PR_IMPLEMENT(void) PR_SetConcurrency(PRUintn numCPUs)
 
 	if (_native_threads_only)
 		return;
-    
+
     _PR_CPU_LIST_LOCK();
     if (_pr_numCPU < numCPUs) {
         newCPU = numCPUs - _pr_numCPU;

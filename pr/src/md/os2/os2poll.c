@@ -24,8 +24,8 @@ PRBool IsSocketSet( PRInt32 osfd, int* socks, int start, int count )
     if( socks[i] == osfd )
       isSet = PR_TRUE;
   }
-  
-  return isSet; 
+
+  return isSet;
 }
 #endif
 
@@ -55,7 +55,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
     wt = 0;
     ex = 0;
     socks = (int) PR_MALLOC( npds * 3 * sizeof(int) );
-    
+
     if (!socks)
     {
         PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
@@ -115,7 +115,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                     if (0 == ready)
                     {
                         PRInt32 osfd = bottom->secret->md.osfd;
-                        if (osfd > maxfd) 
+                        if (osfd > maxfd)
                             maxfd = osfd;
                         if (in_flags_read & PR_POLL_READ)
                         {
@@ -124,7 +124,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                             FD_SET(osfd, &rd);
 #else
                             socks[rd] = osfd;
-                            rd++;              
+                            rd++;
 #endif
                         }
                         if (in_flags_read & PR_POLL_WRITE)
@@ -134,7 +134,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                             FD_SET(osfd, &wt);
 #else
                             socks[npds+wt] = osfd;
-                            wt++;              
+                            wt++;
 #endif
                         }
                         if (in_flags_write & PR_POLL_READ)
@@ -144,7 +144,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                             FD_SET(osfd, &rd);
 #else
                             socks[rd] = osfd;
-                            rd++;              
+                            rd++;
 #endif
                         }
                         if (in_flags_write & PR_POLL_WRITE)
@@ -154,7 +154,7 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                             FD_SET(osfd, &wt);
 #else
                             socks[npds+wt] = osfd;
-                            wt++;              
+                            wt++;
 #endif
                         }
                         if (pd->in_flags & PR_POLL_EXCEPT)
@@ -229,7 +229,7 @@ retry:
         socks[i] = socks[j];
     for( i = rd+wt, j = npds*2; j < npds*2+ex; i++,j++ )
         socks[i] = socks[j];
-    
+
     ready = os2_select(socks, rd, wt, ex, msecs);
 #endif
 
@@ -272,31 +272,31 @@ retry:
 #ifdef BSD_SELECT
                 if (FD_ISSET(osfd, &rd))
 #else
-                if( IsSocketSet(osfd, socks, 0, rd) )        
+                if( IsSocketSet(osfd, socks, 0, rd) )
 #endif
                 {
                     if (pd->out_flags & _PR_POLL_READ_SYS_READ)
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_READ)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
 
 #ifdef BSD_SELECT
                 if (FD_ISSET(osfd, &wt))
 #else
-                if( IsSocketSet(osfd, socks, rd, wt) )        
+                if( IsSocketSet(osfd, socks, rd, wt) )
 #endif
                 {
                     if (pd->out_flags & _PR_POLL_READ_SYS_WRITE)
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_WRITE)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
 
 #ifdef BSD_SELECT
                 if (FD_ISSET(osfd, &ex))
 #else
-                if( IsSocketSet(osfd, socks, rd+wt, ex) )        
+                if( IsSocketSet(osfd, socks, rd+wt, ex) )
 #endif
                 {
                     out_flags |= PR_POLL_EXCEPT;

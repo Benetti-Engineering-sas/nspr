@@ -7,7 +7,7 @@
 /*
  *
  * Test atomic stack operations
- *		
+ *
  *		Two stacks are created and threads add data items (each containing
  *		one of the first n integers) to the first stack, remove data items
  *		from the first stack and add them to the second stack. The primordial
@@ -15,7 +15,7 @@
  *		integers in the data items in the second stack. The test succeeds if
  *		they are equal.
  */
- 
+
 #include "nspr.h"
 #include "plgetopt.h"
 
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 		thread_args[cnt].list1 = list1;
 		thread_args[cnt].list2 = list2;
 		thread_args[cnt].loops = loops;
-		thread_args[cnt].data_cnt = data_cnt;	
+		thread_args[cnt].data_cnt = data_cnt;
 		thread_args[cnt].initial_data_value = 1 + cnt * data_cnt;
 
 		if (cnt & 1)

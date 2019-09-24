@@ -144,7 +144,7 @@ void _MD_unix_map_default_error(int err)
         case ENOLCK:
             prError = PR_FILE_IS_LOCKED_ERROR;
             break;
-#ifdef ENOLINK 
+#ifdef ENOLINK
         case ENOLINK:
             prError = PR_REMOTE_FILE_ERROR;
             break;
@@ -530,8 +530,8 @@ void _MD_unix_map_connect_error(int err)
     switch (err) {
 #if defined(UNIXWARE)
         /*
-         * On some platforms, if we connect to a port on the local host 
-         * (the loopback address) that no process is listening on, we get 
+         * On some platforms, if we connect to a port on the local host
+         * (the loopback address) that no process is listening on, we get
          * EIO instead of ECONNREFUSED.
          */
         case EIO:

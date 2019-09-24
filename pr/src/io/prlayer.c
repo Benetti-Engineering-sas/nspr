@@ -517,7 +517,7 @@ PR_IMPLEMENT(PRStatus) PR_PushIOLayer(
     if (stack == insert)
     {
 		/* going on top of the stack */
-		/* old-style stack */	
+		/* old-style stack */
 		PRFileDesc copy = *stack;
 		*stack = *fd;
 		*fd = copy;

@@ -230,29 +230,29 @@ void _MD_EarlyInit(void)
     sigaddset(&set, SIGALRM);
 }
 
-PRStatus _MD_CREATE_THREAD(PRThread *thread, 
-					void (*start)(void *), 
+PRStatus _MD_CREATE_THREAD(PRThread *thread,
+					void (*start)(void *),
 					PRThreadPriority priority,
-					PRThreadScope scope, 
-					PRThreadState state, 
-					PRUint32 stackSize) 
+					PRThreadScope scope,
+					PRThreadState state,
+					PRUint32 stackSize)
 {
 	long flags;
-	
-    /* mask out SIGALRM for native thread creation */
-    thr_sigsetmask(SIG_BLOCK, &set, &oldset); 
 
-    flags = (state == PR_JOINABLE_THREAD ? THR_SUSPENDED/*|THR_NEW_LWP*/ 
+    /* mask out SIGALRM for native thread creation */
+    thr_sigsetmask(SIG_BLOCK, &set, &oldset);
+
+    flags = (state == PR_JOINABLE_THREAD ? THR_SUSPENDED/*|THR_NEW_LWP*/
 			   : THR_SUSPENDED|THR_DETACHED/*|THR_NEW_LWP*/);
 	if (_PR_IS_GCABLE_THREAD(thread) ||
 							(scope == PR_GLOBAL_BOUND_THREAD))
 		flags |= THR_BOUND;
 
     if (thr_create(NULL, thread->stack->stackSize,
-                  (void *(*)(void *)) start, (void *) thread, 
+                  (void *(*)(void *)) start, (void *) thread,
 				  flags,
                   &thread->md.handle)) {
-        thr_sigsetmask(SIG_SETMASK, &oldset, NULL); 
+        thr_sigsetmask(SIG_SETMASK, &oldset, NULL);
 	return PR_FAILURE;
     }
 
@@ -262,15 +262,15 @@ PRStatus _MD_CREATE_THREAD(PRThread *thread,
      * its register state is initialized properly for GC */
 
     thread->md.lwpid = -1;
-    thr_sigsetmask(SIG_SETMASK, &oldset, NULL); 
+    thr_sigsetmask(SIG_SETMASK, &oldset, NULL);
     _MD_NEW_SEM(&thread->md.waiter_sem, 0);
 
 	if ((scope == PR_GLOBAL_THREAD) || (scope == PR_GLOBAL_BOUND_THREAD)) {
 		thread->flags |= _PR_GLOBAL_SCOPE;
     }
 
-    /* 
-    ** Set the thread priority.  This will also place the thread on 
+    /*
+    ** Set the thread priority.  This will also place the thread on
     ** the runQ.
     **
     ** Force PR_SetThreadPriority to set the priority by
@@ -282,7 +282,7 @@ PRStatus _MD_CREATE_THREAD(PRThread *thread,
     thread->priority = 100;
     PR_SetThreadPriority( thread, pri );
 
-    PR_LOG(_pr_thread_lm, PR_LOG_MIN, 
+    PR_LOG(_pr_thread_lm, PR_LOG_MIN,
             ("(0X%x)[Start]: on to runq at priority %d",
             thread, thread->priority));
     }
@@ -301,7 +301,7 @@ void _MD_cleanup_thread(PRThread *thread)
 
     hdl = thread->md.handle;
 
-    /* 
+    /*
     ** First, suspend the thread (unless it's the active one)
     ** Because we suspend it first, we don't have to use LOCK_SCHEDULER to
     ** prevent both of us modifying the thread structure at the same time.
@@ -456,7 +456,7 @@ void unixware_preempt_off()
 
 void unixware_preempt_on()
 {
-    sigprocmask (SIG_SETMASK, &old_mask, NULL);      
+    sigprocmask (SIG_SETMASK, &old_mask, NULL);
 }
 
 void _MD_Begin_SuspendAll()
@@ -466,7 +466,7 @@ void _MD_Begin_SuspendAll()
     PR_LOG(_pr_gc_lm, PR_LOG_ALWAYS, ("Begin_SuspendAll\n"));
     /* run at highest prio so I cannot be preempted */
     thr_getprio(thr_self(), &gcprio);
-    thr_setprio(thr_self(), 0x7fffffff); 
+    thr_setprio(thr_self(), 0x7fffffff);
     suspendAllOn = 1;
 }
 
@@ -493,7 +493,7 @@ void _MD_Suspend(PRThread *thr)
     /* XXX Primordial thread can't be bound to an lwp, hence there is no
      * way we can assume that we can get the lwp status for primordial
      * thread reliably. Hence we skip this for primordial thread, hoping
-     * that the SP is saved during lock and cond. wait. 
+     * that the SP is saved during lock and cond. wait.
      * XXX - Again this is concern only for java interpreter, not for the
      * server, 'cause primordial thread in the server does not do java work
      */
@@ -518,7 +518,7 @@ void _MD_Resume(PRThread *thr)
    }
    if (thr->md.lwpid == -1)
      return;
- 
+
    if ( _lwp_continue(thr->md.lwpid) < 0) {
       PR_ASSERT(0);  /* ARGH, we are hosed! */
    }
@@ -540,7 +540,7 @@ int
 _pr_unixware_clock_gettime (struct timespec *tp)
 {
     struct timeval tv;
- 
+
     gettimeofday(&tv, NULL);
     tp->tv_sec = tv.tv_sec;
     tp->tv_nsec = tv.tv_usec * 1000;

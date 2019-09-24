@@ -63,7 +63,7 @@ static PRStatus PR_CALLBACK print_thread(PRThread *thread, int i, void *arg)
     PRWord *registers;
 
     printf(
-        "\nprint_thread[0x%lx]: %-20s - i = %ld\n",thread, 
+        "\nprint_thread[0x%lx]: %-20s - i = %ld\n",thread,
         (PR_GLOBAL_THREAD == PR_GetThreadScope(thread)) ?
         "PR_GLOBAL_THREAD" : "PR_LOCAL_THREAD", i);
     registers = PR_GetGCRegisters(thread, 0, (int *)&words);
@@ -88,8 +88,8 @@ static void Level_0_Thread(PRThreadScope scope1, PRThreadScope scope2)
     alive = count;
     for (n=0; n<count; n++) {
         thr = PR_CreateThreadGCAble(PR_USER_THREAD,
-            Level_1_Thread, 
-            (void *)scope2, 
+            Level_1_Thread,
+            (void *)scope2,
             PR_PRIORITY_NORMAL,
             scope1,
             PR_UNJOINABLE_THREAD,

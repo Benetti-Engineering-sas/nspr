@@ -89,7 +89,7 @@ int PR_CALLBACK Writev(int argc, char **argv)
         fragment_length = message_length / (IOV_MAX - 2);
         number_fragments = (message_length + fragment_length - 1) /
             fragment_length + 1;
-        if (NULL != debug) PR_fprintf(debug, 
+        if (NULL != debug) PR_fprintf(debug,
             "Too many fragments - reset fragment length to %ld\n", fragment_length);
     }
     iov = (PRIOVec*)malloc(number_fragments * sizeof(PRIOVec));

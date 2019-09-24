@@ -136,7 +136,7 @@ PRWord *_MD_HomeGCRegisters(PRThread *t, PRIntn isCurrent, PRIntn *np)
 
 #ifndef _PR_PTHREADS
 #if defined(i386) && defined(SOLARIS2_4)
-/* 
+/*
  * Because clock_gettime() on Solaris/x86 2.4 always generates a
  * segmentation fault, we use an emulated version _pr_solx86_clock_gettime(),
  * which is implemented using gettimeofday().

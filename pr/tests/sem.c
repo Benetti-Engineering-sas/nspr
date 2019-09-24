@@ -35,8 +35,8 @@
 PRIntn failed_already=0;
 PRIntn debug_mode;
 
-/* 
-	Since we don't have stdin, stdout everywhere, we will fake 
+/*
+	Since we don't have stdin, stdout everywhere, we will fake
 	it with our in-memory buffers called stdin and stdout.
 */
 
@@ -55,7 +55,7 @@ static PRStatus finalResult = PR_SUCCESS;
 static size_t dread (PRUintn device, char *buf, size_t bufSize)
 {
 	PRUintn	i;
-	
+
 	/* during first read call, initialize the stdinBuf buffer*/
 	if (stdinBufIdx == 0) {
 		for (i=0; i<SBSIZE; i++)
@@ -75,7 +75,7 @@ static size_t dread (PRUintn device, char *buf, size_t bufSize)
 static size_t dwrite (PRUintn device, char *buf, size_t bufSize)
 {
 	PRUintn	i, j;
-	
+
 	/* copy data from the given buffer upto bufSize to stdoutBuf */
 	for (i=0; i<bufSize; i++) {
 		if (stdoutBufIdx == SBSIZE)
@@ -97,8 +97,8 @@ static size_t dwrite (PRUintn device, char *buf, size_t bufSize)
 /*------------------ Following is the real test program ---------*/
 /*
 	Program to copy standard input to standard output.  The program
-	uses two threads.  One reads the input and puts the data in a 
-	double buffer.  The other reads the buffer contents and writes 
+	uses two threads.  One reads the input and puts the data in a
+	double buffer.  The other reads the buffer contents and writes
 	it to standard output.
 */
 
@@ -116,7 +116,7 @@ static void PR_CALLBACK reader(void *arg)
 {
 	PRUintn	i = 0;
 	size_t	nbytes;
-	
+
 	do {
 		(void) PR_WaitSem(emptyBufs);
 		nbytes = dread(0, buf[i].data, BSIZE);
@@ -130,7 +130,7 @@ static void writer(void)
 {
 	PRUintn	i = 0;
 	size_t	nbytes;
-	
+
 	do {
 		(void) PR_WaitSem(fullBufs);
 		nbytes = buf[i].nbytes;
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
             }
         }
     	PL_DestroyOptState(opt);
-    }        
+    }
 
  /* main test */
 
@@ -180,9 +180,9 @@ int main(int argc, char **argv)
     fullBufs = PR_NewSem(0);	/* zero full buffers */
 
 	/* create the reader thread */
-	
+
 	r = PR_CreateThread(PR_USER_THREAD,
-				      reader, 0, 
+				      reader, 0,
 				      PR_PRIORITY_NORMAL,
 				      PR_LOCAL_THREAD,
     				  PR_UNJOINABLE_THREAD,
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
 		failed_already=1;
 	}
     PR_Cleanup();
-	if(failed_already)	
+	if(failed_already)
 		return 1;
 	else
 		return 0;

@@ -104,7 +104,7 @@ int main(PRIntn argc, char *argv[])
     MyPrivateData key_string[] = {
         "Key #0", "Key #1", "Key #2", "Key #3",
         "Bogus #5", "Bogus #6", "Bogus #7", "Bogus #8"};
-    
+
 
     did = should = PR_FALSE;
     for (keys = 0; keys < 4; ++keys)
@@ -133,7 +133,7 @@ int main(PRIntn argc, char *argv[])
     }
     PrintProgress(__LINE__);
 
-    /* re-assign the private data, albeit the same content */    
+    /* re-assign the private data, albeit the same content */
     did = PR_FALSE; should = PR_TRUE;
     for (keys = 0; keys < 4; ++keys)
     {
@@ -253,12 +253,12 @@ void MyThread::RootFunction()
     PRStatus rv;
     PRUintn keys;
     const RCThreadPrivateData *pd;
-    
+
     MyPrivateData extension = MyPrivateData("EXTENSION");
     MyPrivateData key_string[] = {
         "Key #0", "Key #1", "Key #2", "Key #3",
         "Bogus #5", "Bogus #6", "Bogus #7", "Bogus #8"};
-    
+
     did = should = PR_FALSE;
     for (keys = 0; keys < 8; ++keys)
     {
@@ -284,7 +284,7 @@ void MyThread::RootFunction()
     }
     PrintProgress(__LINE__);
 #endif
-    
+
     did = PR_FALSE; should = PR_TRUE;
     for (keys = 0; keys < 4; ++keys)
     {

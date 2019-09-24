@@ -28,7 +28,7 @@
  *   time again, to rule out the possibility that PR_IntervalNow()
  *   is broken.  We allow the actual elapsed time to deviate from
  *   the specified timeout by a certain tolerance (in milliseconds).
- */ 
+ */
 
 #include "nspr.h"
 #include "plgetopt.h"
@@ -525,7 +525,7 @@ int main(int argc, char **argv)
     /* start to time out 5 seconds after a rollover date */
     secs = lead_time_secs + 5;
     idx = 0;
-    for (i = 0; i < num_thread_scopes; i++) { 
+    for (i = 0; i < num_thread_scopes; i++) {
         for (j = 0; j < num_thread_funcs; j++) {
             threads[idx] = PR_CreateThread(PR_USER_THREAD, threadFuncs[j],
                 (void*)PR_SecondsToInterval(secs), PR_PRIORITY_NORMAL,

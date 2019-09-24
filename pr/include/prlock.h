@@ -8,8 +8,8 @@
 ** Description:	API to basic locking functions of NSPR.
 **
 **
-** NSPR provides basic locking mechanisms for thread synchronization.  Locks 
-** are lightweight resource contention controls that prevent multiple threads 
+** NSPR provides basic locking mechanisms for thread synchronization.  Locks
+** are lightweight resource contention controls that prevent multiple threads
 ** from accessing something (code/data) simultaneously.
 **/
 
@@ -46,7 +46,7 @@ typedef struct PRLock PRLock;
 ** RETURN:      PRLock*
 **   If the lock can not be created because of resource constraints, NULL
 **   is returned.
-**  
+**
 ***********************************************************************/
 NSPR_API(PRLock*) PR_NewLock(void);
 

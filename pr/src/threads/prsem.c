@@ -61,16 +61,16 @@ PR_IMPLEMENT(void) PR_DestroySem(PRSemaphore *sem)
 
 /*
 ** Wait on a Semaphore.
-** 
-** This routine allows a calling thread to wait or proceed depending upon the 
-** state of the semahore sem. The thread can proceed only if the counter value 
-** of the semaphore sem is currently greater than 0. If the value of semaphore 
-** sem is positive, it is decremented by one and the routine returns immediately 
-** allowing the calling thread to continue. If the value of semaphore sem is 0, 
-** the calling thread blocks awaiting the semaphore to be released by another 
+**
+** This routine allows a calling thread to wait or proceed depending upon the
+** state of the semahore sem. The thread can proceed only if the counter value
+** of the semaphore sem is currently greater than 0. If the value of semaphore
+** sem is positive, it is decremented by one and the routine returns immediately
+** allowing the calling thread to continue. If the value of semaphore sem is 0,
+** the calling thread blocks awaiting the semaphore to be released by another
 ** thread.
-** 
-** This routine can return PR_PENDING_INTERRUPT if the waiting thread 
+**
+** This routine can return PR_PENDING_INTERRUPT if the waiting thread
 ** has been interrupted.
 */
 PR_IMPLEMENT(PRStatus) PR_WaitSem(PRSemaphore *sem)
@@ -92,13 +92,13 @@ PR_IMPLEMENT(PRStatus) PR_WaitSem(PRSemaphore *sem)
 		sem->count--;
 	PR_Unlock(sem->cvar->lock);
 #endif
-	
+
 	return (status);
 }
 
 /*
-** This routine increments the counter value of the semaphore. If other threads 
-** are blocked for the semaphore, then the scheduler will determine which ONE 
+** This routine increments the counter value of the semaphore. If other threads
+** are blocked for the semaphore, then the scheduler will determine which ONE
 ** thread will be unblocked.
 */
 PR_IMPLEMENT(void) PR_PostSem(PRSemaphore *sem)
@@ -132,7 +132,7 @@ PR_IMPLEMENT(PRUintn) PR_GetValueSem(PRSemaphore *sem)
 	rv = sem->count;
 	PR_Unlock(sem->cvar->lock);
 #endif
-	
+
 	return rv;
 }
 #endif

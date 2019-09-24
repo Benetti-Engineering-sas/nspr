@@ -303,7 +303,7 @@ connection_success_test()
 	 * Now create a thread to accept a connection
 	 */
 	sp.sp_fd = sockfd;
-	thr = PR_CreateThread(PR_USER_THREAD, TCP_Server, (void *)&sp, 
+	thr = PR_CreateThread(PR_USER_THREAD, TCP_Server, (void *)&sp,
 			PR_PRIORITY_NORMAL, PR_LOCAL_THREAD, PR_JOINABLE_THREAD, 0);
 	if (thr == NULL) {
 		fprintf(stderr,"Error - PR_CreateThread failed: (%d,%d)\n",

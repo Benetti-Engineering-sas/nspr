@@ -93,7 +93,7 @@ static PRFileDesc *PopLayer(PRFileDesc *stack)
     if (verbosity > quiet)
         PR_fprintf(logFile, "Popped layer(0x%x) from stack(0x%x)\n", popped, stack);
     popped->dtor(popped);
-    
+
     return stack;
 }  /* PopLayer */
 #endif
@@ -127,7 +127,7 @@ static void PR_CALLBACK Client(void *arg)
 
     if (verbosity > quiet)
         PR_fprintf(logFile, "Client shutting down stack\n");
-    
+
     rv = PR_Shutdown(stack, PR_SHUTDOWN_BOTH); PR_ASSERT(PR_SUCCESS == rv);
 }  /* Client */
 

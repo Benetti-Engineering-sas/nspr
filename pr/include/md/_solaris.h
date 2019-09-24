@@ -82,7 +82,7 @@ struct addrinfo {
     struct addrinfo *ai_next;
 };
 #define AI_CANONNAME 0x0010
-#define AI_V4MAPPED 0x0001 
+#define AI_V4MAPPED 0x0001
 #define AI_ALL      0x0002
 #define AI_ADDRCONFIG   0x0004
 #define _PR_HAVE_MD_SOCKADDR_IN6
@@ -203,7 +203,7 @@ NSPR_API(void)				_MD_SolarisInit();
 #endif /* ! USE_SETJMP */
 
 #include <time.h>
-/* 
+/*
  * Because clock_gettime() on Solaris/x86 always generates a
  * segmentation fault, we use an emulated version _pr_solx86_clock_gettime(),
  * which is implemented using gettimeofday().
@@ -320,10 +320,10 @@ NSPR_API(void)				_MD_SolarisInit();
 #else /* USE_SETJMP */
 
 #define WINDOWSIZE		0
- 
+
 int getedi(void);
 void setedi(int);
- 
+
 #define _MD_INIT_CONTEXT(_thread, _sp, _main, status)	      \
 	PR_BEGIN_MACRO					\
 	ucontext_t *uc = CONTEXT(_thread);		\

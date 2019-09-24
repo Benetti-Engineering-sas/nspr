@@ -15,7 +15,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 
 /***********************************************************************
@@ -45,12 +45,12 @@
 ** OUTPUTS:     None
 ** RETURN:      None
 ** SIDE EFFECTS:
-**      
+**
 ** RESTRICTIONS:
 **      None
 ** MEMORY:      NA
 ** ALGORITHM:   Determine what the status is and print accordingly.
-**      
+**
 ***********************************************************************/
 
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 

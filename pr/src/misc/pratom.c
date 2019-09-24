@@ -88,7 +88,7 @@ int index;
 
 		if (num_atomic_locks > MAX_ATOMIC_LOCKS)
 			num_atomic_locks = MAX_ATOMIC_LOCKS;
-		else if (num_atomic_locks < 1) 
+		else if (num_atomic_locks < 1)
 			num_atomic_locks = 1;
 		else {
 			num_atomic_locks = PR_FloorLog2(num_atomic_locks);
@@ -101,7 +101,7 @@ int index;
 				if (pthread_mutex_init(&atomic_locks[index], NULL)) {
 						PR_DELETE(atomic_locks);
 						atomic_locks = NULL;
-						break; 
+						break;
 				}
 			}
 		}
@@ -328,7 +328,7 @@ PRStack *stack;
 #endif /* !_PR_HAVE_ATOMIC_CAS */
 
 	stack->prstk_head.prstk_elem_next = NULL;
-	
+
     return stack;
 }
 

@@ -36,7 +36,7 @@ static void PrintProgress(PRIntn line)
         printf(
             "@ line %d destructor should%s have been called and was%s\n",
             line, ((should) ? "" : " NOT"), ((did) ? "" : " NOT"));
-#else    
+#else
         PR_fprintf(
             fout, "@ line %d destructor should%s have been called and was%s\n",
             line, ((should) ? "" : " NOT"), ((did) ? "" : " NOT"));
@@ -75,7 +75,7 @@ static void PR_CALLBACK Thread(void *null)
     char *key_string[] = {
         "Key #0", "Key #1", "Key #2", "Key #3",
         "Bogus #5", "Bogus #6", "Bogus #7", "Bogus #8"};
-    
+
     did = should = PR_FALSE;
     for (keys = 0; keys < 8; ++keys)
     {
@@ -99,7 +99,7 @@ static void PR_CALLBACK Thread(void *null)
         MY_ASSERT(PR_FAILURE == rv);
     }
     PrintProgress(__LINE__);
-    
+
     did = PR_FALSE; should = PR_TRUE;
     for (keys = 0; keys < 4; ++keys)
     {
@@ -168,7 +168,7 @@ static PRIntn PR_CALLBACK Tpd(PRIntn argc, char **argv)
     char *key_string[] = {
         "Key #0", "Key #1", "Key #2", "Key #3",
         "Bogus #5", "Bogus #6", "Bogus #7", "Bogus #8"};
-    
+
     fout = PR_STDOUT;
 
     did = should = PR_FALSE;
@@ -204,7 +204,7 @@ static PRIntn PR_CALLBACK Tpd(PRIntn argc, char **argv)
         MY_ASSERT(PR_FAILURE == rv);
     }
     PrintProgress(__LINE__);
-    
+
     did = PR_FALSE; should = PR_TRUE;
     for (keys = 0; keys < 4; ++keys)
     {
@@ -268,7 +268,7 @@ static PRIntn PR_CALLBACK Tpd(PRIntn argc, char **argv)
 #else
     (void)PR_fprintf(
         fout, "%s\n",((PR_TRUE == failed) ? "FAILED" : "PASSED"));
-#endif    
+#endif
 
     return 0;
 

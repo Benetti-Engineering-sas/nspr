@@ -99,7 +99,7 @@ _server_thread(void *arg_id)
 	      read_done,
 	      write_done,
 	      close_done;
-	
+
 
 #ifdef DEBUG
 	fprintf(stdout, "server thread %d alive\n", *id);
@@ -141,12 +141,12 @@ _server_thread(void *arg_id)
 	}
 
 	/* Tell the client to start */
-	if ( (thread = PR_CreateThread(PR_USER_THREAD, 
-                                      _client_thread, 
-                                      id, 
-                                      PR_PRIORITY_NORMAL, 
-                                      scope2, 
-                                      PR_UNJOINABLE_THREAD, 
+	if ( (thread = PR_CreateThread(PR_USER_THREAD,
+                                      _client_thread,
+                                      id,
+                                      PR_PRIORITY_NORMAL,
+                                      scope2,
+                                      PR_UNJOINABLE_THREAD,
                                       0)) == NULL)
 		fprintf(stderr, "Error creating client thread %d\n", *id);
 
@@ -170,7 +170,7 @@ _server_thread(void *arg_id)
 
 
 		connect_done = PR_IntervalNow();
-		
+
 		if ( _readn(newsock, data_buffer, _client_data) < _client_data) {
 			fprintf(stderr, "Error reading client data for iteration %d in server thread %d\n", index, *id );
 			goto done;
@@ -251,7 +251,7 @@ _client_thread(void *arg_id)
 	memset(&sa, 0 , sizeof(sa));
 	rv = PR_InitializeNetAddr(PR_IpAddrLoopback, PORT_BASE + *id, &sa);
 	PR_ASSERT(PR_SUCCESS == rv);
-	
+
 	for (index = 0; index< _iterations; index++) {
 
 #ifdef DEBUG
@@ -331,16 +331,16 @@ void do_work(void)
 
 		*id = index;
 
-		if ( (thread = PR_CreateThread(PR_USER_THREAD, 
-                                       _server_thread, 
-                                       id, 
-                                       PR_PRIORITY_NORMAL, 
-                                       scope1, 
-                                       PR_UNJOINABLE_THREAD, 
+		if ( (thread = PR_CreateThread(PR_USER_THREAD,
+                                       _server_thread,
+                                       id,
+                                       PR_PRIORITY_NORMAL,
+                                       scope1,
+                                       PR_UNJOINABLE_THREAD,
                                        0)) == NULL)
 			fprintf(stderr, "Error creating server thread %d\n", index);
 	}
-	
+
 	PR_EnterMonitor(exit_cv);
 	while (_thread_exit_count > 0)
 		PR_Wait(exit_cv, PR_INTERVAL_NO_TIMEOUT);
@@ -422,7 +422,7 @@ int main(int argc, char **argv)
 			case 'v':
 				verbose = 1;
 				break;
-			default: 
+			default:
 				break;
 		}
 	}
@@ -431,14 +431,14 @@ int main(int argc, char **argv)
 	PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
-	fprintf(stdout, "Running test for %d iterations with %d simultaneous threads.\n", 
+	fprintf(stdout, "Running test for %d iterations with %d simultaneous threads.\n",
 		_iterations, _threads);
-	fprintf(stdout, "\tWill send %d bytes of client data and %d bytes of server data\n", 
+	fprintf(stdout, "\tWill send %d bytes of client data and %d bytes of server data\n",
 		_client_data, _server_data);
 
-	if ( (exit_cv = PR_NewMonitor()) == NULL) 
+	if ( (exit_cv = PR_NewMonitor()) == NULL)
 		fprintf(stderr, "Error creating monitor for exit cv\n");
-	if ( (timer_data = (timer_slot_t *)PR_Malloc(2*_threads * sizeof(timer_slot_t))) == NULL) 
+	if ( (timer_data = (timer_slot_t *)PR_Malloc(2*_threads * sizeof(timer_slot_t))) == NULL)
 		fprintf(stderr, "error allocating thread time results array\n");
 	memset(timer_data, 0 , 2*_threads*sizeof(timer_slot_t));
 

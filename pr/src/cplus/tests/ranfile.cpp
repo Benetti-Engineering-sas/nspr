@@ -320,9 +320,9 @@ PRIntn main (PRIntn argc, char *argv[])
     output = PR_GetSpecialFD(PR_StandardOutput);
 
  /* main test */
- 
+
     cv.SetTimeout(interleave);
-	
+
     if (max_virtual_procs == 0) max_virtual_procs = 2;
     if (limit == 0) limit = 57;
     if (threads == 0) threads = 10;

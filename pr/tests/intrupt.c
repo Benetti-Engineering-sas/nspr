@@ -289,7 +289,7 @@ void PR_CALLBACK Intrupt(void *arg)
     PR_ASSERT(PR_SUCCESS == rv);
 
     PR_DestroyCondVar(cv);
-    PR_DestroyLock(ml);    
+    PR_DestroyLock(ml);
 }  /* Intrupt */
 
 int main(int argc, char **argv)

@@ -208,7 +208,7 @@ strchr(const char *s, int c)
  * A.09.07, and B.10.10) dumps core if called with:
  * 1. First operand with address = 1(mod 4).
  * 2. Size = 1(mod 4)
- * 3. Last byte of the second operand is the last byte of the page and 
+ * 3. Last byte of the second operand is the last byte of the page and
  *    next page is not accessible(not mapped or protected)
  * Thus, using the following naive version (tons of optimizations are
  * possible;^)
@@ -220,10 +220,10 @@ int memcmp(const void *s1, const void *s2, size_t n)
             *p2 = (unsigned char *) s2;
 
     while (n-- > 0) {
-        register int r = ((int) ((unsigned int) *p1)) 
+        register int r = ((int) ((unsigned int) *p1))
                 - ((int) ((unsigned int) *p2));
         if (r) return r;
         p1++; p2++;
     }
-    return 0; 
+    return 0;
 }

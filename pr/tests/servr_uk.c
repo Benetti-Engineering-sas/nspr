@@ -8,7 +8,7 @@
 ** This server simulates a server running in loopback mode.
 **
 ** The idea is that a single server is created.  The server initially creates
-** a number of worker threads.  Then, with the server running, a number of 
+** a number of worker threads.  Then, with the server running, a number of
 ** clients are created which start requesting service from the server.
 **
 **
@@ -93,7 +93,7 @@ WaitServerState(char *waiter, PRInt32 state)
         PR_WaitCondVar(ServerStateCV, PR_INTERVAL_NO_TIMEOUT);
     rv = ServerState;
 
-    if (debug_mode) DPRINTF("\t%s resuming from wait for state %d; state now %d\n", 
+    if (debug_mode) DPRINTF("\t%s resuming from wait for state %d; state now %d\n",
         waiter, state, ServerState);
     PR_Unlock(ServerStateCVLock);
 
@@ -137,7 +137,7 @@ WorkerThreadFunc(void *_listenSock)
 
         if (debug_mode) DPRINTF("\tServer thread going into accept\n");
 
-        bytesRead = PR_AcceptRead(listenSock, 
+        bytesRead = PR_AcceptRead(listenSock,
                                   &newSock,
                                   &rAddr,
                                   dataBuf,
@@ -150,7 +150,7 @@ WorkerThreadFunc(void *_listenSock)
         }
 
         if (debug_mode) DPRINTF("\tServer accepted connection (%d bytes)\n", bytesRead);
-        
+
         PR_AtomicIncrement(&workerThreadsBusy);
         if (workerThreadsBusy == workerThreads) {
             PR_Lock(workerThreadsLock);
@@ -175,13 +175,13 @@ WorkerThreadFunc(void *_listenSock)
             }
             PR_Unlock(workerThreadsLock);
         }
- 
+
         bytesToRead -= bytesRead;
         while (bytesToRead) {
-            bytesRead = PR_Recv(newSock, 
-                                dataBuf, 
-                                bytesToRead, 
-                                0, 
+            bytesRead = PR_Recv(newSock,
+                                dataBuf,
+                                bytesToRead,
+                                0,
                                 PR_INTERVAL_NO_TIMEOUT);
             if (bytesRead < 0) {
                 if (debug_mode) printf("\tServer error receiving data (%d)\n", bytesRead);
@@ -191,12 +191,12 @@ WorkerThreadFunc(void *_listenSock)
         }
 
         bytesWritten = PR_Send(newSock,
-                               sendBuf, 
-                               bytesToWrite, 
-                               0, 
+                               sendBuf,
+                               bytesToWrite,
+                               0,
                                PR_INTERVAL_NO_TIMEOUT);
         if (bytesWritten != _server_data) {
-            if (debug_mode) printf("\tError sending data to client (%d, %d)\n", 
+            if (debug_mode) printf("\tError sending data to client (%d, %d)\n",
                 bytesWritten, PR_GetOSError());
         } else {
             if (debug_mode) DPRINTF("\tServer sent %d bytes\n", bytesWritten);
@@ -217,7 +217,7 @@ ServerSetup(void)
 
     if ( (listenSocket = PR_NewTCPSocket()) == NULL) {
         if (debug_mode) printf("\tServer error creating listen socket\n");
-		else 
+		else
         return NULL;
     }
 
@@ -347,7 +347,7 @@ ClientThreadFunc(void *unused)
 
         if (debug_mode) DPRINTF("\tClient connecting\n");
 
-        rv = PR_Connect(clientSocket, 
+        rv = PR_Connect(clientSocket,
                         &serverAddr,
                         PR_INTERVAL_NO_TIMEOUT);
         if (!clientSocket) {
@@ -357,10 +357,10 @@ ClientThreadFunc(void *unused)
 
         if (debug_mode) DPRINTF("\tClient connected\n");
 
-        rv = PR_Send(clientSocket, 
-                     sendBuf, 
-                     _client_data, 
-                     0, 
+        rv = PR_Send(clientSocket,
+                     sendBuf,
+                     _client_data,
+                     0,
                      PR_INTERVAL_NO_TIMEOUT);
         if (rv != _client_data) {
             if (debug_mode) printf("Client error sending data (%d)\n", rv);
@@ -372,13 +372,13 @@ ClientThreadFunc(void *unused)
 
         bytesNeeded = _server_data;
         while(bytesNeeded) {
-            rv = PR_Recv(clientSocket, 
-                         recvBuf, 
-                         bytesNeeded, 
-                         0, 
+            rv = PR_Recv(clientSocket,
+                         recvBuf,
+                         bytesNeeded,
+                         0,
                          PR_INTERVAL_NO_TIMEOUT);
             if (rv <= 0) {
-                if (debug_mode) printf("Client error receiving data (%d) (%d/%d)\n", 
+                if (debug_mode) printf("Client error receiving data (%d) (%d/%d)\n",
                     rv, (_server_data - bytesNeeded), _server_data);
                 break;
             }
@@ -387,7 +387,7 @@ ClientThreadFunc(void *unused)
         }
 
         PR_Close(clientSocket);
- 
+
         PR_AtomicDecrement(&numRequests);
     }
 
@@ -412,7 +412,7 @@ RunClients(void)
     for (index=0; index<_clients; index++) {
         PRThread *clientThread;
 
-  
+
         clientThread = PR_CreateThread(
                           PR_USER_THREAD,
                           ClientThreadFunc,
@@ -531,7 +531,7 @@ int main(int argc, char **argv)
 		printf("Enter size of server data : \n");
 		scanf("%d", &_server_data);
 	}
-	else 
+	else
 	{
 		_iterations = 7;
 		_clients = 7;
@@ -540,9 +540,9 @@ int main(int argc, char **argv)
 	}
 
     if (debug_mode) {
-		printf("\n\n%d iterations with %d client threads.\n", 
+		printf("\n\n%d iterations with %d client threads.\n",
         _iterations, _clients);
-		printf("Sending %d bytes of client data and %d bytes of server data\n", 
+		printf("Sending %d bytes of client data and %d bytes of server data\n",
         _client_data, _server_data);
 	}
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
@@ -557,7 +557,7 @@ int main(int argc, char **argv)
 
     PR_Cleanup();
 
-	if(failed_already)	
+	if(failed_already)
 		return 1;
 	else
 		return 0;

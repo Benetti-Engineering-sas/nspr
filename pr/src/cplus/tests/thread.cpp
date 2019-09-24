@@ -46,7 +46,7 @@ public:
     PRIntn data;
 };
 
-Foo1::Foo1() 
+Foo1::Foo1()
 {
     data = 0xafaf;
     thread = new TestThread(RCThread::joinable, 0xafaf);

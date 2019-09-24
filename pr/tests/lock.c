@@ -25,7 +25,7 @@
 **             - l <num> to control the number of loops
 **             - c <num> to control the number of CPUs.
 **             (was positional argv).
-** 
+**
 **
 ***********************************************************************/
 
@@ -247,7 +247,7 @@ static PRIntervalTime ReentrantMonitor(PRUint32 loops)
     if (debug_mode) PR_fprintf(std_err, "Monitor released second time\n");
 
     status = PR_JoinThread(thread);
-    if (debug_mode) PR_fprintf(std_err, 
+    if (debug_mode) PR_fprintf(std_err,
         "Reentrant thread joined %s\n",
         (status == PR_SUCCESS) ? "successfully" : "in error");
 
@@ -382,17 +382,17 @@ static PRIntervalTime ContentiousCMonitor(PRUint32 loops)
 static PRIntervalTime Test(
     const char* msg, PRUint32 (*test)(PRUint32 loops),
     PRUint32 loops, PRIntervalTime overhead)
-{ 
+{
     /*
      * overhead - overhead not measured by the test.
      * duration - wall clock time it took to perform test.
-     * predicted - extra time test says should not be counted 
+     * predicted - extra time test says should not be counted
      *
      * Time accountable to the test is duration - overhead - predicted
      * All times are Intervals and accumulated for all iterations.
      */
     PRFloat64 elapsed;
-    PRIntervalTime accountable, duration;    
+    PRIntervalTime accountable, duration;
     PRUintn spaces = PL_strlen(msg);
     PRIntervalTime timeout, timein = PR_IntervalNow();
     PRIntervalTime predicted = test(loops);
@@ -420,7 +420,7 @@ int main(int argc,  char **argv)
     PRIntervalTime duration;
     PRUint32 cpu, cpus = 2, loops = 100;
 
-	
+
     PR_STDIO_INIT();
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     {
@@ -503,14 +503,14 @@ int main(int argc,  char **argv)
 			 failed_already=1;
 	}
 
-	if(failed_already)	
+	if(failed_already)
 	{
-	    PR_fprintf(PR_STDOUT, "FAIL\n"); 
+	    PR_fprintf(PR_STDOUT, "FAIL\n");
 		return 1;
-    } 
+    }
 	else
     {
-	    PR_fprintf(PR_STDOUT, "PASS\n"); 
+	    PR_fprintf(PR_STDOUT, "PASS\n");
 		return 0;
     }
 

@@ -52,7 +52,7 @@ static void PrintExplodedTime(const PRExplodedTime *et) {
         }
         hourOffset = totalOffset / 3600;
         minOffset = (totalOffset % 3600) / 60;
-        if (debug_mode) 
+        if (debug_mode)
             printf("%s%02ld%02ld ", sign, hourOffset, minOffset);
     }
 
@@ -107,7 +107,7 @@ testParseTimeString(PRTime t)
     totalOffset = et.tm_params.tp_gmt_offset + et.tm_params.tp_dst_offset;
     if (totalOffset == 0) {
 	strcat(timeString, "GMT ");  /* I wanted to use "UTC" here, but
-                                      * PR_ParseTimeString doesn't 
+                                      * PR_ParseTimeString doesn't
                                       * understand "UTC".  */
     } else {
         sign = "+";
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 	*/
 	PLOptStatus os;
 	PLOptState *opt;
-    
+
     PR_STDIO_INIT();
 	opt = PL_CreateOptState(argc, argv, "d");
 	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
@@ -165,7 +165,7 @@ int main(int argc, char** argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
 
     /* Testing zero PRTime (the epoch) */
@@ -349,7 +349,7 @@ int main(int argc, char** argv)
         et.tm_sec     = 23;
 	et.tm_usec    = 0;
         et.tm_params.tp_gmt_offset = -8 * 3600;  /* PDT */
-	et.tm_params.tp_dst_offset = 3600; 
+	et.tm_params.tp_dst_offset = 3600;
 
 	PR_NormalizeTime(&et, PR_LocalTimeParameters);
         if (debug_mode) printf("Nov 7 18:29:23 PDT 1996 is ");
@@ -519,7 +519,7 @@ int main(int argc, char** argv)
 		        return 1;
 		    }
 
-		    if (LL_NE(usecs, PR_ImplodeTime(&et1))) { 
+		    if (LL_NE(usecs, PR_ImplodeTime(&et1))) {
 			printf("ERROR: PR_ExplodeTime and PR_ImplodeTime are not inverse\n");
 			PrintExplodedTime(&et1);
 			printf("\n");
@@ -575,7 +575,7 @@ int main(int argc, char** argv)
 	printf("**                                                   **\n");
 	printf("*******************************************************\n\n");
 	}
-	
+
 	LL_I2L(usecPer10Min, 600000000L);
 
 	/* 00:00:00 PST Jan. 1, 2005 */

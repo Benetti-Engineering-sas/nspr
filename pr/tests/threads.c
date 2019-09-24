@@ -16,7 +16,7 @@ PRInt32 count, iterations, alive;
 
 PRBool debug_mode = PR_FALSE, passed = PR_TRUE;
 
-void 
+void
 PR_CALLBACK
 ReallyDumbThread(void *arg)
 {
@@ -65,8 +65,8 @@ static void CreateThreads(PRThreadScope scope1, PRThreadScope scope2)
     alive = count;
     for (n=0; n<count; n++) {
         thr = PR_CreateThread(PR_USER_THREAD,
-                              DumbThread, 
-                              (void *)scope2, 
+                              DumbThread,
+                              (void *)scope2,
                               PR_PRIORITY_NORMAL,
                               scope1,
                               PR_UNJOINABLE_THREAD,
@@ -79,7 +79,7 @@ static void CreateThreads(PRThreadScope scope1, PRThreadScope scope2)
             passed = PR_FALSE;
             alive--;
         }
-         
+
         PR_Sleep(0);
     }
 
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 
     PR_STDIO_INIT();
     PR_Init(PR_USER_THREAD, PR_PRIORITY_HIGH, 0);
-    
+
     {
     	PLOptStatus os;
     	PLOptState *opt = PL_CreateOptState(argc, argv, "dc:i:");

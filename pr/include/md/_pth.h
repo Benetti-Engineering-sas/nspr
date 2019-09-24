@@ -93,14 +93,14 @@
 #define _PT_PTHREAD_INVALIDATE_THR_HANDLE(t)  (t) = 0
 #define _PT_PTHREAD_THR_HANDLE_IS_INVALID(t)  (t) == 0
 #define _PT_PTHREAD_COPY_THR_HANDLE(st, dt)   (dt) = (st)
-#else 
+#else
 #error "pthreads is not supported for this architecture"
 #endif
 
 #if defined(_PR_PTHREADS)
 #define _PT_PTHREAD_ATTR_INIT            pthread_attr_init
 #define _PT_PTHREAD_ATTR_DESTROY         pthread_attr_destroy
-#define _PT_PTHREAD_CREATE(t, a, f, r)   pthread_create(t, &a, f, r) 
+#define _PT_PTHREAD_CREATE(t, a, f, r)   pthread_create(t, &a, f, r)
 #define _PT_PTHREAD_KEY_CREATE           pthread_key_create
 #define _PT_PTHREAD_ATTR_SETSCHEDPOLICY  pthread_attr_setschedpolicy
 #define _PT_PTHREAD_ATTR_GETSTACKSIZE(a, s) pthread_attr_getstacksize(a, s)

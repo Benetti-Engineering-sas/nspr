@@ -22,10 +22,10 @@
 void _PR_InitCPUs(void) {PT_LOG("_PR_InitCPUs")}
 void _PR_InitStacks(void) {PT_LOG("_PR_InitStacks")}
 
-PR_IMPLEMENT(void) PR_SetConcurrency(PRUintn numCPUs) 
+PR_IMPLEMENT(void) PR_SetConcurrency(PRUintn numCPUs)
 {
 #ifdef SOLARIS
-	thr_setconcurrency(numCPUs);	
+	thr_setconcurrency(numCPUs);
 #else
 	PT_LOG("PR_SetConcurrency");
 #endif

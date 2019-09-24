@@ -110,7 +110,7 @@ RCThread::State RCThread::GetState() const
 
 RCThread::Priority RCThread::GetPriority() const
     { return (RCThread::Priority)PR_GetThreadPriority(identity); }
-    
+
 static void _rc_PDDestructor(RCThreadPrivateData* privateData)
 {
     PR_ASSERT(NULL != privateData);
@@ -166,9 +166,9 @@ RCPrimordialThread::~RCPrimordialThread() { }
 
 void RCPrimordialThread::RootFunction()
 {
-    PR_NOT_REACHED("Primordial thread calling root function"); 
+    PR_NOT_REACHED("Primordial thread calling root function");
 }  /* RCPrimordialThread::RootFunction */
- 
+
 PRStatus RCPrimordialThread::Cleanup() { return PR_Cleanup(); }
 
 PRStatus RCPrimordialThread::SetVirtualProcessors(PRIntn count)

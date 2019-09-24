@@ -40,7 +40,7 @@ static void PR_CALLBACK forked(void *arg)
     PRIntn i;
 	PRLock *ml;
 	PRCondVar *cv;
-	
+
     PR_LogPrint("%s logging creating mutex\n", (const char*)arg);
     ml = PR_NewLock();
     PR_LogPrint("%s logging creating condition variable\n", (const char*)arg);
@@ -53,7 +53,7 @@ static void PR_CALLBACK forked(void *arg)
         PR_WaitCondVar(cv, PR_SecondsToInterval(1));
         PR_Unlock(ml);
     }
-    
+
     PR_LogPrint("%s logging destroying condition variable\n", (const char*)arg);
     PR_DestroyCondVar(cv);
     PR_LogPrint("%s logging destroying mutex\n", (const char*)arg);
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     /*
     ** Now change buffering.
     */
-    PR_SetLogBuffering( 65500 );    
+    PR_SetLogBuffering( 65500 );
 	thread = PR_CreateThread(
 	    PR_USER_THREAD, forked, (void*)argv[0], PR_PRIORITY_NORMAL,
 	    PR_LOCAL_THREAD, PR_JOINABLE_THREAD, 0);

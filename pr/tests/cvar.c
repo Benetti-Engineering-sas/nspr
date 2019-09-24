@@ -8,7 +8,7 @@
 **
 ** Name: cvar.c
 **
-** Description: Tests Condition Variable Operations 
+** Description: Tests Condition Variable Operations
 **
 ** Modification History:
 ** 13-May-97 AGarcia- Converted the test to accomodate the debug_mode flag.
@@ -58,17 +58,17 @@ static PRBool failed = PR_FALSE;
 static CircBuf* NewCB(void)
 {
 	CircBuf		*cbp;
-	
+
 	cbp = PR_NEW(CircBuf);
 	if (cbp == NULL)
 		return (NULL);
-		
+
 	cbp->bufLock 	= PR_NewLock();
 	cbp->startIdx 	= 0;
 	cbp->numFull 	= 0;
 	cbp->notFull	= PR_NewCondVar(cbp->bufLock);
 	cbp->notEmpty	= PR_NewCondVar(cbp->bufLock);
-	
+
 	return (cbp);
 }
 
@@ -85,7 +85,7 @@ static void DeleteCB(CircBuf *cbp)
 
 
 /*
-** PutCBData puts new data on the queue.  If the queue is full, it waits 
+** PutCBData puts new data on the queue.  If the queue is full, it waits
 ** until there is room.
 */
 static void PutCBData(CircBuf *cbp, void *data)
@@ -96,7 +96,7 @@ static void PutCBData(CircBuf *cbp, void *data)
 		PR_WaitCondVar(cbp->notFull,PR_INTERVAL_NO_TIMEOUT);
 	cbp->data[(cbp->startIdx + cbp->numFull) % kQSIZE] = data;
 	cbp->numFull += 1;
-	
+
 	/* let a waiting reader know that there is data */
 	PR_NotifyCondVar(cbp->notEmpty);
 	PR_Unlock(cbp->bufLock);
@@ -105,13 +105,13 @@ static void PutCBData(CircBuf *cbp, void *data)
 
 
 /*
-** GetCBData gets the oldest data on the queue.  If the queue is empty, it waits 
+** GetCBData gets the oldest data on the queue.  If the queue is empty, it waits
 ** until new data appears.
 */
 static void* GetCBData(CircBuf *cbp)
 {
 	void *data;
-	
+
 	PR_Lock(cbp->bufLock);
 	/* wait while the buffer is empty */
 	while (cbp->numFull == 0)
@@ -119,11 +119,11 @@ static void* GetCBData(CircBuf *cbp)
 	data = cbp->data[cbp->startIdx];
 	cbp->startIdx =(cbp->startIdx + 1) % kQSIZE;
 	cbp->numFull -= 1;
-	
+
 	/* let a waiting writer know that there is room */
 	PR_NotifyCondVar(cbp->notFull);
 	PR_Unlock(cbp->bufLock);
-	
+
 	return (data);
 }
 
@@ -144,7 +144,7 @@ static void PR_CALLBACK CXReader(void *arg)
 		if ((int)data != i)
     		if (debug_mode) printf("data mismatch at for i = %d usec\n", i);
     }
- 
+
     PR_EnterMonitor(mon);
     --alive;
     PR_Notify(mon);
@@ -178,14 +178,14 @@ static void CondWaitContextSwitch(PRThreadScope scope1, PRThreadScope scope2)
 	cbp =  NewCB();
 
 	t1 = PR_CreateThread(PR_USER_THREAD,
-				      CXReader, cbp, 
+				      CXReader, cbp,
 				      PR_PRIORITY_NORMAL,
 				      scope1,
     				  PR_UNJOINABLE_THREAD,
 				      0);
 	PR_ASSERT(t1);
 	t2 = PR_CreateThread(PR_USER_THREAD,
-				      CXWriter, cbp, 
+				      CXWriter, cbp,
 				      PR_PRIORITY_NORMAL,
 				      scope2,
     				  PR_UNJOINABLE_THREAD,
@@ -284,7 +284,7 @@ static PRIntn PR_CALLBACK RealMain(int argc, char **argv)
 int main(int argc, char *argv[])
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

@@ -115,14 +115,14 @@ static int ExplodedTimeIsEqual(const PRExplodedTime *et1,
  *
  * Call PR_ImplodeTime for each of the exploded values and compare
  * the resulting PRTime values with the original input.
- * 
+ *
  * This test is run for the values of time T corresponding to the
  * following dates:
- * - 12/31/99 - before 2000 
- * - 01/01/00 - after 2000 
- * - Leap year - Feb 29, 2000 
- * - March 1st, 2001 (after 1 year) 
- * - March 1st, 2005 (after second leap year) 
+ * - 12/31/99 - before 2000
+ * - 01/01/00 - after 2000
+ * - Leap year - Feb 29, 2000
+ * - March 1st, 2001 (after 1 year)
+ * - March 1st, 2005 (after second leap year)
  * - 09/09/99 (used by some programs as an end of file marker)
  *
  * Call PR_Now, convert to calendar time using PR_ExplodeTime and
@@ -130,7 +130,7 @@ static int ExplodedTimeIsEqual(const PRExplodedTime *et1,
  * the system clock.
  *
  * Tested functions: PR_Now, PR_ExplodeTime, PR_ImplodeTime,
- * PR_LocalTimeParameters, PR_GMTParameters. 
+ * PR_LocalTimeParameters, PR_GMTParameters.
  */
 
 static PRTime prt[] = {
@@ -228,7 +228,7 @@ static PRStatus TestExplodeImplodeTime(void)
 
     for (idx = 0; idx < array_size; idx++) {
         PR_snprintf(buf, sizeof(buf), "%lld", prt[idx]);
-        if (debug_mode) printf("Time stamp %s\n", buf); 
+        if (debug_mode) printf("Time stamp %s\n", buf);
         PR_ExplodeTime(prt[idx], PR_GMTParameters, &et_tmp);
         if (!ExplodedTimeIsEqual(&et_tmp, &gmt[idx])) {
             fprintf(stderr, "GMT not equal\n");
@@ -339,7 +339,7 @@ typedef struct time_increment {
  *		Time zone.
  */
 typedef struct normalize_test_data {
-    PRExplodedTime		base_time; 
+    PRExplodedTime		base_time;
     time_increment_t  	increment;
     PRExplodedTime		expected_gmt_time;
     PRExplodedTime		expected_uspt_time;
@@ -410,7 +410,7 @@ normalize_test_data_t normalize_test_array[] = {
 	/* 2004-04-26 12:00 GMT */
 	{{0, 0, 0, 20, 3, 0, 2001, 3, 2, { 0, 0}},
     {0, 0, 30,0},
-	{0, 0, 30, 20, 3, 0, 2001, 3, 2, { 0, 0}},/*Wed Jan  3 20:30:00 2001 UTC*/ 
+	{0, 0, 30, 20, 3, 0, 2001, 3, 2, { 0, 0}},/*Wed Jan  3 20:30:00 2001 UTC*/
     {0, 0, 30, 12, 3, 0, 2001, 3, 2, { -28800, 0}}/*Wed Jan  3 12:30:00
 														2001 -0800*/
 	},
@@ -499,7 +499,7 @@ typedef struct ParseTest
     PRExplodedTime  et;         /* expected result of the conversion */
 } ParseTest;
 
-static ParseTest parseArray[] = 
+static ParseTest parseArray[] =
 {
     /*                                  |<----- expected result ------------------------------------------->| */
     /* "string to test"                   usec     sec min hour   day  mo  year  wday julian {gmtoff, dstoff }*/
@@ -533,7 +533,7 @@ static ParseTest parseArray[] =
     { "69-12-31    00:00:00",           { 000000,  00, 00, 00,    31,  11, 2069, 2,   364,   {-28800, 0 }}},
     { "69/12/31    00:00:00",           { 000000,  00, 00, 00,    31,  11, 2069, 2,   364,   {-28800, 0 }}},
 
-    /* "Sun". 31-Dec-1998 (?) */ 
+    /* "Sun". 31-Dec-1998 (?) */
     { "Thu 31 Dec 1998 00:00:00",        { 00000,  00, 00, 00,    31,  11, 1998, 4,   364,    {-28800, 0 }}},
     { "12/31/98    00:00:00",            { 00000,  00, 00, 00,    31,  11, 1998, 4,   364,    {-28800, 0 }}},
     { "12/31/1998  00:00:00",            { 00000,  00, 00, 00,    31,  11, 1998, 4,   364,    {-28800, 0 }}},
@@ -551,7 +551,7 @@ static ParseTest parseArray[] =
     { "09-09-99    00:00:00",           { 000000,  00, 00, 00,     9,   8, 1999, 4,   251,   {-28800, 3600 }}},
     { "09-09-1999  00:00:00",           { 000000,  00, 00, 00,     9,   8, 1999, 4,   251,   {-28800, 3600 }}},
     { "99-09-09    00:00:00",           { 000000,  00, 00, 00,     9,   8, 1999, 4,   251,   {-28800, 3600 }}},
-    
+
     /* "Sun". 10-Sep-1999. Because Sun said so. */
     { "10 Sep 1999 00:00:00",           { 000000,  00, 00, 00,    10,   8, 1999, 5,   252,   {-28800, 3600 }}},
     { "9/10/99     00:00:00",           { 000000,  00, 00, 00,    10,   8, 1999, 5,   252,   {-28800, 3600 }}},
@@ -659,7 +659,7 @@ static ParseTest parseArray[] =
     { "03-01-2005  00:00:00",           { 000000,  00, 00, 00,     1,   2, 2005, 2,    59,   {-28800, 0 }}},
 
     /* last element. string must be null */
-    { NULL }        
+    { NULL }
 }; /* end array of ParseTest */
 
 /*
@@ -708,12 +708,12 @@ static PRStatus TestParseTime( void )
                     PrintExplodedTime( &ptp->et );
                     printf("\n");
                 }
-                
+
                 rv = PR_FAILURE;
                 failed_already = 1;
             }
         }
-                
+
         /* point to next element in array, keep going */
         ptp++;
         sp = ptp->sDate;
@@ -732,7 +732,7 @@ int main(int argc, char** argv)
 	*/
 	PLOptStatus os;
 	PLOptState *opt;
-    
+
     PR_STDIO_INIT();
 	opt = PL_CreateOptState(argc, argv, "d");
 	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
@@ -750,7 +750,7 @@ int main(int argc, char** argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     lm = PR_NewLogModule("test");
 
@@ -778,9 +778,9 @@ int main(int argc, char** argv)
     else
     	printf("Test 3: Parse Time Test passed\n");
 
-	if (failed_already) 
+	if (failed_already)
 	    return 1;
-	else 
+	else
 	    return 0;
 } /* end main() y2k.c */
 

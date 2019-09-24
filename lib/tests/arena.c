@@ -46,13 +46,13 @@ static void ArenaAllocate( void )
 	PRInt32	i;
 
     PL_InitArenaPool( &ap, "AllocArena", 2048, sizeof(double));
-    PR_LOG( tLM, PR_LOG_DEBUG, ("AA, InitPool -- Pool: %p. first: %p, current: %p, size: %d", 
+    PR_LOG( tLM, PR_LOG_DEBUG, ("AA, InitPool -- Pool: %p. first: %p, current: %p, size: %d",
         &ap, ap.first, ap.current, ap.arenasize  ));
 
 	for( i = 0; i < 150; i++ )
 	{
 		PL_ARENA_ALLOCATE( ptr, &ap, 512 );
-        PR_LOG( tLM, PR_LOG_DEBUG,("AA, after alloc -- Pool: %p. first: %p, current: %p, size: %d", 
+        PR_LOG( tLM, PR_LOG_DEBUG,("AA, after alloc -- Pool: %p. first: %p, current: %p, size: %d",
                &ap, ap.first, ap.current, ap.arenasize  ));
 		PR_LOG( tLM, PR_LOG_DEBUG,(
 		    "AA -- Pool: %p. alloc: %p ", &ap, ptr ));
@@ -63,14 +63,14 @@ static void ArenaAllocate( void )
 	for( i = 0; i < 221; i++ )
 	{
 		PL_ARENA_ALLOCATE( ptr, &ap, 512 );
-        PR_LOG( tLM, PR_LOG_DEBUG,("AA, after alloc -- Pool: %p. first: %p, current: %p, size: %d", 
+        PR_LOG( tLM, PR_LOG_DEBUG,("AA, after alloc -- Pool: %p. first: %p, current: %p, size: %d",
                &ap, ap.first, ap.current, ap.arenasize  ));
 		PR_LOG( tLM, PR_LOG_DEBUG,(
 		    "AA -- Pool: %p. alloc: %p ", &ap, ptr ));
 	}
 
     PL_FreeArenaPool( &ap );
-    
+
     return;
 } /* end ArenaGrow() */
 /*
@@ -111,20 +111,20 @@ static void MarkAndRelease( void )
     PL_InitArenaPool( &ap, "TheArena", 4096, sizeof(double));
     mark0 = PL_ARENA_MARK( &ap );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("mark0. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p, m0: %p", 
+        ("mark0. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p, m0: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr, mark0 ));
 
 	for( i = 0; i < 201; i++ )
 	{
 		PL_ARENA_ALLOCATE( ptr, &ap, 512 );
         PR_LOG( tLM, PR_LOG_DEBUG,
-            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
                 &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 	}
 
     mark1 = PL_ARENA_MARK( &ap );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("mark1. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p, m1: %p", 
+        ("mark1. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p, m1: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr, mark1 ));
 
 
@@ -132,48 +132,48 @@ static void MarkAndRelease( void )
 	{
 		PL_ARENA_ALLOCATE( ptr, &ap, 512 );
         PR_LOG( tLM, PR_LOG_DEBUG,
-            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
                 &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 	}
 
     PL_ARENA_RELEASE( &ap, mark1 );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("Release-1: %p -- Pool: %p. first: %p, current: %p, size: %d", 
+        ("Release-1: %p -- Pool: %p. first: %p, current: %p, size: %d",
                mark1, &ap, ap.first, ap.current, ap.arenasize  ));
 
 	for( i = 0; i < 20; i++ )
 	{
 		PL_ARENA_ALLOCATE( ptr, &ap, 512 );
         PR_LOG( tLM, PR_LOG_DEBUG,
-            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+            ("mr. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
                 &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 	}
 
     PL_ARENA_RELEASE( &ap, mark1 );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("Release-1. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+        ("Release-1. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 
     PL_ARENA_RELEASE( &ap, mark0 );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("Release-0. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+        ("Release-0. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 
     PL_FreeArenaPool( &ap );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("Free. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+        ("Free. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
-    
+
     PL_FinishArenaPool( &ap );
     PR_LOG( tLM, PR_LOG_DEBUG,
-        ("Finish. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p", 
+        ("Finish. ap: %p, ap.f: %p, ap.c: %p, ap.siz: %d, alloc: %p",
             &ap, ap.first.next, ap.current, ap.arenasize, ptr ));
 
     return;
 } /* end MarkAndRelease() */
 
 /*
-** RandSize() returns a random number in the range 
+** RandSize() returns a random number in the range
 ** min..max, rounded to the next doubleword
 **
 */
@@ -230,15 +230,15 @@ static void PR_CALLBACK StressThread( void *arg )
     PR_EnterMonitor(tMon);
     threadCount--;
     PR_Notify(tMon);
-    PR_ExitMonitor(tMon);    
+    PR_ExitMonitor(tMon);
     return;
-}    
+}
 
 /*
 ** Stress()
 ** Flog the hell out of arenas multi-threaded.
 ** Do NOT pass an individual arena to another thread.
-** 
+**
 */
 static void Stress( void )
 {
@@ -263,7 +263,7 @@ static void Stress( void )
 
     /* Wait for all threads to exit */
     PR_EnterMonitor(tMon);
-    while ( threadCount != 0 ) 
+    while ( threadCount != 0 )
     {
         PR_Wait(tMon, PR_INTERVAL_NO_TIMEOUT);
     }
@@ -286,7 +286,7 @@ static PRIntn  EvaluateResults(void)
     {
         PR_LOG( tLM, PR_LOG_DEBUG, ("FAIL\n"));
         rc =1;
-    } 
+    }
     else
     {
         PR_LOG( tLM, PR_LOG_DEBUG, ("PASS\n"));
@@ -308,7 +308,7 @@ void Help( void )
     printf("-d       enable debug mode\n");
     printf("\n");
     exit(1);
-}    
+}
 
 PRIntn main(PRIntn argc, char *argv[])
 {

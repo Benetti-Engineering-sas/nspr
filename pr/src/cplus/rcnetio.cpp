@@ -42,7 +42,7 @@ RCIO* RCNetStreamIO::Accept(RCNetAddr* addr, const RCInterval& timeout)
 PRInt32 RCNetStreamIO::AcceptRead(
     RCIO **nd, RCNetAddr **raddr, void *buf,
     PRSize amount, const RCInterval& timeout)
-{   
+{
     PRNetAddr *from;
     PRFileDesc *accepted;
     PRInt32 rv = (fd->methods->acceptread)(
@@ -138,7 +138,7 @@ PRInt32 RCNetStreamIO::Write(const void *buf, PRSize amount)
 PRInt32 RCNetStreamIO::Writev(
     const PRIOVec *iov, PRSize size, const RCInterval& timeout)
     { return (fd->methods->writev)(fd, iov, size, timeout); }
-    
+
 /*
 ** Invalid functions
 */

@@ -49,7 +49,7 @@
 #include <setjmp.h>
 
 #if defined(_PR_BSDI_JMPBUF_IS_ARRAY)
-#define _MD_GET_SP(_t)    (_t)->md.context[2] 
+#define _MD_GET_SP(_t)    (_t)->md.context[2]
 #elif defined(_PR_BSDI_JMPBUF_IS_STRUCT)
 #define _MD_GET_SP(_t)    (_t)->md.context[0].jb_esp
 #else

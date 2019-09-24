@@ -38,9 +38,9 @@ int main (int argc, char **argv)
 	}
 	PL_DestroyOptState(opt);
 
-	if (( housekeeping_tid = 
+	if (( housekeeping_tid =
 		PR_CreateThread (PR_USER_THREAD, housecleaning,  (void*)&thread_start_time,
-						 PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD, PR_UNJOINABLE_THREAD, 0)) 
+						 PR_PRIORITY_NORMAL, PR_GLOBAL_THREAD, PR_UNJOINABLE_THREAD, 0))
 																		== NULL ) {
 		fprintf(stderr,
 			"simple_test: Error - PR_CreateThread failed: (%ld, %ld)\n",
@@ -52,7 +52,7 @@ int main (int argc, char **argv)
 }
 
 static void
-housecleaning (void *cur_time) 
+housecleaning (void *cur_time)
 {
   DPRINTF(("Child Thread exiting\n"));
 }

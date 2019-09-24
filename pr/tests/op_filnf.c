@@ -48,4 +48,4 @@ int main(int argc, char **argv)
 	printf ("opened a file that should not exist\n");
 	printf ("FAIL\n");
 	return 1;
-}			
+}

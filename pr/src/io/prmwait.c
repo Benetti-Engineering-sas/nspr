@@ -81,7 +81,7 @@ static void TimerManager(void *arg)
             {
                 timeout = (PRIntervalTime)(timer->absolute - now);
                 PR_WaitCondVar(tm_vars.new_timer, timeout);
-            } 
+            }
         }
     }
     PR_Unlock(tm_vars.ml);
@@ -143,7 +143,7 @@ static PRBool CancelTimer(TimerEvent *timer)
     }
     PR_Unlock(tm_vars.ml);
     PR_DELETE(timer);
-    return canceled; 
+    return canceled;
 }
 
 static PRStatus TimerInit(void)
@@ -301,7 +301,7 @@ static _PR_HashStory MW_AddHashInternal(PRRecvWait *desc, _PRWaiterHash *hash)
         }
         hidx = (hidx + hoffset) % (hash->length);
     }
-    return _prmw_rehash;    
+    return _prmw_rehash;
 }  /* MW_AddHashInternal */
 
 static _PR_HashStory MW_ExpandHashInternal(PRWaitGroup *group)
@@ -408,7 +408,7 @@ static PRRecvWait **_MW_LookupInternal(PRWaitGroup *group, PRFileDesc *fd)
     _PRWaiterHash *hash = group->waiter;
     PRUintn hidx = _MW_HASH(fd, hash->length);
     PRUintn hoffset = 0;
-    
+
     while (rehash-- > 0)
     {
         desc = (&hash->recv_wait) + hidx;
@@ -520,7 +520,7 @@ static PRStatus _MW_PollInternal(PRWaitGroup *group)
                     count += 1;
                 }
             }
-        } 
+        }
 
         PR_ASSERT(count == group->waiter->count);
 
@@ -636,7 +636,7 @@ static void NT_TimeProc(void *arg)
     _MDOverlapped *overlapped = (_MDOverlapped *)arg;
     PRRecvWait *desc =  overlapped->data.mw.desc;
     PRFileDesc *bottom;
-    
+
     if (InterlockedCompareExchange((LONG *)&desc->outcome,
         (LONG)PR_MW_TIMEOUT, (LONG)PR_MW_PENDING) != (LONG)PR_MW_PENDING)
     {
@@ -801,7 +801,7 @@ PR_IMPLEMENT(PRStatus) PR_AddWaitFileDesc(
         PR_SetError(PR_INVALID_ARGUMENT_ERROR, 0);
         return PR_FAILURE;
     }
-    hFile = (HANDLE)bottom->secret->md.osfd; 
+    hFile = (HANDLE)bottom->secret->md.osfd;
     if (!bottom->secret->md.io_model_committed)
     {
         PRInt32 st;
@@ -840,7 +840,7 @@ PR_IMPLEMENT(PRRecvWait*) PR_WaitRecvReady(PRWaitGroup *group)
     PRCList *io_ready = NULL;
 #ifdef WINNT
     PRThread *me = _PR_MD_CURRENT_THREAD();
-    _MDOverlapped *overlapped;    
+    _MDOverlapped *overlapped;
 #endif
 
     if (!_pr_initialized) _PR_ImplicitInitialization();
@@ -934,7 +934,7 @@ PR_IMPLEMENT(PRRecvWait*) PR_WaitRecvReady(PRWaitGroup *group)
                 ** it is still full of if's with continue and goto.
                 */
                 PRStatus st;
-                do 
+                do
                 {
                     st = PR_WaitCondVar(group->io_complete, PR_INTERVAL_NO_TIMEOUT);
                     if (_prmw_running != group->state)
@@ -966,7 +966,7 @@ PR_IMPLEMENT(PRRecvWait*) PR_WaitRecvReady(PRWaitGroup *group)
                 ** i/o ready, it has a higher priority.  I want to
                 ** process the ready i/o first and wake up another
                 ** thread to be the new poller.
-                */ 
+                */
                 if (NULL == group->poller)
                 {
                     if (PR_CLIST_IS_EMPTY(&group->io_ready))
@@ -1395,7 +1395,7 @@ PR_IMPLEMENT(PRRecvWait*) PR_EnumerateWaitGroup(
     PRMWaitEnumerator *enumerator, const PRRecvWait *previous)
 {
     PRRecvWait *result = NULL;
-    
+
     /* entry point sanity checking */
     PR_ASSERT(NULL != enumerator);
     PR_ASSERT(_PR_ENUM_SEALED == enumerator->seal);

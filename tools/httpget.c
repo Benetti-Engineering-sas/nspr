@@ -78,7 +78,7 @@ loop:
 	} else if (*inputHead == '\n') {
 	    lineFound = PR_TRUE;
 	    if (crPtr == dst - 1) {
-		dst--; 
+		dst--;
 	    }
 	}
 	*(dst++) = *(inputHead++);

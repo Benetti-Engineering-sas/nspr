@@ -189,11 +189,11 @@ static PRBool _pr_ipv6_v6only_on_by_default;
 #error "Cannot determine architecture"
 #endif
 
-#if defined(SOLARIS)            
+#if defined(SOLARIS)
 #ifndef PROTO_SDP
 /* on solaris, SDP is a new type of protocol */
 #define PROTO_SDP   257
-#endif 
+#endif
 #define _PR_HAVE_SDP
 #elif defined(LINUX)
 #ifndef AF_INET_SDP
@@ -280,7 +280,7 @@ static PRBool IsValidNetAddrLen(const PRNetAddr *addr, PRInt32 addr_len)
 #if defined(HAVE_SOCKLEN_T) \
     || (defined(__GLIBC__) && __GLIBC__ >= 2)
 typedef socklen_t pt_SockLen;
-#elif (defined(AIX) && !defined(AIX4_1)) 
+#elif (defined(AIX) && !defined(AIX4_1))
 typedef PRSize pt_SockLen;
 #else
 typedef PRIntn pt_SockLen;
@@ -308,7 +308,7 @@ struct pt_Continuation
         /*
          * For sendfile()
          */
-		struct file_spec {		
+		struct file_spec {
         	off_t offset;                       /* offset in file to send */
         	size_t nbytes;                      /* length of file data to send */
         	size_t st_size;                     /* file size */
@@ -325,7 +325,7 @@ struct pt_Continuation
     int filedesc;                           /* descriptor of file to send */
     int nbytes_to_send;                     /* size of header and file */
 #endif  /* HPUX11 */
-    
+
 #ifdef SOLARIS
     /*
      * For sendfilev()
@@ -341,7 +341,7 @@ struct pt_Continuation
     off_t offset;
     size_t count;
 #endif  /* LINUX */
- 
+
     PRIntervalTime timeout;                 /* client (relative) timeout */
 
     PRInt16 event;                           /* flags for poll()'s events */
@@ -374,7 +374,7 @@ PR_IMPLEMENT(void) PT_FPrintStats(PRFileDesc *debug_out, const char *msg)
     LL_SUB(elapsed, PR_Now(), stats.timeStarted);
     LL_I2L(aMil, 1000000);
     LL_DIV(elapsed, elapsed, aMil);
-    
+
     if (NULL != msg) PR_fprintf(debug_out, "%s", msg);
     PR_fprintf(
         debug_out, "\tstarted: %s[%lld]\n", buffer, elapsed);
@@ -416,7 +416,7 @@ static void pt_poll_now_with_select(pt_Continuation *op)
 	PRIntervalTime epoch, now, elapsed, remaining;
 	PRBool wait_for_remaining;
     PRThread *self = PR_GetCurrentThread();
-    
+
 	PR_ASSERT(PR_INTERVAL_NO_WAIT != op->timeout);
 	PR_ASSERT(op->arg1.osfd < FD_SETSIZE);
 
@@ -463,7 +463,7 @@ static void pt_poll_now_with_select(pt_Continuation *op)
 						revents |= POLLIN;
 					if ((op->event & POLLOUT) && FD_ISSET(op->arg1.osfd, &wr))
 						revents |= POLLOUT;
-						
+
 					if (op->function(op, revents))
 						op->status = pt_continuation_done;
 				} else if (rv == -1) {
@@ -520,7 +520,7 @@ static void pt_poll_now_with_select(pt_Continuation *op)
 						revents |= POLLIN;
 					if ((op->event & POLLOUT) && FD_ISSET(op->arg1.osfd, &wr))
 						revents |= POLLOUT;
-						
+
 					if (op->function(op, revents))
 						op->status = pt_continuation_done;
 
@@ -559,7 +559,7 @@ static void pt_poll_now(pt_Continuation *op)
 	PRIntervalTime epoch, now, elapsed, remaining;
 	PRBool wait_for_remaining;
     PRThread *self = PR_GetCurrentThread();
-    
+
 	PR_ASSERT(PR_INTERVAL_NO_WAIT != op->timeout);
 #if defined (_PR_POLL_WITH_SELECT)
 	/*
@@ -584,7 +584,7 @@ static void pt_poll_now(pt_Continuation *op)
 				tmp_pfd.events = op->event;
 
 				rv = poll(&tmp_pfd, 1, msecs);
-				
+
 				if (_PT_THREAD_INTERRUPTED(self))
 				{
 					self->state &= ~PT_THREAD_ABORTED;
@@ -642,7 +642,7 @@ static void pt_poll_now(pt_Continuation *op)
 					msecs = PT_DEFAULT_POLL_MSEC;
 				}
 				rv = poll(&tmp_pfd, 1, msecs);
-				
+
 				if (_PT_THREAD_INTERRUPTED(self))
 				{
 					self->state &= ~PT_THREAD_ABORTED;
@@ -658,7 +658,7 @@ static void pt_poll_now(pt_Continuation *op)
 					PRInt16 revents = tmp_pfd.revents;
 
 					if ((revents & POLLNVAL)  /* busted in all cases */
-						|| ((events & POLLOUT) && (revents & POLLHUP))) 
+						|| ((events & POLLOUT) && (revents & POLLHUP)))
 											/* write op & hup */
 					{
 						op->result.code = -1;
@@ -749,7 +749,7 @@ static PRBool pt_read_cont(pt_Continuation *op, PRInt16 revents)
     op->result.code = read(
         op->arg1.osfd, op->arg2.buffer, op->arg3.amount);
     op->syserrno = errno;
-    return ((-1 == op->result.code) && 
+    return ((-1 == op->result.code) &&
             (EWOULDBLOCK == op->syserrno || EAGAIN == op->syserrno)) ?
         PR_FALSE : PR_TRUE;
 }  /* pt_read_cont */
@@ -773,7 +773,7 @@ static PRBool pt_recv_cont(pt_Continuation *op, PRInt16 revents)
         op->arg1.osfd, op->arg2.buffer, op->arg3.amount, op->arg4.flags);
 #endif
     op->syserrno = errno;
-    return ((-1 == op->result.code) && 
+    return ((-1 == op->result.code) &&
             (EWOULDBLOCK == op->syserrno || EAGAIN == op->syserrno)) ?
         PR_FALSE : PR_TRUE;
 }  /* pt_recv_cont */
@@ -933,7 +933,7 @@ static PRBool pt_recvfrom_cont(pt_Continuation *op, PRInt16 revents)
         op->arg1.osfd, op->arg2.buffer, op->arg3.amount,
         op->arg4.flags, (struct sockaddr*)op->arg5.addr, &addr_len);
     op->syserrno = errno;
-    return ((-1 == op->result.code) && 
+    return ((-1 == op->result.code) &&
             (EWOULDBLOCK == op->syserrno || EAGAIN == op->syserrno)) ?
         PR_FALSE : PR_TRUE;
 }  /* pt_recvfrom_cont */
@@ -1041,7 +1041,7 @@ static PRBool pt_hpux_sendfile_cont(pt_Continuation *op, PRInt16 revents)
 }
 #endif  /* HPUX11 */
 
-#ifdef SOLARIS  
+#ifdef SOLARIS
 static PRBool pt_solaris_sendfile_cont(pt_Continuation *op, PRInt16 revents)
 {
     struct sendfilevec *vec = (struct sendfilevec *) op->arg2.buffer;
@@ -1060,7 +1060,7 @@ static PRBool pt_solaris_sendfile_cont(pt_Continuation *op, PRInt16 revents)
         }
         count = xferred;
     } else if (count == 0) {
-        /* 
+        /*
          * We are now at EOF. The file was truncated. Solaris sendfile is
          * supposed to return 0 and no error in this case, though some versions
          * may return -1 and EINVAL .
@@ -1070,7 +1070,7 @@ static PRBool pt_solaris_sendfile_cont(pt_Continuation *op, PRInt16 revents)
         return PR_TRUE;
     }
     PR_ASSERT(count <= op->nbytes_to_send);
-    
+
     op->result.code += count;
     if (count < op->nbytes_to_send) {
         op->nbytes_to_send -= count;
@@ -1094,7 +1094,7 @@ static PRBool pt_solaris_sendfile_cont(pt_Continuation *op, PRInt16 revents)
 }
 #endif  /* SOLARIS */
 
-#ifdef LINUX 
+#ifdef LINUX
 static PRBool pt_linux_sendfile_cont(pt_Continuation *op, PRInt16 revents)
 {
     ssize_t rv;
@@ -1133,9 +1133,9 @@ void _PR_InitIO(void)
     _pr_flock_cv = PR_NewCondVar(_pr_flock_lock);
     PR_ASSERT(NULL != _pr_flock_cv);
     _pr_rename_lock = PR_NewLock();
-    PR_ASSERT(NULL != _pr_rename_lock); 
+    PR_ASSERT(NULL != _pr_rename_lock);
 
-    _PR_InitFdCache();  /* do that */   
+    _PR_InitFdCache();  /* do that */
 
     _pr_stdin = pt_SetMethods(0, PR_DESC_FILE, PR_FALSE, PR_TRUE);
     _pr_stdout = pt_SetMethods(1, PR_DESC_FILE, PR_FALSE, PR_TRUE);
@@ -1170,11 +1170,11 @@ void _PR_CleanupIO(void)
     _pr_stdin = NULL;
     _PR_Putfd(_pr_stdout);
     _pr_stdout = NULL;
-    _PR_Putfd(_pr_stderr); 
+    _PR_Putfd(_pr_stderr);
     _pr_stderr = NULL;
 
     _PR_CleanupFdCache();
-    
+
     if (_pr_flock_cv)
     {
         PR_DestroyCondVar(_pr_flock_cv);
@@ -1198,7 +1198,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_GetSpecialFD(PRSpecialFD osfd)
     PR_ASSERT(osfd >= PR_StandardInput && osfd <= PR_StandardError);
 
     if (!_pr_initialized) _PR_ImplicitInitialization();
-    
+
     switch (osfd)
     {
         case PR_StandardInput: result = _pr_stdin; break;
@@ -2175,7 +2175,7 @@ static void pt_aix_sendfile_init_routine(void)
     dlclose(handle);
 }
 
-/* 
+/*
  * pt_AIXDispatchSendFile
  */
 static PRInt32 pt_AIXDispatchSendFile(PRFileDesc *sd, PRSendFileData *sfd,
@@ -2199,17 +2199,17 @@ static PRInt32 pt_AIXDispatchSendFile(PRFileDesc *sd, PRSendFileData *sfd,
  * pt_AIXSendFile
  *
  *    Send file sfd->fd across socket sd. If specified, header and trailer
- *    buffers are sent before and after the file, respectively. 
+ *    buffers are sent before and after the file, respectively.
  *
  *    PR_TRANSMITFILE_CLOSE_SOCKET flag - close socket after sending file
- *    
+ *
  *    return number of bytes sent or -1 on error
  *
  *      This implementation takes advantage of the send_file() system
  *      call available in AIX 4.3.2.
  */
 
-static PRInt32 pt_AIXSendFile(PRFileDesc *sd, PRSendFileData *sfd, 
+static PRInt32 pt_AIXSendFile(PRFileDesc *sd, PRSendFileData *sfd,
 		PRTransmitFileFlags flags, PRIntervalTime timeout)
 {
     struct sf_parms sf_struct;
@@ -2299,14 +2299,14 @@ static PRInt32 pt_AIXSendFile(PRFileDesc *sd, PRSendFileData *sfd,
  *    buffers are sent before and after the file, respectively.
  *
  *    PR_TRANSMITFILE_CLOSE_SOCKET flag - close socket after sending file
- *    
+ *
  *    return number of bytes sent or -1 on error
  *
  *      This implementation takes advantage of the sendfile() system
  *      call available in HP-UX B.11.00.
  */
 
-static PRInt32 pt_HPUXSendFile(PRFileDesc *sd, PRSendFileData *sfd, 
+static PRInt32 pt_HPUXSendFile(PRFileDesc *sd, PRSendFileData *sfd,
 		PRTransmitFileFlags flags, PRIntervalTime timeout)
 {
     struct stat statbuf;
@@ -2321,7 +2321,7 @@ static PRInt32 pt_HPUXSendFile(PRFileDesc *sd, PRSendFileData *sfd,
         if (fstat(sfd->fd->secret->md.osfd, &statbuf) == -1) {
             _PR_MD_MAP_FSTAT_ERROR(errno);
             return -1;
-        } 		
+        }
         file_nbytes_to_send = statbuf.st_size - sfd->file_offset;
     } else {
         file_nbytes_to_send = sfd->file_nbytes;
@@ -2412,7 +2412,7 @@ static PRInt32 pt_HPUXSendFile(PRFileDesc *sd, PRSendFileData *sfd,
 
 #endif  /* HPUX11 */
 
-#ifdef SOLARIS 
+#ifdef SOLARIS
 
 /*
  *    pt_SolarisSendFile
@@ -2432,9 +2432,9 @@ static PRInt32 pt_SolarisSendFile(PRFileDesc *sd, PRSendFileData *sfd,
                 PRTransmitFileFlags flags, PRIntervalTime timeout)
 {
     struct stat statbuf;
-    size_t nbytes_to_send, file_nbytes_to_send;	
-    struct sendfilevec sfv_struct[3];  
-    int sfvcnt = 0;	
+    size_t nbytes_to_send, file_nbytes_to_send;
+    struct sendfilevec sfv_struct[3];
+    int sfvcnt = 0;
     size_t xferred;
     PRInt32 count;
     int syserrno;
@@ -2444,7 +2444,7 @@ static PRInt32 pt_SolarisSendFile(PRFileDesc *sd, PRSendFileData *sfd,
         if (fstat(sfd->fd->secret->md.osfd, &statbuf) == -1) {
             _PR_MD_MAP_FSTAT_ERROR(errno);
             return -1;
-        } 		
+        }
         file_nbytes_to_send = statbuf.st_size - sfd->file_offset;
     } else {
         file_nbytes_to_send = sfd->file_nbytes;
@@ -2455,7 +2455,7 @@ static PRInt32 pt_SolarisSendFile(PRFileDesc *sd, PRSendFileData *sfd,
     if (sfd->hlen != 0) {
         sfv_struct[sfvcnt].sfv_fd = SFV_FD_SELF;
         sfv_struct[sfvcnt].sfv_flag = 0;
-        sfv_struct[sfvcnt].sfv_off = (off_t) sfd->header; 
+        sfv_struct[sfvcnt].sfv_off = (off_t) sfd->header;
         sfv_struct[sfvcnt].sfv_len = sfd->hlen;
         sfvcnt++;
     }
@@ -2471,7 +2471,7 @@ static PRInt32 pt_SolarisSendFile(PRFileDesc *sd, PRSendFileData *sfd,
     if (sfd->tlen != 0) {
         sfv_struct[sfvcnt].sfv_fd = SFV_FD_SELF;
         sfv_struct[sfvcnt].sfv_flag = 0;
-        sfv_struct[sfvcnt].sfv_off = (off_t) sfd->trailer; 
+        sfv_struct[sfvcnt].sfv_off = (off_t) sfd->trailer;
         sfv_struct[sfvcnt].sfv_len = sfd->tlen;
         sfvcnt++;
     }
@@ -2480,7 +2480,7 @@ static PRInt32 pt_SolarisSendFile(PRFileDesc *sd, PRSendFileData *sfd,
         count = 0;
         goto done;
     }
-   	   
+
     /*
      * Strictly speaking, we may have sent some bytes when the
      * sendfilev() is interrupted and we should retry it from an
@@ -2555,7 +2555,7 @@ static void pt_solaris_sendfilev_init_routine(void)
 {
     void *handle;
     PRBool close_it = PR_FALSE;
- 
+
     /*
      * We do not want to unload libsendfile.so.  This handle is leaked
      * intentionally.
@@ -2578,13 +2578,13 @@ static void pt_solaris_sendfilev_init_routine(void)
     pt_solaris_sendfilev_fptr = (ssize_t (*)()) dlsym(handle, "sendfilev");
     PR_LOG(_pr_io_lm, PR_LOG_DEBUG,
         ("dlsym(sendfilev) returns %p", pt_solaris_sendfilev_fptr));
-    
+
     if (close_it) {
         dlclose(handle);
     }
 }
 
-/* 
+/*
  * pt_SolarisDispatchSendFile
  */
 static PRInt32 pt_SolarisDispatchSendFile(PRFileDesc *sd, PRSendFileData *sfd,
@@ -2613,7 +2613,7 @@ static PRInt32 pt_SolarisDispatchSendFile(PRFileDesc *sd, PRSendFileData *sfd,
  *    buffers are sent before and after the file, respectively.
  *
  *    PR_TRANSMITFILE_CLOSE_SOCKET flag - close socket after sending file
- *    
+ *
  *    return number of bytes sent or -1 on error
  *
  *      This implementation takes advantage of the sendfile() system
@@ -2624,7 +2624,7 @@ static PRInt32 pt_LinuxSendFile(PRFileDesc *sd, PRSendFileData *sfd,
                 PRTransmitFileFlags flags, PRIntervalTime timeout)
 {
     struct stat statbuf;
-    size_t file_nbytes_to_send;	
+    size_t file_nbytes_to_send;
     PRInt32 count = 0;
     ssize_t rv;
     int syserrno;
@@ -2637,7 +2637,7 @@ static PRInt32 pt_LinuxSendFile(PRFileDesc *sd, PRSendFileData *sfd,
         if (fstat(sfd->fd->secret->md.osfd, &statbuf) == -1) {
             _PR_MD_MAP_FSTAT_ERROR(errno);
             return -1;
-        } 		
+        }
         file_nbytes_to_send = statbuf.st_size - sfd->file_offset;
     } else {
         file_nbytes_to_send = sfd->file_nbytes;
@@ -3132,30 +3132,30 @@ static PRIOMethods _pr_file_methods = {
     pt_Seek64,
     pt_FileInfo,
     pt_FileInfo64,
-    (PRWritevFN)_PR_InvalidInt,        
-    (PRConnectFN)_PR_InvalidStatus,        
-    (PRAcceptFN)_PR_InvalidDesc,        
-    (PRBindFN)_PR_InvalidStatus,        
-    (PRListenFN)_PR_InvalidStatus,        
-    (PRShutdownFN)_PR_InvalidStatus,    
-    (PRRecvFN)_PR_InvalidInt,        
-    (PRSendFN)_PR_InvalidInt,        
-    (PRRecvfromFN)_PR_InvalidInt,    
-    (PRSendtoFN)_PR_InvalidInt,        
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
     pt_Poll,
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,    
-    (PRGetpeernameFN)_PR_InvalidStatus,    
-    (PRReservedFN)_PR_InvalidInt,    
-    (PRReservedFN)_PR_InvalidInt,    
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -3171,30 +3171,30 @@ static PRIOMethods _pr_pipe_methods = {
     (PRSeek64FN)_PR_InvalidInt64,
     (PRFileInfoFN)_PR_InvalidStatus,
     (PRFileInfo64FN)_PR_InvalidStatus,
-    (PRWritevFN)_PR_InvalidInt,        
-    (PRConnectFN)_PR_InvalidStatus,        
-    (PRAcceptFN)_PR_InvalidDesc,        
-    (PRBindFN)_PR_InvalidStatus,        
-    (PRListenFN)_PR_InvalidStatus,        
-    (PRShutdownFN)_PR_InvalidStatus,    
-    (PRRecvFN)_PR_InvalidInt,        
-    (PRSendFN)_PR_InvalidInt,        
-    (PRRecvfromFN)_PR_InvalidInt,    
-    (PRSendtoFN)_PR_InvalidInt,        
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
     pt_Poll,
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,    
-    (PRGetpeernameFN)_PR_InvalidStatus,    
-    (PRReservedFN)_PR_InvalidInt,    
-    (PRReservedFN)_PR_InvalidInt,    
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -3233,11 +3233,11 @@ static PRIOMethods _pr_tcp_methods = {
     (PRReservedFN)_PR_InvalidInt,
     pt_GetSocketOption,
     pt_SetSocketOption,
-    pt_SendFile, 
+    pt_SendFile,
     pt_ConnectContinue,
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -3272,11 +3272,11 @@ static PRIOMethods _pr_udp_methods = {
     (PRReservedFN)_PR_InvalidInt,
     pt_GetSocketOption,
     pt_SetSocketOption,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -3292,30 +3292,30 @@ static PRIOMethods _pr_socketpollfd_methods = {
     (PRSeek64FN)_PR_InvalidInt64,
     (PRFileInfoFN)_PR_InvalidStatus,
     (PRFileInfo64FN)_PR_InvalidStatus,
-    (PRWritevFN)_PR_InvalidInt,        
-    (PRConnectFN)_PR_InvalidStatus,        
-    (PRAcceptFN)_PR_InvalidDesc,        
-    (PRBindFN)_PR_InvalidStatus,        
-    (PRListenFN)_PR_InvalidStatus,        
-    (PRShutdownFN)_PR_InvalidStatus,    
-    (PRRecvFN)_PR_InvalidInt,        
-    (PRSendFN)_PR_InvalidInt,        
-    (PRRecvfromFN)_PR_InvalidInt,    
-    (PRSendtoFN)_PR_InvalidInt,        
+    (PRWritevFN)_PR_InvalidInt,
+    (PRConnectFN)_PR_InvalidStatus,
+    (PRAcceptFN)_PR_InvalidDesc,
+    (PRBindFN)_PR_InvalidStatus,
+    (PRListenFN)_PR_InvalidStatus,
+    (PRShutdownFN)_PR_InvalidStatus,
+    (PRRecvFN)_PR_InvalidInt,
+    (PRSendFN)_PR_InvalidInt,
+    (PRRecvfromFN)_PR_InvalidInt,
+    (PRSendtoFN)_PR_InvalidInt,
 	pt_Poll,
-    (PRAcceptreadFN)_PR_InvalidInt,   
-    (PRTransmitfileFN)_PR_InvalidInt, 
-    (PRGetsocknameFN)_PR_InvalidStatus,    
-    (PRGetpeernameFN)_PR_InvalidStatus,    
-    (PRReservedFN)_PR_InvalidInt,    
-    (PRReservedFN)_PR_InvalidInt,    
+    (PRAcceptreadFN)_PR_InvalidInt,
+    (PRTransmitfileFN)_PR_InvalidInt,
+    (PRGetsocknameFN)_PR_InvalidStatus,
+    (PRGetpeernameFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRGetsocketoptionFN)_PR_InvalidStatus,
     (PRSetsocketoptionFN)_PR_InvalidStatus,
-    (PRSendfileFN)_PR_InvalidInt, 
-    (PRConnectcontinueFN)_PR_InvalidStatus, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
-    (PRReservedFN)_PR_InvalidInt, 
+    (PRSendfileFN)_PR_InvalidInt,
+    (PRConnectcontinueFN)_PR_InvalidStatus,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
+    (PRReservedFN)_PR_InvalidInt,
     (PRReservedFN)_PR_InvalidInt
 };
 
@@ -3368,7 +3368,7 @@ static PRFileDesc *pt_SetMethods(
     PRIntn osfd, PRDescType type, PRBool isAcceptedSocket, PRBool imported)
 {
     PRFileDesc *fd = _PR_Getfd();
-    
+
     if (fd == NULL) PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
     else
     {
@@ -3457,7 +3457,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_AllocFileDesc(
     fd->secret->state = _PR_FILEDESC_OPEN;
     fd->secret->inheritable = _PR_TRI_UNKNOWN;
     return fd;
-    
+
 failed:
     PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
     return fd;
@@ -3549,7 +3549,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_Socket(PRInt32 domain, PRInt32 type, PRInt32 proto)
 #if defined(_PR_INET6_PROBE)
 	if (PR_AF_INET6 == domain)
 		domain = _pr_ipv6_is_present() ? AF_INET6 : AF_INET;
-#elif defined(_PR_INET6) 
+#elif defined(_PR_INET6)
 	if (PR_AF_INET6 == domain)
 		domain = AF_INET6;
 #else
@@ -3578,7 +3578,7 @@ PR_IMPLEMENT(PRFileDesc*) PR_Socket(PRInt32 domain, PRInt32 type, PRInt32 proto)
 #if defined(_PR_INET6_PROBE) || !defined(_PR_INET6)
 	if (fd != NULL) {
 		/*
-		 * For platforms with no support for IPv6 
+		 * For platforms with no support for IPv6
 		 * create layered socket for IPv4-mapped IPv6 addresses
 		 */
 		if (PR_AF_INET6 == tmp_domain && PR_AF_INET == domain) {
@@ -3694,7 +3694,7 @@ PR_IMPLEMENT(PRStatus) PR_Access(const char *name, PRAccessHow how)
     if (0 == rv) return PR_SUCCESS;
     pt_MapError(_PR_MD_MAP_ACCESS_ERROR, errno);
     return PR_FAILURE;
-    
+
 }  /* PR_Access */
 
 PR_IMPLEMENT(PRStatus) PR_GetFileInfo(const char *fn, PRFileInfo *info)
@@ -3722,7 +3722,7 @@ PR_IMPLEMENT(PRStatus) PR_Rename(const char *from, const char *to)
     ** We have to acquire a lock here to stiffle anybody trying to create
     ** a new file at the same time. And we have to hold that lock while we
     ** test to see if the file exists and do the rename. The other place
-    ** where the lock is held is in PR_Open() when possibly creating a 
+    ** where the lock is held is in PR_Open() when possibly creating a
     ** new file.
     */
 
@@ -4334,7 +4334,7 @@ retry:
 							}
 						}
 					}
-                } else 
+                } else
                     _PR_MD_MAP_SELECT_ERROR(oserror);
             }
             else if (ready > 0)
@@ -4652,7 +4652,7 @@ PR_IMPLEMENT(PRStatus) PR_LockFile(PRFileDesc *fd)
         fd->secret->lockCount += 1;
     }
     PR_Unlock(_pr_flock_lock);
- 
+
     return status;
 }  /* PR_LockFile */
 
@@ -4670,7 +4670,7 @@ PR_IMPLEMENT(PRStatus) PR_TLockFile(PRFileDesc *fd)
     }
     else fd->secret->lockCount += 1;
     PR_Unlock(_pr_flock_lock);
- 
+
     return status;
 }  /* PR_TLockFile */
 
@@ -4704,7 +4704,7 @@ PR_IMPLEMENT(PRInt32) PR_GetSysfdTableMax(void)
 #else
     struct rlimit rlim;
 
-    if ( getrlimit(RLIMIT_NOFILE, &rlim) < 0) 
+    if ( getrlimit(RLIMIT_NOFILE, &rlim) < 0)
        return -1;
 
     return rlim.rlim_max;
@@ -4728,7 +4728,7 @@ PR_IMPLEMENT(PRInt32) PR_SetSysfdTableSize(PRIntn table_size)
     else
         rlim.rlim_cur = table_size;
 
-    if ( setrlimit(RLIMIT_NOFILE, &rlim) < 0) 
+    if ( setrlimit(RLIMIT_NOFILE, &rlim) < 0)
         return -1;
 
     return rlim.rlim_cur;
@@ -4854,7 +4854,7 @@ _PR_getset(PR_fd_set *pr_set, fd_set *set)
 
     if (!pr_set)
         return 0;
-   
+
     FD_ZERO(set);
 
     /* First set the pr file handle osfds */
@@ -4896,7 +4896,7 @@ _PR_setset(PR_fd_set *pr_set, fd_set *set)
 }
 
 PR_IMPLEMENT(PRInt32) PR_Select(
-    PRInt32 unused, PR_fd_set *pr_rd, PR_fd_set *pr_wr, 
+    PRInt32 unused, PR_fd_set *pr_rd, PR_fd_set *pr_wr,
     PR_fd_set *pr_ex, PRIntervalTime timeout)
 {
     fd_set rd, wr, ex;
@@ -4963,7 +4963,7 @@ retry:
 }
 #endif /* defined(_PR_PTHREADS) */
 
-#ifdef MOZ_UNICODE 
+#ifdef MOZ_UNICODE
 /* ================ UTF16 Interfaces ================================ */
 PR_IMPLEMENT(PRFileDesc*) PR_OpenFileUTF16(
     const PRUnichar *name, PRIntn flags, PRIntn mode)

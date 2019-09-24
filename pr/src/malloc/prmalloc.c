@@ -60,7 +60,7 @@ void *_PR_UnlockedCalloc(size_t n, size_t elsize);
 #  define TRACE(foo)    printf  foo
 static int malloc_event;
 #else
-#  define TRACE(foo)	
+#  define TRACE(foo)
 #endif
 
 /* XXX Pick a number, any number */
@@ -182,7 +182,7 @@ static	struct	pginfo **page_dir;
 static	unsigned	malloc_ninfo;
 
 /*
- * Free pages line up here 
+ * Free pages line up here
  */
 static struct pgfree	free_list;
 
@@ -253,7 +253,7 @@ malloc_dump(FILE *fd)
 	    fprintf(fd,"(%p)\n", pd[j]);
 	} else {
 	    fprintf(fd,"%p %d (of %d) x %d @ %p --> %p\n",
-		pd[j],pd[j]->free, pd[j]->total, 
+		pd[j],pd[j]->free, pd[j]->total,
 		pd[j]->size, pd[j]->page, pd[j]->next);
 	}
     }
@@ -356,7 +356,7 @@ extend_page_directory(u_long index)
     int i;
 
     TRACE(("%6d E %lu\n",malloc_event++,index));
-    
+
     /* Make it this many pages */
     i = index * sizeof *page_dir;
     i /= malloc_pagesize;
@@ -444,7 +444,7 @@ malloc_init (void)
 #endif /* malloc_pageshift */
 
 #ifndef malloc_cache
-    malloc_cache = 50 << malloc_pageshift;	
+    malloc_cache = 50 << malloc_pageshift;
 #endif /* malloc_cache */
 
 #ifndef malloc_minsize
@@ -528,17 +528,17 @@ static void *malloc_pages(size_t size)
 	}
 	if ((void*)pf->page >= (void*)sbrk(0))
 	    wrterror("entry on free_list past brk\n");
-	if (page_dir[((u_long)pf->page >> malloc_pageshift) - malloc_origo] 
+	if (page_dir[((u_long)pf->page >> malloc_pageshift) - malloc_origo]
 	  != MALLOC_FREE) {
 	    TRACE(("%6d !f %p %p %p <%d>\n",malloc_event++,
 		pf,pf->page,pf->end,__LINE__));
 	    wrterror("non-free first page on free-list\n");
 	}
-	if (page_dir[((u_long)pf->end >> malloc_pageshift) - 1 - malloc_origo] 
+	if (page_dir[((u_long)pf->end >> malloc_pageshift) - 1 - malloc_origo]
 	  != MALLOC_FREE)
 	    wrterror("non-free last page on free-list\n");
 #endif /* EXTRA_SANITY */
-	if (pf->size < size) 
+	if (pf->size < size)
 	    continue;
 	else if (pf->size == size) {
 	    p = pf->page;
@@ -555,7 +555,7 @@ static void *malloc_pages(size_t size)
         }
     }
 #ifdef EXTRA_SANITY
-    if (p && page_dir[((u_long)p >> malloc_pageshift) - malloc_origo] 
+    if (p && page_dir[((u_long)p >> malloc_pageshift) - malloc_origo]
       != MALLOC_FREE) {
 	wrterror("allocated non-free page on free-list\n");
     }
@@ -575,7 +575,7 @@ static void *malloc_pages(size_t size)
 	    page_dir[index+i] = MALLOC_FOLLOW;
     }
     if (delay_free) {
-	if (!px) 
+	if (!px)
 	    px = (struct pgfree*)delay_free;
 	else
 	    _PR_UnlockedFree(delay_free);
@@ -732,9 +732,9 @@ void *_PR_UnlockedMemalign(size_t alignment, size_t size)
      */
 
     if ((size <= alignment) && (alignment <= malloc_maxsize))
-		size = alignment;	
+		size = alignment;
     else
-           	size += alignment - 1;	
+           	size += alignment - 1;
 
     /* Round up to a multiple of 8 bytes */
     if (size & 7) {
@@ -829,7 +829,7 @@ void *_PR_UnlockedRealloc(void *ptr, size_t size)
 	 * memalign-allocated memory
 	 */
 	index = tmp_index;
-	page = index + malloc_origo;			
+	page = index + malloc_origo;
 	ptr = (void *) (page << malloc_pageshift);
     }
     TRACE(("%6d R2 %p %d\n",malloc_event++, ptr, size));
@@ -850,8 +850,8 @@ void *_PR_UnlockedRealloc(void *ptr, size_t size)
 	    osize += malloc_pagesize;
 	    mp++;
 	}
-        if (!malloc_realloc && 
-		size < osize && 
+        if (!malloc_realloc &&
+		size < osize &&
 		size > malloc_maxsize &&
 	    size > (osize - malloc_pagesize)) {
 	    return ptr;
@@ -859,7 +859,7 @@ void *_PR_UnlockedRealloc(void *ptr, size_t size)
     } else if (*mp >= MALLOC_MAGIC) {
 	osize = (*mp)->size;
 	if (!malloc_realloc &&
-		size < osize && 
+		size < osize &&
 	    (size > (*mp)->size/2 || (*mp)->size == malloc_minsize)) {
 	    return ptr;
 	}
@@ -1114,7 +1114,7 @@ void _PR_UnlockedFree(void *ptr)
 	 * memalign-allocated memory
 	 */
 	index = tmp_index;
-	page = index + malloc_origo;			
+	page = index + malloc_origo;
 	ptr = (void *) (page << malloc_pageshift);
     }
     /* make sure it makes sense in some fashion */
@@ -1135,7 +1135,7 @@ void _PR_UnlockedFree(void *ptr)
     info = page_dir[index];
     if (info < MALLOC_MAGIC)
         free_pages((char*)ptr, page, index, info);
-    else 
+    else
 	free_bytes(ptr,page,index,info);
     return;
 }

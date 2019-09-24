@@ -13,7 +13,7 @@
 **      in.
 **
 **      The goal: try to survive.
-**      
+**
 */
 
 #include "prcvar.h"
@@ -134,14 +134,14 @@ static PRStatus NSPRPUB_TESTS_CreateThread(StartFn start, void *arg)
 #if defined(WIN32)
         {
             void *th;
-            PRUintn id;       
+            PRUintn id;
             StartObject *start_object;
             start_object = PR_NEW(StartObject);
             PR_ASSERT(NULL != start_object);
             start_object->start = start;
             start_object->arg = arg;
             th = (void*)_beginthreadex(
-                NULL, /* LPSECURITY_ATTRIBUTES - pointer to thread security attributes */  
+                NULL, /* LPSECURITY_ATTRIBUTES - pointer to thread security attributes */
                 0U, /* DWORD - initial thread stack size, in bytes */
                 windows_start, /* LPTHREAD_START_ROUTINE - pointer to thread function */
                 start_object, /* LPVOID - argument for new thread */
@@ -182,46 +182,46 @@ static void OneShot(void *arg)
     switch (test)
     {
         case 0:
-            lock = PR_NewLock(); 
+            lock = PR_NewLock();
 			DPRINTF((output,"Thread[0x%x] called PR_NewLock\n",
 			PR_GetCurrentThread()));
             PR_DestroyLock(lock);
             break;
-            
+
         case 1:
             (void)PR_SecondsToInterval(1);
 			DPRINTF((output,"Thread[0x%x] called PR_SecondsToInterval\n",
 			PR_GetCurrentThread()));
             break;
-            
+
         case 2: (void)PR_CreateThread(
             PR_USER_THREAD, lazyEntry, NULL, PR_PRIORITY_NORMAL,
-            PR_LOCAL_THREAD, PR_UNJOINABLE_THREAD, 0); 
+            PR_LOCAL_THREAD, PR_UNJOINABLE_THREAD, 0);
 			DPRINTF((output,"Thread[0x%x] called PR_CreateThread\n",
 			PR_GetCurrentThread()));
             break;
-            
+
         case 3:
-            fd = PR_Open("foreign.tmp", PR_CREATE_FILE | PR_RDWR, 0666); 
+            fd = PR_Open("foreign.tmp", PR_CREATE_FILE | PR_RDWR, 0666);
 			DPRINTF((output,"Thread[0x%x] called PR_Open\n",
 			PR_GetCurrentThread()));
             PR_Close(fd);
             break;
-            
+
         case 4:
-            fd = PR_NewUDPSocket(); 
+            fd = PR_NewUDPSocket();
 			DPRINTF((output,"Thread[0x%x] called PR_NewUDPSocket\n",
 			PR_GetCurrentThread()));
             PR_Close(fd);
             break;
-            
+
         case 5:
-            fd = PR_NewTCPSocket(); 
+            fd = PR_NewTCPSocket();
 			DPRINTF((output,"Thread[0x%x] called PR_NewTCPSocket\n",
 			PR_GetCurrentThread()));
             PR_Close(fd);
             break;
-            
+
         case 6:
 #define TEMP_DIR "/tmp/"
             dir = PR_OpenDir(TEMP_DIR);
@@ -229,19 +229,19 @@ static void OneShot(void *arg)
 			PR_GetCurrentThread()));
             PR_CloseDir(dir);
             break;
-            
+
         case 7:
             (void)PR_NewThreadPrivateIndex(&pdkey, NULL);
 			DPRINTF((output,"Thread[0x%x] called PR_NewThreadPrivateIndex\n",
 			PR_GetCurrentThread()));
             break;
-        
+
         case 8:
             (void)PR_GetEnv("PATH");
 			DPRINTF((output,"Thread[0x%x] called PR_GetEnv\n",
 			PR_GetCurrentThread()));
             break;
-            
+
         case 9:
             (void)PR_NewTCPSocketPair(pair);
 			DPRINTF((output,"Thread[0x%x] called PR_NewTCPSocketPair\n",
@@ -249,7 +249,7 @@ static void OneShot(void *arg)
             PR_Close(pair[0]);
             PR_Close(pair[1]);
             break;
-            
+
         case 10:
             PR_SetConcurrency(2);
 			DPRINTF((output,"Thread[0x%x] called PR_SetConcurrency\n",
@@ -261,8 +261,8 @@ static void OneShot(void *arg)
 			DPRINTF((output,"Thread[0x%x] called PR_SetThreadPriority\n",
 			PR_GetCurrentThread()));
             break;
-            
-        default: 
+
+        default:
             break;
     } /* switch() */
 	}

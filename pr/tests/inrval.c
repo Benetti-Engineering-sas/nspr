@@ -123,7 +123,7 @@ static void TestIntervals(void)
         LL_I2L(thousand, 1000);
         LL_DIV(elapsed, elapsed, thousand);
         LL_L2UI(delta, elapsed);
-        if (debug_mode) PR_fprintf(output, 
+        if (debug_mode) PR_fprintf(output,
             "TestIntervals: %swaiting %ld seconds took %ld msecs\n",
             ((rv == PR_SUCCESS) ? "" : "FAILED "), seconds, delta);
     }
@@ -144,7 +144,7 @@ static PRIntn PR_CALLBACK RealMain(int argc, char** argv)
 	*/
 
  /* main test */
-	
+
 	PLOptStatus os;
 	PLOptState *opt = PL_CreateOptState(argc, argv, "dl:c:");
 	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
@@ -166,7 +166,7 @@ static PRIntn PR_CALLBACK RealMain(int argc, char** argv)
         }
     }
 	PL_DestroyOptState(opt);
-	
+
     output = PR_GetSpecialFD(PR_StandardOutput);
     PR_fprintf(output, "inrval: Examine stdout to determine results.\n");
 
@@ -190,7 +190,7 @@ static PRIntn PR_CALLBACK RealMain(int argc, char** argv)
         TestConversions();
         TestIntervals();
     }
-        
+
     return 0;
 }
 
@@ -198,7 +198,7 @@ static PRIntn PR_CALLBACK RealMain(int argc, char** argv)
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

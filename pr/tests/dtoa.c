@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     double zero = 0.0;
     char   cnvt[50];
     char  *thousands;
-    
+
     num = 1e24;
     num1 = PR_strtod("1e24",NULL);
     if(num1 != num){

@@ -45,7 +45,7 @@ _PR_MD_INIT_IO()
     HMODULE module;
 
     sock_init();
-    
+
     rc = DosLoadModule(NULL, 0, "DOSCALL1", &module);
     if (rc != NO_ERROR)
     {
@@ -78,8 +78,8 @@ _PR_MD_WAIT(PRThread *thread, PRIntervalTime ticks)
     PRUint32 msecs = (ticks == PR_INTERVAL_NO_TIMEOUT) ?
         SEM_INDEFINITE_WAIT : PR_IntervalToMilliseconds(ticks);
     rv = DosWaitEventSem(thread->md.blocked_sema, msecs);
-    DosResetEventSem(thread->md.blocked_sema, &count); 
-    switch(rv) 
+    DosResetEventSem(thread->md.blocked_sema, &count);
+    switch(rv)
     {
         case NO_ERROR:
             return PR_SUCCESS;
@@ -99,7 +99,7 @@ _PR_MD_WAIT(PRThread *thread, PRIntervalTime ticks)
                      */
                     _PR_THREAD_UNLOCK(thread);
                     rv = DosWaitEventSem(thread->md.blocked_sema, 0);
-                    DosResetEventSem(thread->md.blocked_sema, &count); 
+                    DosResetEventSem(thread->md.blocked_sema, &count);
                     PR_ASSERT(rv == NO_ERROR);
                 }
             }
@@ -113,7 +113,7 @@ _PR_MD_WAIT(PRThread *thread, PRIntervalTime ticks)
 PRStatus
 _PR_MD_WAKEUP_WAITER(PRThread *thread)
 {
-    if ( _PR_IS_NATIVE_THREAD(thread) ) 
+    if ( _PR_IS_NATIVE_THREAD(thread) )
     {
         if (DosPostEventSem(thread->md.blocked_sema) != NO_ERROR)
             return PR_FAILURE;
@@ -132,7 +132,7 @@ _PR_MD_WAKEUP_WAITER(PRThread *thread)
  *  The NSPR open flags (osflags) are translated into flags for OS/2
  *
  *  Mode seems to be passed in as a unix style file permissions argument
- *  as in 0666, in the case of opening the logFile. 
+ *  as in 0666, in the case of opening the logFile.
  *
  */
 PRInt32
@@ -149,7 +149,7 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, int mode)
      * All the pointer arguments (&file, &actionTaken and name) have to be in
      * low memory for DosOpen to use them.
      * The following moves name to low memory.
-     */ 
+     */
     if ((ULONG)name >= 0x20000000)
     {
         size_t len = strlen(name) + 1;
@@ -178,7 +178,7 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, int mode)
             flags = OPEN_ACTION_CREATE_IF_NEW | OPEN_ACTION_REPLACE_IF_EXISTS;
         else
             flags = OPEN_ACTION_CREATE_IF_NEW | OPEN_ACTION_OPEN_IF_EXISTS;
-    } 
+    }
     else
     {
         if (osflags & PR_TRUNCATE)
@@ -223,7 +223,7 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, int mode)
 
     if (rc != NO_ERROR) {
         _PR_MD_MAP_OPEN_ERROR(rc);
-        return -1; 
+        return -1;
     }
 
     return (PRInt32)file;
@@ -239,8 +239,8 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
                  (PVOID)buf,
                  len,
                  &bytes);
-    
-    if (rv != NO_ERROR) 
+
+    if (rv != NO_ERROR)
     {
         /* ERROR_HANDLE_EOF can only be returned by async io */
         PR_ASSERT(rv != ERROR_HANDLE_EOF);
@@ -258,14 +258,14 @@ PRInt32
 _PR_MD_WRITE(PRFileDesc *fd, const void *buf, PRInt32 len)
 {
     PRInt32 bytes;
-    int rv; 
+    int rv;
 
     rv = DosWrite((HFILE)fd->secret->md.osfd,
                   (PVOID)buf,
                   len,
                   (PULONG)&bytes);
 
-    if (rv != NO_ERROR) 
+    if (rv != NO_ERROR)
     {
         _PR_MD_MAP_WRITE_ERROR(rv);
         return -1;
@@ -344,12 +344,12 @@ _PR_MD_LSEEK64(PRFileDesc *fd, PRInt64 offset, PRSeekWhence whence)
     {
         rc = DosSetFilePtr((HFILE)fd->secret->md.osfd, lo, where, (PULONG)&newLocation);
     }
-     
+
     if (rc != NO_ERROR) {
       _PR_MD_MAP_LSEEK_ERROR(rc);
       return -1;
     }
-    
+
     if (isWSEB)
     {
         return newLocationL;
@@ -373,7 +373,7 @@ _PR_MD_FSYNC(PRFileDesc *fd)
     PRInt32 rc = DosResetBuffer((HFILE)fd->secret->md.osfd);
 
     if (rc != NO_ERROR) {
-   	if (rc != ERROR_ACCESS_DENIED) {	
+   	if (rc != ERROR_ACCESS_DENIED) {
    			_PR_MD_MAP_FSYNC_ERROR(rc);
    	    return -1;
    	}
@@ -385,7 +385,7 @@ PRInt32
 _MD_CloseFile(PRInt32 osfd)
 {
     PRInt32 rv;
-    
+
     rv = DosClose((HFILE)osfd);
  	if (rv != NO_ERROR)
 		_PR_MD_MAP_CLOSE_ERROR(rv);
@@ -558,7 +558,7 @@ _PR_MD_STAT(const char *fn, struct stat *info)
          * can be handled by _stat() on NT but not on Win95.
          *
          * We remove the backslash or slash at the end and
-         * try again.  
+         * try again.
          *
          * Not sure if this happens on OS/2 or not,
          * but it doesn't hurt to be careful.
@@ -587,7 +587,7 @@ _PR_MD_GETFILEINFO(const char *fn, PRFileInfo *info)
     struct stat sb;
     PRInt32 rv;
     PRInt64 s, s2us;
- 
+
     if ( (rv = _PR_MD_STAT(fn, &sb)) == 0 ) {
         if (info) {
             if (S_IFREG & sb.st_mode)
@@ -622,7 +622,7 @@ _PR_MD_GETFILEINFO64(const char *fn, PRFileInfo64 *info)
     LL_UI2L(info->size,info32.size);
     info->modifyTime = info32.modifyTime;
     info->creationTime = info32.creationTime;
-    
+
     if (isWSEB)
     {
         APIRET rc ;
@@ -697,11 +697,11 @@ _PR_MD_GETOPENFILEINFO64(const PRFileDesc *fd, PRFileInfo64 *info)
     {
        info->type = info32.type;
        LL_UI2L(info->size,info32.size);
-    
+
        info->modifyTime = info32.modifyTime;
        info->creationTime = info32.creationTime;
     }
-    
+
     if (isWSEB)
     {
         APIRET rc ;
@@ -792,7 +792,7 @@ _PR_MD_LOCKFILE(PRInt32 f)
     PRInt32   rv;
     FILELOCK lock, unlock;
     FILELOCKL lockL, unlockL;
-    
+
     lock.lOffset = 0;
     lockL.lOffset = 0;
     lock.lRange = 0xffffffff;
@@ -824,7 +824,7 @@ _PR_MD_LOCKFILE(PRInt32 f)
 		if ( rv != NO_ERROR )
         {
             DosSleep( 50 );  /* Sleep() a few milisecs and try again. */
-        }            
+        }
     } /* end for() */
     return PR_SUCCESS;
 } /* end _PR_MD_LOCKFILE() */
@@ -842,7 +842,7 @@ _PR_MD_UNLOCKFILE(PRInt32 f)
     PRInt32   rv;
     FILELOCK lock, unlock;
     FILELOCKL lockL, unlockL;
-    
+
     lock.lOffset = 0;
     lockL.lOffset = 0;
     lock.lRange = 0;
@@ -851,7 +851,7 @@ _PR_MD_UNLOCKFILE(PRInt32 f)
     unlockL.lOffset = 0;
     unlock.lRange = 0xffffffff;
     unlockL.lRange = 0xffffffffffffffff;
-    
+
     if (isWSEB)
     {
         rv = myDosSetFileLocksL( (HFILE) f,
@@ -864,7 +864,7 @@ _PR_MD_UNLOCKFILE(PRInt32 f)
                                     &unlock, &lock,
                                     0, 0);
     }
-            
+
     if ( rv != NO_ERROR )
     {
         return PR_SUCCESS;

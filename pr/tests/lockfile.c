@@ -136,17 +136,17 @@ static PRIntervalTime ContentiousLock(PRInt32 loops)
 static PRIntervalTime Test(
     const char* msg, PRIntervalTime (*test)(PRInt32 loops),
     PRInt32 loops, PRIntervalTime overhead)
-{ 
+{
     /*
      * overhead - overhead not measured by the test.
      * duration - wall clock time it took to perform test.
-     * predicted - extra time test says should not be counted 
+     * predicted - extra time test says should not be counted
      *
      * Time accountable to the test is duration - overhead - predicted
      * All times are Intervals and accumulated for all iterations.
      */
     PRFloat64 elapsed;
-    PRIntervalTime accountable, duration;    
+    PRIntervalTime accountable, duration;
     PRUintn spaces = strlen(msg);
     PRIntervalTime timeout, timein = PR_IntervalNow();
     PRIntervalTime predicted = test(loops);
@@ -171,7 +171,7 @@ int main(int argc,  char **argv)
     PRUint32 cpu, cpus = 2;
     PRInt32 loops = 100;
 
-	
+
 	/* The command line argument: -d is used to determine if the test is being run
 	in debug mode. The regress tool requires only one line output:PASS or FAIL.
 	All of the printfs associated with this test has been handled with a if (debug_mode)
@@ -195,7 +195,7 @@ int main(int argc,  char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
@@ -212,7 +212,7 @@ int main(int argc,  char **argv)
     {
         if (debug_mode) printf("\nLockFile: Using %d CPU(s)\n", cpu);
         PR_SetConcurrency(cpu);
-        
+
         duration = Test("LockFile non-contentious locking/unlocking", NonContentiousLock, loops, 0);
         (void)Test("LockFile contentious locking/unlocking", ContentiousLock, loops, duration);
     }
@@ -220,7 +220,7 @@ int main(int argc,  char **argv)
     PR_Delete(LOCKFILE);  /* try to get rid of evidence */
 
     if (debug_mode) printf("%s: test %s\n", "Lock(mutex) test", ((failed_already) ? "failed" : "passed"));
-	if(failed_already)	
+	if(failed_already)
 		return 1;
 	else
 		return 0;

@@ -50,9 +50,9 @@ static PRAlarmID *pr_getNextAlarm(PRAlarm *alarm, PRAlarmID *id)
     PRIntervalTime now = PR_IntervalNow();
 
     if (!PR_CLIST_IS_EMPTY(&alarm->timers))
-    {    
+    {
         if (id != NULL)  /* have to put this id back in */
-        {        
+        {
             PRIntervalTime idDelta = now - id->nextNotify;
             timer = alarm->timers.next;
             do

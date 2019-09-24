@@ -43,7 +43,7 @@ static void Test(void)
     for (i = POLL_DESC_COUNT; i >= 1; i--) {
         rv = PR_Poll(pd, i, timeout);
         if (rv != 0) {
-            fprintf(stderr, "PR_Poll should time out but returns %d\n", 
+            fprintf(stderr, "PR_Poll should time out but returns %d\n",
                              (int) rv);
             exit(1);
         }
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
                             (int) PR_GetError(), (int) PR_GetOSError());
             exit(1);
         }
-    
+
         pd[i].fd = sock;
         pd[i].in_flags = PR_POLL_READ;
     }

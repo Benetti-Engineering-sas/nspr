@@ -19,7 +19,7 @@ _PR_MD_ENSURE_TLS(void)
    if(!pThreadLocalStorage)
    {
       /* Allocate thread local storage (TLS).  Note, that only 32 bytes can
-       * be allocated at a time. 
+       * be allocated at a time.
        */
       int rc = DosAllocThreadLocalMemory(sizeof(_NSPR_TLS) / 4, (PULONG*)&pThreadLocalStorage);
       PR_ASSERT(rc == NO_ERROR);
@@ -169,18 +169,18 @@ ExcpStartFunc(void* arg)
 }
 
 PRStatus
-_PR_MD_CREATE_THREAD(PRThread *thread, 
-                  void (*start)(void *), 
-                  PRThreadPriority priority, 
-                  PRThreadScope scope, 
-                  PRThreadState state, 
+_PR_MD_CREATE_THREAD(PRThread *thread,
+                  void (*start)(void *),
+                  PRThreadPriority priority,
+                  PRThreadScope scope,
+                  PRThreadState state,
                   PRUint32 stackSize)
 {
     PARAMSTORE* params = PR_Malloc(sizeof(PARAMSTORE));
     params->start = start;
     params->thread = thread;
     thread->md.handle = thread->id = (TID) _beginthread(ExcpStartFunc,
-                                                        NULL, 
+                                                        NULL,
                                                         thread->stack->stackSize,
                                                         params);
     if(thread->md.handle == -1) {
@@ -268,7 +268,7 @@ _PR_MD_EXIT(PRIntn status)
 }
 
 #ifdef HAVE_THREAD_AFFINITY
-PR_EXTERN(PRInt32) 
+PR_EXTERN(PRInt32)
 _PR_MD_SETTHREADAFFINITYMASK(PRThread *thread, PRUint32 mask )
 {
    /* Can we do this on OS/2?  Only on SMP versions? */
@@ -295,14 +295,14 @@ _PR_MD_GETTHREADAFFINITYMASK(PRThread *thread, PRUint32 *mask)
     PRInt32 rv, system_mask;
 
     rv = GetProcessAffinityMask(GetCurrentProcess(), mask, &system_mask);
-    
+
     return rv?0:-1;
   */
 }
 #endif /* HAVE_THREAD_AFFINITY */
 
 void
-_PR_MD_SUSPEND_CPU(_PRCPU *cpu) 
+_PR_MD_SUSPEND_CPU(_PRCPU *cpu)
 {
     _PR_MD_SUSPEND_THREAD(cpu->thread);
 }

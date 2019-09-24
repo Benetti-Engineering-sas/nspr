@@ -25,7 +25,7 @@
 #define PR_DLL_SUFFIX        ".sl"
 #endif
 
-#define _PR_VMBASE        0x30000000 
+#define _PR_VMBASE        0x30000000
 #define _PR_STACK_VMBASE    0x50000000
 /*
  * _USE_BIG_FDS increases the size of fd_set from 256 bytes to
@@ -260,7 +260,7 @@ struct _MDCPU {
 #if !defined(PTHREADS_USER)
 #define _MD_EARLY_INIT                 	_MD_EarlyInit
 #define _MD_FINAL_INIT					_PR_UnixInit
-#endif 
+#endif
 
 #if defined(HPUX_LW_TIMER)
 extern void _PR_HPUX_LW_IntervalInit(void);

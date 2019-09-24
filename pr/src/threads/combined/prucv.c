@@ -10,10 +10,10 @@
 
 #if defined(WIN95)
 /*
-** Some local variables report warnings on Win95 because the code paths 
+** Some local variables report warnings on Win95 because the code paths
 ** using them are conditioned on HAVE_CUSTOME_USER_THREADS.
 ** The pragma suppresses the warning.
-** 
+**
 */
 #pragma warning(disable : 4101)
 #endif
@@ -86,8 +86,8 @@ PRBool _PR_NotifyThread (PRThread *thread, PRThread *me)
         } else {
             _PR_THREAD_UNLOCK(thread);
             rv = PR_FALSE;
-        }    
-    }    
+        }
+    }
 
     return rv;
 }
@@ -142,7 +142,7 @@ void _PR_NotifyLockedThread (PRThread *thread)
             	thread->state = _PR_RUNNING;
             _PR_THREAD_UNLOCK(thread);
             _PR_MD_WAKEUP_WAITER(thread);
-    }    
+    }
 
     _PR_CVAR_UNLOCK(cvar);
     return;
@@ -216,9 +216,9 @@ PRStatus _PR_WaitCondVar(
     }
     _PR_CVAR_UNLOCK(cvar);
     _PR_THREAD_UNLOCK(thread);
-   
-    /* 
-    ** Release lock protecting the condition variable and thereby giving time 
+
+    /*
+    ** Release lock protecting the condition variable and thereby giving time
     ** to the next thread which can potentially notify on the condition variable
     */
     PR_Unlock(lock);
@@ -307,7 +307,7 @@ void _PR_ClockInterrupt(void)
     PRThread *thread, *me = _PR_MD_CURRENT_THREAD();
     _PRCPU *cpu = me->cpu;
     PRIntervalTime elapsed, now;
- 
+
     PR_ASSERT(_PR_MD_GET_INTSOFF() != 0);
     /* Figure out how much time elapsed since the last clock tick */
     now = PR_IntervalNow();
@@ -610,7 +610,7 @@ PR_IMPLEMENT(void) PRP_DestroyNakedCondVar(PRCondVar *cvar)
     PR_ASSERT(_PR_NAKED_CV_LOCK == cvar->lock);
 
     _PR_MD_FREE_LOCK(&(cvar->ilock));
- 
+
     PR_DELETE(cvar);
 }
 

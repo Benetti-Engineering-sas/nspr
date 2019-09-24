@@ -3424,7 +3424,7 @@ PR_dtoa(PRFloat64 d, PRIntn mode, PRIntn ndigits,
         rv = PR_SUCCESS;
     }
     freedtoa(result);
-    return rv;  
+    return rv;
 }
 
 /*
@@ -3432,7 +3432,7 @@ PR_dtoa(PRFloat64 d, PRIntn mode, PRIntn ndigits,
 ** prcsn - number of digits of precision to generate floating
 ** point value.
 ** This should be reparameterized so that you can send in a
-**   prcn for the positive and negative ranges.  For now, 
+**   prcn for the positive and negative ranges.  For now,
 **   conform to the ECMA JavaScript spec which says numbers
 **   less than 1e-6 are in scientific notation.
 ** Also, the ECMA spec says that there should always be a

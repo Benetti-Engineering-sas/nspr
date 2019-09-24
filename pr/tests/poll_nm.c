@@ -64,7 +64,7 @@ clientThreadFunc(void *arg)
     for (i = 0; i < NUM_ITERATIONS; i++) {
 	sock = PR_NewTCPSocket();
 	PR_ASSERT(sock != NULL);
-	
+
     sts = PR_Connect(sock, &addr, PR_INTERVAL_NO_TIMEOUT);
 	PR_ASSERT(sts == PR_SUCCESS);
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
     if ((listenSock2  = PR_NewTCPSocket()) == NULL) {
 	fprintf(stderr, "Can't create a new TCP socket\n");
-	failed_already=1;	
+	failed_already=1;
 	goto exit_now;
     }
     addr.inet.family = PR_AF_INET;
@@ -161,19 +161,19 @@ int main(int argc, char **argv)
     addr.inet.port = PR_htons(0);
     if (PR_Bind(listenSock2, &addr) == PR_FAILURE) {
 	fprintf(stderr, "Can't bind socket\n");
-	failed_already=1;	
+	failed_already=1;
 	goto exit_now;
     }
     if (PR_GetSockName(listenSock2, &addr) == PR_FAILURE) {
 	fprintf(stderr, "PR_GetSockName failed\n");
-	failed_already=1;	
+	failed_already=1;
 	goto exit_now;
     }
     listenPort2 = PR_ntohs(addr.inet.port);
     PR_SetSocketOption(listenSock2, &optval);
     if (PR_Listen(listenSock2, 5) == PR_FAILURE) {
 	fprintf(stderr, "Can't listen on a socket\n");
-	failed_already=1;	
+	failed_already=1;
 	goto exit_now;
     }
     PR_snprintf(buf, sizeof(buf),
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 	    PR_UNJOINABLE_THREAD, 0);
     if (clientThread == NULL) {
 	fprintf(stderr, "can't create thread\n");
-	failed_already=1;	
+	failed_already=1;
 	goto exit_now;
     }
 
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 	    PR_UNJOINABLE_THREAD, 0);
     if (clientThread == NULL) {
 	fprintf(stderr, "can't create thread\n");
-	failed_already=1;		
+	failed_already=1;
 	goto exit_now;
     }
 
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 	PR_ASSERT(retVal != 0);  /* no timeout */
 	if (retVal == -1) {
 	    fprintf(stderr, "PR_Poll failed\n");
-		failed_already=1;			
+		failed_already=1;
 	    goto exit_now;
 	}
 
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
 		sock = PR_Accept(pds[j].fd, NULL, PR_INTERVAL_NO_TIMEOUT);
 		if (sock == NULL) {
 		    fprintf(stderr, "PR_Accept() failed\n");
-			failed_already=1;	
+			failed_already=1;
 		    goto exit_now;
 		}
 		other_pds[nextIndex].fd = sock;
@@ -259,12 +259,12 @@ int main(int argc, char **argv)
 		nextIndex++;
 	    } else if (pds[j].out_flags & PR_POLL_ERR) {
 		fprintf(stderr, "PR_Poll() indicates that an fd has error\n");
-		failed_already=1;	
+		failed_already=1;
 		goto exit_now;
 	    } else if (pds[j].out_flags & PR_POLL_NVAL) {
 		fprintf(stderr, "PR_Poll() indicates that fd %d is invalid\n",
 			PR_FileDesc2NativeHandle(pds[j].fd));
-		failed_already=1;	
+		failed_already=1;
 		goto exit_now;
 	    }
 	}
@@ -292,7 +292,7 @@ int main(int argc, char **argv)
                 PR_ASSERT(nAvail == nRead);
 		if (nRead == -1) {
 		    fprintf(stderr, "PR_Read() failed\n");
-			failed_already=1;	
+			failed_already=1;
 		    goto exit_now;
                 } else if (nRead == 0) {
                     PR_Close(pds[j].fd);
@@ -304,11 +304,11 @@ int main(int argc, char **argv)
                 }
 	    } else if (pds[j].out_flags & PR_POLL_ERR) {
 		fprintf(stderr, "PR_Poll() indicates that an fd has error\n");
-		failed_already=1;			
+		failed_already=1;
 		goto exit_now;
 	    } else if (pds[j].out_flags & PR_POLL_NVAL) {
 		fprintf(stderr, "PR_Poll() indicates that an fd is invalid\n");
-		failed_already=1;			
+		failed_already=1;
 		goto exit_now;
 	    }
             other_pds[nextIndex] = pds[j];
@@ -336,8 +336,8 @@ exit_now:
     }
 
     PR_Cleanup();
-	
-	if(failed_already)	
+
+	if(failed_already)
 		return 1;
 	else
 		return 0;

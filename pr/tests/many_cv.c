@@ -100,7 +100,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
     PR_DELETE(cv);
 
     PR_DestroyLock(ml);
-    
+
     printf("PASS\n");
 
     PT_FPrintStats(err, "\nPThread Statistics\n");
@@ -111,7 +111,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

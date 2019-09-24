@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 
     if ((listenSock2  = PR_NewTCPSocket()) == NULL) {
 	fprintf(stderr, "Can't create a new TCP socket\n");
-	if (!debug_mode)  failed_already=1;	
+	if (!debug_mode)  failed_already=1;
 	goto exit_now;
     }
     addr.inet.family = PR_AF_INET;
@@ -120,18 +120,18 @@ int main(int argc, char **argv)
     addr.inet.port = PR_htons(0);
     if (PR_Bind(listenSock2, &addr) == PR_FAILURE) {
 	fprintf(stderr, "Can't bind socket\n");
-	if (!debug_mode)  failed_already=1;	
+	if (!debug_mode)  failed_already=1;
 	goto exit_now;
     }
     if (PR_GetSockName(listenSock2, &addr) == PR_FAILURE) {
 	fprintf(stderr, "PR_GetSockName failed\n");
-	if (!debug_mode)  failed_already=1;	
+	if (!debug_mode)  failed_already=1;
 	goto exit_now;
     }
     listenPort2 = PR_ntohs(addr.inet.port);
     if (PR_Listen(listenSock2, 5) == PR_FAILURE) {
 	fprintf(stderr, "Can't listen on a socket\n");
-	if (!debug_mode)  failed_already=1;	
+	if (!debug_mode)  failed_already=1;
 	goto exit_now;
     }
     PR_snprintf(buf, sizeof(buf),
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 		"PR_Poll should time out and return 0, but it returns %ld\n",
 		retVal);
 	fprintf(stderr, "%s", buf);
-	if (!debug_mode)  failed_already=1;	
+	if (!debug_mode)  failed_already=1;
 	goto exit_now;
     }
     if (debug_mode) printf("PR_Poll timed out.  Test passed.\n\n");
@@ -173,7 +173,7 @@ exit_now:
 
     PR_Cleanup();
 
-	if(failed_already)	
+	if(failed_already)
 		return 1;
 	else
 		return 0;

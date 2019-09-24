@@ -14,7 +14,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 /***********************************************************************
 ** Includes
@@ -44,7 +44,7 @@ PRIntn debug_mode = 0;
 #define	GLOBAL_SCOPE_STRING			"GLOBAL scope"
 #define	GLOBAL_BOUND_SCOPE_STRING	"GLOBAL_BOUND scope"
 
-void 
+void
 thread_main(void *_info)
 {
     threadInfo *info = (threadInfo *)_info;
@@ -56,7 +56,7 @@ thread_main(void *_info)
 	PRThreadScope tscope;
 	char *scope_str;
 
- 
+
 	if (debug_mode)
     	printf("thread %d is alive\n", info->id);
 	tscope = PR_GetThreadScope(PR_GetCurrentThread());
@@ -84,7 +84,7 @@ thread_main(void *_info)
 		failed_already=1;
         goto dead;
     }
-  
+
     listenAddr.inet.family = PR_AF_INET;
     listenAddr.inet.port = PR_htons(BASE_PORT + info->id);
     listenAddr.inet.ip = PR_htonl(PR_INADDR_ANY);
@@ -105,15 +105,15 @@ thread_main(void *_info)
     }
 
 	if (debug_mode)
-    	printf("thread %d going into accept for %d seconds\n", 
+    	printf("thread %d going into accept for %d seconds\n",
         	info->id, info->accept_timeout + info->id);
 
     clientSock = PR_Accept(listenSock, &clientAddr, PR_SecondsToInterval(info->accept_timeout +info->id));
 
     if (clientSock == NULL) {
         if (PR_GetError() == PR_IO_TIMEOUT_ERROR) {
-			if (debug_mode) {	
-            	printf("PR_Accept() timeout worked!\n"); 
+			if (debug_mode) {
+            	printf("PR_Accept() timeout worked!\n");
 				printf("TEST PASSED! PR_Accept() returned error %d\n",
 							PR_IO_TIMEOUT_ERROR);
 			}
@@ -160,7 +160,7 @@ thread_test(PRThreadScope scope, PRInt32 num_threads)
     dead_lock = PR_NewLock();
     dead_cv = PR_NewCondVar(dead_lock);
     alive = num_threads;
-    
+
     for (index = 0; index < num_threads; index++) {
         threadInfo *info = (threadInfo *)PR_Malloc(sizeof(threadInfo));
 
@@ -169,7 +169,7 @@ thread_test(PRThreadScope scope, PRInt32 num_threads)
         info->dead_cv = dead_cv;
         info->alive = &alive;
         info->accept_timeout = DEFAULT_ACCEPT_TIMEOUT;
-        
+
         thr = PR_CreateThread( PR_USER_THREAD,
                                thread_main,
                                (void *)info,
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     if (0 == num_threads)
         num_threads = NUM_THREADS;
 

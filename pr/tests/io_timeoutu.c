@@ -40,7 +40,7 @@ typedef struct threadInfo {
 PRIntn failed_already=0;
 PRIntn debug_mode;
 
-void 
+void
 thread_main(void *_info)
 {
     threadInfo *info = (threadInfo *)_info;
@@ -49,7 +49,7 @@ thread_main(void *_info)
     PRFileDesc *listenSock = NULL;
     PRFileDesc *clientSock;
     PRStatus rv;
- 
+
     if (debug_mode) printf("thread %d is alive\n", info->id);
 
     listenSock = PR_NewTCPSocket();
@@ -57,7 +57,7 @@ thread_main(void *_info)
         if (debug_mode) printf("unable to create listen socket\n");
         goto dead;
     }
-  
+
     listenAddr.inet.family = AF_INET;
     listenAddr.inet.port = PR_htons(BASE_PORT + info->id);
     listenAddr.inet.ip = PR_htonl(INADDR_ANY);
@@ -73,7 +73,7 @@ thread_main(void *_info)
         goto dead;
     }
 
-    if (debug_mode) printf("thread %d going into accept for %d seconds\n", 
+    if (debug_mode) printf("thread %d going into accept for %d seconds\n",
         info->id, info->accept_timeout + info->id);
 
     clientSock = PR_Accept(
@@ -81,7 +81,7 @@ thread_main(void *_info)
 			info->accept_timeout + info->id));
 
     if (clientSock == NULL) {
-        if (PR_GetError() == PR_IO_TIMEOUT_ERROR) 
+        if (PR_GetError() == PR_IO_TIMEOUT_ERROR)
             if (debug_mode) {
 				printf("PR_Accept() timeout worked!\n");
                 printf("TEST FAILED! PR_Accept() returned error %d\n",
@@ -120,7 +120,7 @@ thread_test(PRInt32 scope, PRInt32 num_threads)
     dead_lock = PR_NewLock();
     dead_cv = PR_NewCondVar(dead_lock);
     alive = num_threads;
-    
+
     for (index = 0; index < num_threads; index++) {
         threadInfo *info = (threadInfo *)malloc(sizeof(threadInfo));
 
@@ -129,7 +129,7 @@ thread_test(PRInt32 scope, PRInt32 num_threads)
         info->dead_cv = dead_cv;
         info->alive = &alive;
         info->accept_timeout = DEFAULT_ACCEPT_TIMEOUT;
-        
+
         thr = PR_CreateThread( PR_USER_THREAD,
                                thread_main,
                                (void *)info,
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     if (argc > 2)
         num_threads = atoi(argv[2]);
     else
@@ -193,10 +193,10 @@ int main(int argc, char **argv)
     thread_test(PR_LOCAL_THREAD, num_threads);
 
      PR_Cleanup();
-     if(failed_already)    
+     if(failed_already)
         return 1;
      else
         return 0;
-     
+
 
 }

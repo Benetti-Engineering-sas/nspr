@@ -90,7 +90,7 @@ static void _PR_RELEASE_LOCK_STACK(void *lock_stack);
 /*
  * PR_NewRWLock
  *		Create a reader-writer lock, with the given lock rank and lock name
- *	
+ *
  */
 
 PR_IMPLEMENT(PRRWLock *)
@@ -118,7 +118,7 @@ PR_NewRWLock(PRUint32 lock_rank, const char *lock_name)
 	} else {
 		rwlock->rw_name = NULL;
 	}
-	
+
 #if defined(HAVE_UNIX98_RWLOCK) || defined(HAVE_UI_RWLOCK)
 	err = RWLOCK_INIT(&rwlock->rw_lock);
 	if (err != 0) {
@@ -148,7 +148,7 @@ PR_NewRWLock(PRUint32 lock_rank, const char *lock_name)
 
 failed:
 	if (rwlock->rw_reader_waitq != NULL) {
-		PR_DestroyCondVar(rwlock->rw_reader_waitq);	
+		PR_DestroyCondVar(rwlock->rw_reader_waitq);
 	}
 	if (rwlock->rw_lock != NULL) {
 		PR_DestroyLock(rwlock->rw_lock);
@@ -171,8 +171,8 @@ PR_DestroyRWLock(PRRWLock *rwlock)
 	PR_ASSERT(err == 0);
 #else
 	PR_ASSERT(rwlock->rw_reader_cnt == 0);
-	PR_DestroyCondVar(rwlock->rw_reader_waitq);	
-	PR_DestroyCondVar(rwlock->rw_writer_waitq);	
+	PR_DestroyCondVar(rwlock->rw_reader_waitq);
+	PR_DestroyCondVar(rwlock->rw_writer_waitq);
 	PR_DestroyLock(rwlock->rw_lock);
 #endif
 	if (rwlock->rw_name != NULL)
@@ -196,7 +196,7 @@ int err;
 	 * be equal to or greater than the highest rank of all the locks held by
 	 * the thread.
 	 */
-	PR_ASSERT((rwlock->rw_rank == PR_RWLOCK_RANK_NONE) || 
+	PR_ASSERT((rwlock->rw_rank == PR_RWLOCK_RANK_NONE) ||
 					(rwlock->rw_rank >= _PR_GET_THREAD_RWLOCK_RANK()));
 #endif
 
@@ -250,7 +250,7 @@ int err;
 	 * be equal to or greater than the highest rank of all the locks held by
 	 * the thread.
 	 */
-	PR_ASSERT((rwlock->rw_rank == PR_RWLOCK_RANK_NONE) || 
+	PR_ASSERT((rwlock->rw_rank == PR_RWLOCK_RANK_NONE) ||
 					(rwlock->rw_rank >= _PR_GET_THREAD_RWLOCK_RANK()));
 #endif
 
@@ -409,7 +409,7 @@ PRStatus rv;
 	 */
 	if (lock_stack) {
 		if (lock_stack->trs_index < _PR_RWLOCK_RANK_ORDER_LIMIT)
-			lock_stack->trs_stack[lock_stack->trs_index++] = rwlock;	
+			lock_stack->trs_stack[lock_stack->trs_index++] = rwlock;
 	}
 }
 
@@ -426,7 +426,7 @@ _PR_RELEASE_LOCK_STACK(void *lock_stack)
  *		return thread's lock rank. If thread-private-data for the lock
  *		stack is not allocated, return PR_RWLOCK_RANK_NONE.
  */
-	
+
 static PRUint32
 _PR_GET_THREAD_RWLOCK_RANK(void)
 {
@@ -445,7 +445,7 @@ _PR_GET_THREAD_RWLOCK_RANK(void)
  *		remove the rwlock from the lock stack. Since locks may not be
  *		unlocked in a FIFO order, the entire lock stack is searched.
  */
-	
+
 static void
 _PR_UNSET_THREAD_RWLOCK_RANK(PRRWLock *rwlock)
 {

@@ -10,7 +10,7 @@
 ** Description: Join tests user - user
 **
 ** Modification History:
-** 
+**
 ** 19-May-97 AGarcia - separate the four join tests into different unit test modules.
 **			 AGarcia- Converted the test to accomodate the debug_mode flag.
 **	         The debug mode will print all of the printfs associated with this test.
@@ -57,9 +57,9 @@ void runTest(PRThreadScope scope1, PRThreadScope scope2)
 	PRThread *low,*high;
 
 	/* create the low and high priority threads */
-	
+
 	low = PR_CreateThread(PR_USER_THREAD,
-				      lowPriority, 0, 
+				      lowPriority, 0,
 				      PR_PRIORITY_LOW,
 				      scope1,
     				  PR_JOINABLE_THREAD,
@@ -71,7 +71,7 @@ void runTest(PRThreadScope scope1, PRThreadScope scope2)
 	}
 
 	high = PR_CreateThread(PR_USER_THREAD,
-				      highPriority, 0, 
+				      highPriority, 0,
 				      PR_PRIORITY_HIGH,
 				      scope2,
     				  PR_JOINABLE_THREAD,
@@ -107,7 +107,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 	test.
 	Usage: test_name -d
 	*/
-	
+
 	PLOptStatus os;
 	PLOptState *opt = PL_CreateOptState(argc, argv, "d:");
 	while (PL_OPT_EOL != (os = PL_GetNextOpt(opt)))
@@ -131,11 +131,11 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
     if (debug_mode) printf("User-User test\n");
     runTest(PR_LOCAL_THREAD, PR_LOCAL_THREAD);
 
-	if(failed_already)	
+	if(failed_already)
 	{
         printf("FAIL\n");
 		return 1;
-    } else 
+    } else
     {
         printf("PASS\n");
 		return 0;
@@ -148,7 +148,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

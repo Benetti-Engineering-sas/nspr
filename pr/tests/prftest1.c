@@ -14,7 +14,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 /***********************************************************************
 ** Includes
@@ -39,12 +39,12 @@
 ** OUTPUTS:     None
 ** RETURN:      None
 ** SIDE EFFECTS:
-**      
+**
 ** RESTRICTIONS:
 **      None
 ** MEMORY:      NA
 ** ALGORITHM:   Determine what the status is and print accordingly.
-**      
+**
 ***********************************************************************/
 
 
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 
 	/* main test */
     PR_STDIO_INIT();
-	
+
     i16 = -1;
     n = -1;
     i32 = -1;

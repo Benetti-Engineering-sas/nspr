@@ -419,14 +419,14 @@ retry:
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_READ)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
                 if (FD_ISSET(osfd, &wt))
                 {
                     if (pd->out_flags & _PR_POLL_READ_SYS_WRITE)
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_WRITE)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
                 if (FD_ISSET(osfd, &ex)) out_flags |= PR_POLL_EXCEPT;
             }
             pd->out_flags = out_flags;
@@ -670,7 +670,7 @@ PRInt32 _MD_pr_poll(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
     return rv;
 }  /* _MD_pr_poll */
 
-#endif  /* defined(_PR_PTHREADS) */               
+#endif  /* defined(_PR_PTHREADS) */
 
 /* uxpoll.c */
 

@@ -335,7 +335,7 @@ PR_IMPLEMENT(PRStatus) _pr_push_ipv6toipv4_layer(PRFileDesc *fd)
 		return PR_FAILURE;
 
 	/*
-	 * For platforms with no support for IPv6 
+	 * For platforms with no support for IPv6
 	 * create layered socket for IPv4-mapped IPv6 addresses
 	 */
 	if (fd->methods->file_type == PR_DESC_SOCKET_TCP)
@@ -346,7 +346,7 @@ PR_IMPLEMENT(PRStatus) _pr_push_ipv6toipv4_layer(PRFileDesc *fd)
 									&ipv6_to_v4_udpMethods);
 	if (NULL == ipv6_fd) {
 		goto errorExit;
-	} 
+	}
 	ipv6_fd->secret = NULL;
 
 	if (PR_PushIOLayer(fd, PR_TOP_IO_LAYER, ipv6_fd) == PR_FAILURE) {

@@ -555,7 +555,7 @@ static void WaitPidDaemonThread(void *unused)
             /*
              * waitpid() cannot return 0 because we did not invoke it
              * with the WNOHANG option.
-             */ 
+             */
 	    PR_ASSERT(0 != pid);
 
             /*
@@ -612,7 +612,7 @@ static void WaitPidDaemonThread(void *unused)
         }
 	PR_Lock(pr_wp.ml);
 #endif
-	    
+
         do {
             rv = read(pr_wp.pipefd[0], buf, sizeof(buf));
         } while (sizeof(buf) == rv || (-1 == rv && EINTR == errno));

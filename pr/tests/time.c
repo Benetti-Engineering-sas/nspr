@@ -53,7 +53,7 @@ static void timeTime(void)
 {
     PRInt32 index = count;
     time_t rv;
- 
+
     for (;index--;)
         rv = time(NULL);
 }
@@ -62,7 +62,7 @@ static void timeGethrtime(void)
 {
     PRInt32 index = count;
     time_t rv;
- 
+
     for (;index--;)
         rv = ftime();
 }
@@ -72,7 +72,7 @@ static void timeGettimeofday(void)
     PRInt32 index = count;
     time_t rv;
     struct timeval tp;
- 
+
     for (;index--;)
         rv = gettimeofday(&tp, NULL);
 }
@@ -85,7 +85,7 @@ static void timePRTime32(void)
     PRTime rv;
 
     LL_I2L(q, 1000000);
- 
+
     for (;index--;) {
         rv = PR_Now();
         LL_DIV(rv, rv, q);
@@ -97,7 +97,7 @@ static void timePRTime64(void)
 {
     PRInt32 index = count;
     PRTime rv;
- 
+
     for (;index--;)
         rv = PR_Now();
 }

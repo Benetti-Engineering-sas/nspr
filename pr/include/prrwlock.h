@@ -39,7 +39,7 @@ typedef struct PRRWLock PRRWLock;
 ** RETURN:      PRRWLock*
 **   If the lock cannot be created because of resource constraints, NULL
 **   is returned.
-**  
+**
 ***********************************************************************/
 NSPR_API(PRRWLock*) PR_NewRWLock(PRUint32 lock_rank, const char *lock_name);
 

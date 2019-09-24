@@ -383,7 +383,7 @@ void _MD_os2_map_read_error(PRInt32 err)
 			break;
 		case EBADF:
 			PR_SetError(PR_BAD_DESCRIPTOR_ERROR, err);
-			break; 
+			break;
 		case ENOTSOCK:
 			PR_SetError(PR_NOT_SOCKET_ERROR, err);
 			break;

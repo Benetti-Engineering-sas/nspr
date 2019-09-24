@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
- * Test: sendzlf.c 
+ * Test: sendzlf.c
  *
  * Description: send a zero-length file with PR_SendFile and
  * PR_TransmitFile.

@@ -19,7 +19,7 @@ PR_BEGIN_EXTERN_C
 # include <intrin.h>
 # pragma  intrinsic(_BitScanForward,_BitScanReverse)
   __forceinline static int __prBitScanForward32(unsigned int val)
-  { 
+  {
     unsigned long idx;
     _BitScanForward(&idx, (unsigned long)val);
     return( (int)idx );
@@ -56,18 +56,18 @@ typedef unsigned long prbitmap_t;
 /*
 ** Compute the log of the least power of 2 greater than or equal to n
 */
-NSPR_API(PRIntn) PR_CeilingLog2(PRUint32 i); 
+NSPR_API(PRIntn) PR_CeilingLog2(PRUint32 i);
 
 /*
 ** Compute the log of the greatest power of 2 less than or equal to n
 */
-NSPR_API(PRIntn) PR_FloorLog2(PRUint32 i); 
+NSPR_API(PRIntn) PR_FloorLog2(PRUint32 i);
 
 /*
 ** Macro version of PR_CeilingLog2: Compute the log of the least power of
 ** 2 greater than or equal to _n. The result is returned in _log2.
 */
-#ifdef PR_HAVE_BUILTIN_BITSCAN32 
+#ifdef PR_HAVE_BUILTIN_BITSCAN32
 #define PR_CEILING_LOG2(_log2,_n)      \
   PR_BEGIN_MACRO                       \
     PRUint32 j_ = (PRUint32)(_n);      \

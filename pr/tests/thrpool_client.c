@@ -90,7 +90,7 @@ readn(PRFileDesc *sockfd, char *buf, int len)
             PR_GetCurrentThread(), bytes));
         if (bytes < 0) {
 			return -1;
-		}	
+		}
     }
     return len;
 }
@@ -226,7 +226,7 @@ TCP_Client(void *arg)
 
 /*
  * TCP_Socket_Client_Server_Test    - concurrent server test
- *    
+ *
  *    Each client connects to the server and sends a chunk of data
  *    For each connection, server reads the data
  *    from the client and sends it back to the client, unmodified.

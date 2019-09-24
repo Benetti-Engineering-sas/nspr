@@ -11,7 +11,7 @@
 
 #if defined(PTHREADS_USER)
 /*
-** Thread Local Storage 
+** Thread Local Storage
 */
 extern pthread_key_t current_thread_key;
 extern pthread_key_t current_cpu_key;
@@ -24,7 +24,7 @@ extern pthread_key_t intsoff_key;
 			((struct _PRCPU *) pthread_getspecific(current_cpu_key))
 #define _MD_LAST_THREAD()				\
 			((struct PRThread *) pthread_getspecific(last_thread_key))
-	
+
 #define _MD_SET_CURRENT_THREAD(newval) 			\
 	pthread_setspecific(current_thread_key, (void *)newval)
 
@@ -36,7 +36,7 @@ extern pthread_key_t intsoff_key;
 
 #define _MD_SET_INTSOFF(_val)
 #define _MD_GET_INTSOFF()	1
-	
+
 /*
 ** Initialize the thread context preparing it to execute _main.
 */

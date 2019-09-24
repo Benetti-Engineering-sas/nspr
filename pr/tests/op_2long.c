@@ -31,7 +31,7 @@ PRIntn error_code;
 /*
  * should exceed any system's maximum file name length
  * Note: was set at 4096. This is legal on some unix (Linux 2.1+) platforms.
- * 
+ *
  */
 #define TOO_LONG 5000
 
@@ -64,12 +64,12 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
-	
+
 		else {
 			printf ("Test passed\n");
 			return 0;
 		}
-	
 
 
-}			
+
+}

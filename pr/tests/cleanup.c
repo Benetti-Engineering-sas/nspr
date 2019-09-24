@@ -81,8 +81,8 @@ int main(int argc, char **argv)
     PR_fprintf(err, "\tConcurrency: %d\n", concurrency);
     PR_fprintf(err, "\tNumber of threads: %d\n", threads);
     PR_fprintf(err, "\tThread sleep: %d\n", child_sleep);
-    PR_fprintf(err, "\tMain sleep: %d\n", main_sleep); 
-    PR_fprintf(err, "\tCleanup will %sbe called\n\n", (cleanup) ? "" : "NOT "); 
+    PR_fprintf(err, "\tMain sleep: %d\n", main_sleep);
+    PR_fprintf(err, "\tCleanup will %sbe called\n\n", (cleanup) ? "" : "NOT ");
 
     PR_SetConcurrency(concurrency);
 

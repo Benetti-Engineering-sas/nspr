@@ -106,7 +106,7 @@ PR_IMPLEMENT(PRStatus) PR_GetSystemInfo(PRSysInfo cmd, char *buf, PRUint32 bufle
                     break;
                 }
                 len += 1;
-            }    
+            }
 #endif
          break;
 
@@ -159,7 +159,7 @@ PR_IMPLEMENT(PRStatus) PR_GetSystemInfo(PRSysInfo cmd, char *buf, PRUint32 bufle
 
 /*
 ** PR_GetNumberOfProcessors()
-** 
+**
 ** Implementation notes:
 **   Every platform does it a bit different.
 **     numCpus is the returned value.
@@ -169,7 +169,7 @@ PR_IMPLEMENT(PRStatus) PR_GetSystemInfo(PRSysInfo cmd, char *buf, PRUint32 bufle
 **   order of the if defined()s may be important,
 **     especially for unix variants. Do platform
 **     specific implementations before XP_UNIX.
-** 
+**
 */
 PR_IMPLEMENT(PRInt32) PR_GetNumberOfProcessors( void )
 {
@@ -244,14 +244,14 @@ PR_IMPLEMENT(PRInt32) PR_GetNumberOfProcessors( void )
 
 /*
 ** PR_GetPhysicalMemorySize()
-** 
+**
 ** Implementation notes:
 **   Every platform does it a bit different.
 **     bytes is the returned value.
 **   for each platform's "if defined" section
 **     declare your local variable
 **     do your thing, assign to bytes.
-** 
+**
 */
 PR_IMPLEMENT(PRUint64) PR_GetPhysicalMemorySize(void)
 {

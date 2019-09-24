@@ -9,7 +9,7 @@
  * For LOCAL_SCOPE threads, we're using NT fibers.  For GLOBAL_SCOPE threads
  * we're using NT-native threads.
  *
- * When doing IO, we want to use completion ports for optimal performance 
+ * When doing IO, we want to use completion ports for optimal performance
  * with fibers.  But if we use completion ports for all IO, it is difficult
  * to project a blocking model with GLOBAL_SCOPE threads.  To handle this
  * we create an extra thread for completing IO for GLOBAL_SCOPE threads.
@@ -32,9 +32,9 @@ static PRThread             *_pr_io_completion_thread;
 #define RECYCLE_SIZE 512
 static struct _MDLock        _pr_recycle_lock;
 static PRInt32               _pr_recycle_INET_array[RECYCLE_SIZE];
-static PRInt32               _pr_recycle_INET_tail = 0; 
+static PRInt32               _pr_recycle_INET_tail = 0;
 static PRInt32               _pr_recycle_INET6_array[RECYCLE_SIZE];
-static PRInt32               _pr_recycle_INET6_tail = 0; 
+static PRInt32               _pr_recycle_INET6_tail = 0;
 
 __declspec(thread) PRThread *_pr_io_restarted_io = NULL;
 DWORD _pr_io_restartedIOIndex;  /* The thread local storage slot for each
@@ -97,14 +97,14 @@ static PRInt32 _nt_nonblock_recvfrom(PRFileDesc *, char *, int, struct sockaddr 
  * An inheritable fd cannot be associated with an I/O completion port
  * because the completion notification of async I/O initiated by the
  * child process is still posted to the I/O completion port in the
- * parent process. 
+ * parent process.
  */
 #define _NT_USE_NB_IO(fd) \
     ((fd)->secret->nonblocking || (fd)->secret->inheritable == _PR_TRI_TRUE)
 
 /*
  * UDP support
- * 
+ *
  * UDP is supported on NT by the continuation thread mechanism.
  * The code is borrowed from ptio.c in pthreads nspr, hence the
  * PT and pt prefixes.  This mechanism is in fact general and
@@ -139,7 +139,7 @@ struct pt_Continuation
     union { PRIntn amount; } arg3;          /* #3 - size of 'buffer' */
     union { PRIntn flags; } arg4;           /* #4 - read/write flags */
     union { PRNetAddr *addr; } arg5;        /* #5 - send/recv address */
-    
+
     PRIntervalTime timeout;                 /* representation of the timeout */
 
     PRIntn event;                           /* flags for select()'s events */
@@ -218,7 +218,7 @@ _PR_MD_PAUSE_CPU(PRIntervalTime ticks)
             if ( !_PR_IS_NATIVE_THREAD(deadThread) ){
                 /* Spinlock while user thread is still running.
                  * There is no way to use a condition variable here. The thread
-                 * is dead, and we have to wait until we switch off the dead 
+                 * is dead, and we have to wait until we switch off the dead
                  * thread before we can kill the fiber completely.
                  */
                 while ( deadThread->no_sched)
@@ -248,7 +248,7 @@ _PR_MD_PAUSE_CPU(PRIntervalTime ticks)
      */
         timeout = 5000;
 #endif
-    else 
+    else
         timeout = PR_IntervalToMilliseconds(ticks);
 
     /*
@@ -261,7 +261,7 @@ _PR_MD_PAUSE_CPU(PRIntervalTime ticks)
                 &bytes,
                 &key,
                 &olp,
-                timeout); 
+                timeout);
         if (rv == 0 && olp == NULL) {
             /* Error in GetQueuedCompetionStatus */
             if (GetLastError() != WAIT_TIMEOUT) {
@@ -273,7 +273,7 @@ _PR_MD_PAUSE_CPU(PRIntervalTime ticks)
             }
         }
 
-        if (olp == NULL) 
+        if (olp == NULL)
             return 0;
 
         mdOlp = (_MDOverlapped *)olp;
@@ -354,7 +354,7 @@ _PR_MD_PAUSE_CPU(PRIntervalTime ticks)
 
                 /* The KEY_CVAR notification only occurs when a native thread
                  * is notifying a user thread.  For user-user notifications
-                 * the wakeup occurs by having the notifier place the thread 
+                 * the wakeup occurs by having the notifier place the thread
                  * on the runq directly; for native-native notifications the
                  * wakeup occurs by calling ReleaseSemaphore.
                  */
@@ -648,7 +648,7 @@ _native_thread_io_wait(PRThread *thread, PRIntervalTime ticks)
 			break;
 		case WAIT_OBJECT_0 + _NATIVE_WAKEUP_EVENT_INDEX:
 			/*
-			 * I/O interrupted; 
+			 * I/O interrupted;
 			 */
 #ifdef DEBUG
 			_PR_THREAD_LOCK(thread);
@@ -696,7 +696,7 @@ _NT_IO_WAIT(PRThread *thread, PRIntervalTime timeout)
 
         _PR_THREAD_LOCK(thread);
 
-        /* The IO may have already completed; if so, don't add to sleepQ, 
+        /* The IO may have already completed; if so, don't add to sleepQ,
          * since we are already on the runQ!
          */
         if (thread->io_pending == PR_TRUE) {
@@ -724,7 +724,7 @@ void _PR_Unblock_IO_Wait(PRThread *thr)
 {
     PRStatus rv;
     _PRCPU *cpu = thr->cpu;
- 
+
     PR_ASSERT(thr->state == _PR_IO_WAIT);
 	/*
 	 * A thread for which an I/O timed out or was interrupted cannot be
@@ -776,10 +776,10 @@ _NT_ResumeIO(PRThread *thread, PRIntervalTime ticks)
         if (!thread->io_pending)
             fWait = PR_FALSE;
         thread->io_suspended = PR_FALSE;
-            
+
         _PR_THREAD_UNLOCK(thread);
     }
-    /* We don't put ourselves back on the sleepQ yet; until we 
+    /* We don't put ourselves back on the sleepQ yet; until we
      * set the suspended bit to false, we can't do that.  Just save
      * the sleep time here, and then continue.  The restarted_io handler
      * will add us to the sleepQ if needed.
@@ -800,10 +800,10 @@ _PR_MD_WAKEUP_WAITER(PRThread *thread)
 {
     if (thread == NULL) {
         /* If thread is NULL, we aren't waking a thread, we're just poking
-         * idle thread 
+         * idle thread
          */
-        if ( PostQueuedCompletionStatus(_pr_completion_port, 0, 
-            KEY_CVAR, NULL) == FALSE) 
+        if ( PostQueuedCompletionStatus(_pr_completion_port, 0,
+            KEY_CVAR, NULL) == FALSE)
             return PR_FAILURE;
         return PR_SUCCESS;
     }
@@ -818,17 +818,17 @@ _PR_MD_WAKEUP_WAITER(PRThread *thread)
 
         /* When a Native thread has to awaken a user thread, it has to poke
          * the completion port because all user threads might be idle, and
-         * thus the CPUs are just waiting for a completion.  
+         * thus the CPUs are just waiting for a completion.
          *
-         * XXXMB - can we know when we are truely idle (and not checking 
+         * XXXMB - can we know when we are truely idle (and not checking
          *         the runq)?
          */
         if ((_PR_IS_NATIVE_THREAD(me) || (thread->cpu != me->cpu)) &&
                 (!thread->md.thr_bound_cpu)) {
             /* The thread should not be in any queue */
             PR_ASSERT(thread->queueCount == 0);
-            if ( PostQueuedCompletionStatus(_pr_completion_port, 0, 
-                KEY_CVAR, &(thread->md.overlapped.overlapped)) == FALSE) 
+            if ( PostQueuedCompletionStatus(_pr_completion_port, 0,
+                KEY_CVAR, &(thread->md.overlapped.overlapped)) == FALSE)
                 return PR_FAILURE;
         }
         return PR_SUCCESS;
@@ -845,12 +845,12 @@ _PR_MD_INIT_IO()
 
     err = WSAStartup( WSAVersion, &WSAData );
     PR_ASSERT(0 == err);
-                                                      
-    _pr_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 
-                                                 NULL, 
-                                                 0, 
+
+    _pr_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE,
+                                                 NULL,
+                                                 0,
                                                  0);
- 
+
     _MD_NEW_LOCK(&_pr_recycle_lock);
     _MD_NEW_LOCK(&_pr_ioq_lock);
 
@@ -860,7 +860,7 @@ _PR_MD_INIT_IO()
         if (OSversion.dwMajorVersion >= 4) {
             _nt_version_gets_lockfile_completion = PR_TRUE;
         }
-    } else 
+    } else
         PR_ASSERT(0);
 
 #ifdef _NEED_351_FILE_LOCKING_HACK
@@ -972,7 +972,7 @@ _md_put_recycled_socket(SOCKET newsock, int af)
         _MD_UNLOCK(&_pr_recycle_lock);
         closesocket(newsock);
     }
- 
+
     return;
 }
 
@@ -986,8 +986,8 @@ _md_Associate(HANDLE file)
     HANDLE port;
 
 	if (!_native_threads_only) {
-		port = CreateIoCompletionPort((HANDLE)file, 
-										_pr_completion_port, 
+		port = CreateIoCompletionPort((HANDLE)file,
+										_pr_completion_port,
 										KEY_IO,
 										0);
 
@@ -1026,7 +1026,7 @@ _NT_IO_ABORT(PROsfd sock)
     int loop_count;
 
     /* This is a clumsy way to abort the IO, but it is all we can do.
-     * It looks a bit racy, but we handle all the cases. 
+     * It looks a bit racy, but we handle all the cases.
      * case 1:  IO completes before calling closesocket
      *     case 1a:  fWait is set to PR_FALSE
      *           This should e the most likely case.  We'll properly
@@ -1147,7 +1147,7 @@ _PR_MD_connect_thread(void *cdata)
 
 
 PRInt32
-_PR_MD_CONNECT(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen, 
+_PR_MD_CONNECT(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen,
                PRIntervalTime timeout)
 {
     PROsfd osfd = fd->secret->md.osfd;
@@ -1207,7 +1207,7 @@ _PR_MD_BIND(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen)
 #if 0
     /* Disable nagle- so far unknown if this is good or not...
      */
-    rv = setsockopt(fd->secret->md.osfd, 
+    rv = setsockopt(fd->secret->md.osfd,
                     SOL_SOCKET,
                     TCP_NODELAY,
                     (const char *)&one,
@@ -1221,19 +1221,19 @@ _PR_MD_BIND(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen)
 void _PR_MD_UPDATE_ACCEPT_CONTEXT(PROsfd accept_sock, PROsfd listen_sock)
 {
     /* Sockets accept()'d with AcceptEx need to call this setsockopt before
-     * calling anything other than ReadFile(), WriteFile(), send(), recv(), 
-     * Transmitfile(), and closesocket().  In order to call any other 
+     * calling anything other than ReadFile(), WriteFile(), send(), recv(),
+     * Transmitfile(), and closesocket().  In order to call any other
      * winsock functions, we have to make this setsockopt call.
      *
      * XXXMB - For the server, we *NEVER* need this in
      * the "normal" code path.  But now we have to call it.  This is a waste
-     * of a system call.  We'd like to only call it before calling the 
+     * of a system call.  We'd like to only call it before calling the
      * obscure socket calls, but since we don't know at that point what the
      * original socket was (or even if it is still alive) we can't do it
-     * at that point... 
+     * at that point...
      */
-    setsockopt((SOCKET)accept_sock, 
-               SOL_SOCKET, 
+    setsockopt((SOCKET)accept_sock,
+               SOL_SOCKET,
                SO_UPDATE_ACCEPT_CONTEXT,
                (char *)&listen_sock,
                sizeof(listen_sock));
@@ -1243,7 +1243,7 @@ void _PR_MD_UPDATE_ACCEPT_CONTEXT(PROsfd accept_sock, PROsfd listen_sock)
 #define INET_ADDR_PADDED (sizeof(PRNetAddr) + 16)
 PROsfd
 _PR_MD_FAST_ACCEPT(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
-              PRIntervalTime timeout, PRBool fast, 
+              PRIntervalTime timeout, PRBool fast,
               _PR_AcceptTimeoutCallback callback, void *callbackArg)
 {
     PROsfd osfd = fd->secret->md.osfd;
@@ -1393,9 +1393,9 @@ _PR_MD_FAST_ACCEPT(PRFileDesc *fd, PRNetAddr *raddr, PRUint32 *rlen,
 }
 
 PRInt32
-_PR_MD_FAST_ACCEPT_READ(PRFileDesc *sd, PROsfd *newSock, PRNetAddr **raddr, 
-                   void *buf, PRInt32 amount, PRIntervalTime timeout, 
-                   PRBool fast, _PR_AcceptTimeoutCallback callback, 
+_PR_MD_FAST_ACCEPT_READ(PRFileDesc *sd, PROsfd *newSock, PRNetAddr **raddr,
+                   void *buf, PRInt32 amount, PRIntervalTime timeout,
+                   PRBool fast, _PR_AcceptTimeoutCallback callback,
                    void *callbackArg)
 {
     PROsfd sock = sd->secret->md.osfd;
@@ -1481,7 +1481,7 @@ retry:
 
         PR_ASSERT(timeout != PR_INTERVAL_NO_TIMEOUT);
 
-        err = getsockopt(*newSock, 
+        err = getsockopt(*newSock,
                          SOL_SOCKET,
                          SO_CONNECT_TIME,
                          (char *)&seconds,
@@ -1489,9 +1489,9 @@ retry:
         if ( err == NO_ERROR ) {
             PRIntervalTime elapsed = PR_SecondsToInterval(seconds);
 
-            if (seconds == 0xffffffff) 
+            if (seconds == 0xffffffff)
                 isConnected = PR_FALSE;
-            else 
+            else
                 isConnected = PR_TRUE;
 
             if (!isConnected) {
@@ -1527,9 +1527,9 @@ retry:
         PR_ASSERT(me->io_pending ==  PR_FALSE);
         PR_ASSERT(me->io_suspended ==  PR_FALSE);
         PR_ASSERT(me->md.thr_bound_cpu ==  NULL);
-        /* If the IO is still suspended, it means we didn't get any 
+        /* If the IO is still suspended, it means we didn't get any
          * completion from NT_IO_WAIT.  This is not disasterous, I hope,
-         * but it may mean we still have an IO outstanding...  Try to 
+         * but it may mean we still have an IO outstanding...  Try to
          * recover by just allowing ourselves to continue.
          */
         me->io_suspended = PR_FALSE;
@@ -1554,7 +1554,7 @@ retry:
         return -1;
     }
 
-    if (!fast) 
+    if (!fast)
         _PR_MD_UPDATE_ACCEPT_CONTEXT((SOCKET)*newSock, (SOCKET)sock);
 
     /* IO is done */
@@ -1677,7 +1677,7 @@ _PR_MD_SENDFILE(PRFileDesc *sock, PRSendFileData *sfd,
 }
 
 PRInt32
-_PR_MD_RECV(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags, 
+_PR_MD_RECV(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags,
             PRIntervalTime timeout)
 {
     PROsfd osfd = fd->secret->md.osfd;
@@ -1722,7 +1722,7 @@ _PR_MD_RECV(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags,
     me->io_fd = osfd;
 
     rv = ReadFile((HANDLE)osfd,
-                  buf, 
+                  buf,
                   amount,
                   &bytes,
                   &(me->md.overlapped.overlapped));
@@ -1821,7 +1821,7 @@ _PR_MD_SEND(PRFileDesc *fd, const void *buf, PRInt32 amount, PRIntn flags,
     me->io_fd = osfd;
 
     rv = WriteFile((HANDLE)osfd,
-                   buf, 
+                   buf,
                    amount,
                    &bytes,
                    &(me->md.overlapped.overlapped));
@@ -1927,7 +1927,7 @@ _PR_MD_WRITEV(PRFileDesc *fd, const PRIOVec *iov, PRInt32 iov_size, PRIntervalTi
     for (index=0; index<iov_size; index++) {
         rv = _PR_MD_SEND(fd, iov[index].iov_base, iov[index].iov_len, 0,
 						timeout);
-        if (rv > 0) 
+        if (rv > 0)
             sent += rv;
         if ( rv != iov[index].iov_len ) {
             if (sent <= 0)
@@ -1996,7 +1996,7 @@ _PR_MD_GETPEERNAME(PRFileDesc *fd, PRNetAddr *addr, PRUint32 *len)
          * Determine if the socket is connected.
          */
 
-        rv = getsockopt(fd->secret->md.osfd, 
+        rv = getsockopt(fd->secret->md.osfd,
                         SOL_SOCKET,
                         SO_CONNECT_TIME,
                         (char *) &seconds,
@@ -2013,7 +2013,7 @@ _PR_MD_GETPEERNAME(PRFileDesc *fd, PRNetAddr *addr, PRUint32 *len)
             _PR_MD_MAP_GETSOCKOPT_ERROR(WSAGetLastError());
             return PR_FAILURE;
         }
-    } else { 
+    } else {
         rv = getpeername((SOCKET)fd->secret->md.osfd,
                          (struct sockaddr *) addr, len);
         if (rv == 0) {
@@ -2062,9 +2062,9 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, PRIntn mode)
     PRInt32 access = 0;
     PRInt32 flags = 0;
     PRInt32 flag6 = 0;
-    
+
     if (osflags & PR_SYNC) flag6 = FILE_FLAG_WRITE_THROUGH;
- 
+
     if (osflags & PR_RDONLY || osflags & PR_RDWR) access |= GENERIC_READ;
     if (osflags & PR_WRONLY || osflags & PR_RDWR) access |= GENERIC_WRITE;
 
@@ -2078,11 +2078,11 @@ _PR_MD_OPEN(const char *name, PRIntn osflags, PRIntn mode)
 
     flag6 |= FILE_FLAG_OVERLAPPED;
 
-    file = CreateFile(name, 
-                      access, 
+    file = CreateFile(name,
+                      access,
                       FILE_SHARE_READ|FILE_SHARE_WRITE,
                       NULL,
-                      flags, 
+                      flags,
                       flag6,
                       NULL);
     if (file == INVALID_HANDLE_VALUE) {
@@ -2114,7 +2114,7 @@ _PR_MD_OPEN_FILE(const char *name, PRIntn osflags, PRIntn mode)
     PACL pACL = NULL;
 
     if (osflags & PR_SYNC) flag6 = FILE_FLAG_WRITE_THROUGH;
- 
+
     if (osflags & PR_RDONLY || osflags & PR_RDWR) access |= GENERIC_READ;
     if (osflags & PR_WRONLY || osflags & PR_RDWR) access |= GENERIC_WRITE;
 
@@ -2137,11 +2137,11 @@ _PR_MD_OPEN_FILE(const char *name, PRIntn osflags, PRIntn mode)
             lpSA = &sa;
         }
     }
-    file = CreateFile(name, 
-                      access, 
+    file = CreateFile(name,
+                      access,
                       FILE_SHARE_READ|FILE_SHARE_WRITE,
                       lpSA,
-                      flags, 
+                      flags,
                       flag6,
                       NULL);
     if (lpSA != NULL) {
@@ -2163,7 +2163,7 @@ _PR_MD_OPEN_FILE(const char *name, PRIntn osflags, PRIntn mode)
     return (PROsfd)file;
 }
 
-PRInt32 
+PRInt32
 _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
 {
     PROsfd f = fd->secret->md.osfd;
@@ -2186,10 +2186,10 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
         PR_ASSERT((me->md.overlapped.overlapped.Offset != 0xffffffff) || (GetLastError() == NO_ERROR));
 
         if (fd->secret->inheritable == _PR_TRI_TRUE) {
-            rv = ReadFile((HANDLE)f, 
-                          (LPVOID)buf, 
-                          len, 
-                          &bytes, 
+            rv = ReadFile((HANDLE)f,
+                          (LPVOID)buf,
+                          len,
+                          &bytes,
                           &me->md.overlapped.overlapped);
             if (rv != 0) {
                 loOffset = SetFilePointer((HANDLE)f, bytes, &hiOffset, FILE_CURRENT);
@@ -2235,10 +2235,10 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
 			_PR_THREAD_UNLOCK(me);
 			me->io_fd = f;
 
-            rv = ReadFile((HANDLE)f, 
-                          (LPVOID)buf, 
-                          len, 
-                          &bytes, 
+            rv = ReadFile((HANDLE)f,
+                          (LPVOID)buf,
+                          len,
+                          &bytes,
                           &me->md.overlapped.overlapped);
             if ( (rv == 0) && ((err = GetLastError()) != ERROR_IO_PENDING) ) {
 				_PR_THREAD_LOCK(me);
@@ -2287,7 +2287,7 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
             }
 
             SetFilePointer((HANDLE)f, me->md.blocked_io_bytes, 0, FILE_CURRENT);
-    
+
             PR_ASSERT(me->io_pending == PR_FALSE);
 
             return me->md.blocked_io_bytes;
@@ -2304,7 +2304,7 @@ _PR_MD_READ(PRFileDesc *fd, void *buf, PRInt32 len)
             /* ERROR_HANDLE_EOF can only be returned by async io */
             PR_ASSERT(err != ERROR_HANDLE_EOF);
             if (err == ERROR_BROKEN_PIPE) {
-                /* The write end of the pipe has been closed. */ 
+                /* The write end of the pipe has been closed. */
                 return 0;
             }
             _PR_MD_MAP_READ_ERROR(err);
@@ -2338,10 +2338,10 @@ _PR_MD_WRITE(PRFileDesc *fd, const void *buf, PRInt32 len)
         PR_ASSERT((me->md.overlapped.overlapped.Offset != 0xffffffff) || (GetLastError() == NO_ERROR));
 
         if (fd->secret->inheritable == _PR_TRI_TRUE) {
-            rv = WriteFile((HANDLE)f, 
-                          (LPVOID)buf, 
-                          len, 
-                          &bytes, 
+            rv = WriteFile((HANDLE)f,
+                          (LPVOID)buf,
+                          len,
+                          &bytes,
                           &me->md.overlapped.overlapped);
             if (rv != 0) {
                 loOffset = SetFilePointer((HANDLE)f, bytes, &hiOffset, FILE_CURRENT);
@@ -2382,10 +2382,10 @@ _PR_MD_WRITE(PRFileDesc *fd, const void *buf, PRInt32 len)
 			_PR_THREAD_UNLOCK(me);
 			me->io_fd = f;
 
-            rv = WriteFile((HANDLE)f, 
-                           buf, 
-                           len, 
-                           &bytes, 
+            rv = WriteFile((HANDLE)f,
+                           buf,
+                           len,
+                           &bytes,
                            &(me->md.overlapped.overlapped));
             if ( (rv == 0) && ((err = GetLastError()) != ERROR_IO_PENDING) ) {
 				_PR_THREAD_LOCK(me);
@@ -2439,7 +2439,7 @@ _PR_MD_WRITE(PRFileDesc *fd, const void *buf, PRInt32 len)
             offset.QuadPart += me->md.blocked_io_bytes;
 
             SetFilePointer((HANDLE)f, offset.LowPart, &offset.HighPart, FILE_BEGIN);
-    
+
             PR_ASSERT(me->io_pending == PR_FALSE);
 
             return me->md.blocked_io_bytes;
@@ -2608,7 +2608,7 @@ _PR_MD_CLOSE(PROsfd osfd, PRBool socket)
             _PR_THREAD_LOCK(me);
             me->state = _PR_IO_WAIT;
             /* The IO could have completed on another thread just after
-             * calling closesocket while the io_suspended flag was true.  
+             * calling closesocket while the io_suspended flag was true.
              * So we now grab the lock to do a safe check on io_pending to
              * see if we need to wait or not.
              */
@@ -2655,7 +2655,7 @@ _PR_MD_SET_FD_INHERITABLE(PRFileDesc *fd, PRBool inheritable)
         return PR_FAILURE;
     }
     return PR_SUCCESS;
-} 
+}
 
 void
 _PR_MD_INIT_FD_INHERITABLE(PRFileDesc *fd, PRBool imported)
@@ -3000,7 +3000,7 @@ PRInt32
 _PR_MD_GETFILEINFO64(const char *fn, PRFileInfo64 *info)
 {
     WIN32_FILE_ATTRIBUTE_DATA findFileData;
-    
+
     if (NULL == fn || '\0' == *fn) {
         PR_SetError(PR_INVALID_ARGUMENT_ERROR, 0);
         return -1;
@@ -3213,7 +3213,7 @@ _PR_MD_LOCKFILE(PROsfd f)
     me->state = _PR_IO_WAIT;
     _PR_THREAD_UNLOCK(me);
 
-    rv = LockFileEx((HANDLE)f, 
+    rv = LockFileEx((HANDLE)f,
                     LOCKFILE_EXCLUSIVE_LOCK,
                     0,
                     0x7fffffff,
@@ -3249,7 +3249,7 @@ _PR_MD_LOCKFILE(PROsfd f)
      *
      * If we pretend we won't get a completion, NSPR gets confused later
      * when the unexpected completion arrives.  If we assume we do get
-     * a completion, we hang on 3.51.  Worse, Microsoft informs me that the 
+     * a completion, we hang on 3.51.  Worse, Microsoft informs me that the
      * behavior varies on 3.51 depending on if you are using a network
      * file system or a local disk!
      *
@@ -3257,7 +3257,7 @@ _PR_MD_LOCKFILE(PROsfd f)
      * depending on whether or not this system is EITHER
      *      - running NT 4.0
      *      - running NT 3.51 with a service pack greater than 5.
-     * 
+     *
      * In the meantime, this code may not work on network file systems.
      *
      */
@@ -3279,14 +3279,14 @@ _PR_MD_LOCKFILE(PROsfd f)
     }
 #ifdef _NEED_351_FILE_LOCKING_HACK
     else if (rv)  {
-        /* If this is NT 3.51 and the file is local, then we won't get a 
+        /* If this is NT 3.51 and the file is local, then we won't get a
          * completion back from LockFile when it succeeded.
          */
         if (_nt_version_gets_lockfile_completion == PR_FALSE) {
             if ( IsFileLocal((HANDLE)f) == _PR_LOCAL_FILE) {
                 me->io_pending = PR_FALSE;
                 me->state = _PR_RUNNING;
-                return PR_SUCCESS; 
+                return PR_SUCCESS;
             }
         }
     }
@@ -3332,7 +3332,7 @@ _PR_MD_TLOCKFILE(PROsfd f)
     me->state = _PR_IO_WAIT;
     _PR_THREAD_UNLOCK(me);
 
-    rv = LockFileEx((HANDLE)f, 
+    rv = LockFileEx((HANDLE)f,
                     LOCKFILE_FAIL_IMMEDIATELY|LOCKFILE_EXCLUSIVE_LOCK,
                     0,
                     0x7fffffff,
@@ -3375,7 +3375,7 @@ _PR_MD_TLOCKFILE(PROsfd f)
     }
 #ifdef _NEED_351_FILE_LOCKING_HACK
     else if (rv)  {
-        /* If this is NT 3.51 and the file is local, then we won't get a 
+        /* If this is NT 3.51 and the file is local, then we won't get a
          * completion back from LockFile when it succeeded.
          */
         if (_nt_version_gets_lockfile_completion == PR_FALSE) {
@@ -3391,7 +3391,7 @@ _PR_MD_TLOCKFILE(PROsfd f)
 				}
 				_PR_THREAD_UNLOCK(me);
 
-                return PR_SUCCESS; 
+                return PR_SUCCESS;
             }
         }
     }
@@ -3465,17 +3465,17 @@ _PR_MD_MAKE_NONBLOCK(PRFileDesc *f)
 
 #ifdef _NEED_351_FILE_LOCKING_HACK
 /***************
-** 
+**
 ** Lockfile hacks
 **
 ** The following code is a hack to work around a microsoft bug with lockfile.
 ** The problem is that on NT 3.51, if LockFileEx() succeeds, you never
 ** get a completion back for files that are on local disks.  So, we need to
-** know if a file is local or remote so we can tell if we should expect 
+** know if a file is local or remote so we can tell if we should expect
 ** a completion.
 **
 ** The only way to check if a file is local or remote based on the handle is
-** to get the serial number for the volume it is mounted on and then to 
+** to get the serial number for the volume it is mounted on and then to
 ** compare that with mounted drives.  This code caches the volume numbers of
 ** fixed disks and does a relatively quick check.
 **
@@ -3550,12 +3550,12 @@ PRBool IsFileLocalInit()
             case DRIVE_REMOVABLE:
 
                // CDROM is a removable media
-            case DRIVE_CDROM: 
+            case DRIVE_CDROM:
 
                // no idea if ramdisks can change serial numbers or not
                // but it doesn't hurt to treat them as removable.
-              
-            case DRIVE_RAMDISK: 
+
+            case DRIVE_RAMDISK:
 
 
                // Here is where we keep track of removable drives.
@@ -3565,7 +3565,7 @@ PRBool IsFileLocalInit()
 
             case DRIVE_FIXED:
 
-               // cache volume serial numbers. 
+               // cache volume serial numbers.
                if (GetVolumeInformation(
                    &lpBuffer[dwIndex],
                    NULL, 0,
@@ -3577,7 +3577,7 @@ PRBool IsFileLocalInit()
                         dwLastCachedDrive = dwDriveIndex;
                      dwCachedVolumeSerialNumbers[dwDriveIndex] = dwVolumeSerialNumber;
                   }
- 
+
                break;
          }
       }
@@ -3616,7 +3616,7 @@ PRInt32 IsFileLocal(HANDLE hFile)
    _MD_UNLOCK(&cachedVolumeLock);
 
    // volume serial number not found in the cache.  Check removable files.
-   // removable drives are noted as a bitmask.  If the bit associated with 
+   // removable drives are noted as a bitmask.  If the bit associated with
    // a specific drive is set, then we should query its volume serial number
    // as its possible it has changed.
    dwMask = dwRemoveableDrivesToCheck;
@@ -3819,7 +3819,7 @@ static PRInt32 _nt_nonblock_connect(PRFileDesc *fd, struct sockaddr *addr, int a
                 }
                 _PR_MD_MAP_CONNECT_ERROR(err);
                 return -1;
-            } 
+            }
             PR_ASSERT(FD_ISSET((SOCKET)osfd, &wr));
             rv = 0;
         } else {
@@ -3946,7 +3946,7 @@ static PRInt32 _nt_nonblock_writev(PRFileDesc *fd, const PRIOVec *iov, int size,
 
     for (index=0; index<size; index++) {
         rv = _nt_nonblock_send(fd, iov[index].iov_base, iov[index].iov_len, timeout);
-        if (rv > 0) 
+        if (rv > 0)
             sent += rv;
         if ( rv != iov[index].iov_len ) {
             if (rv < 0) {
@@ -4110,7 +4110,7 @@ static void pt_InsertTimedInternal(pt_Continuation *op)
          * Subsequently earlier timeouts are computed based on the latter
          * knowledge by subracting the timeout deltas that are stored in
          * the operation list. There are operation[n]->timeout ticks
-         * between the expiration of operation[n-1] and operation[n].e e 
+         * between the expiration of operation[n-1] and operation[n].e e
          *
          * Therefore, the operation[n-1] will expire operation[n]->timeout
          * ticks prior to operation[n].
@@ -4375,7 +4375,7 @@ static void ContinuationThread(void *arg)
         {
             if (0 == pt_tq.head->timeout)
             {
-                /* 
+                /*
                  * The leading element of the timed queue has timed
                  * out. Get rid of it. In any case go around the
                  * loop again, computing the polling list, checking

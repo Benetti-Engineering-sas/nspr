@@ -199,7 +199,7 @@ retry:
 			}
 #endif
 			return -1;
-		}	
+		}
     }
     return len;
 }
@@ -331,14 +331,14 @@ PRInt32 native_thread = 0;
 #else
 		HANDLE thandle;
 		unsigned tid;
-		
+
 		thandle = (HANDLE) _beginthreadex(
 						NULL,
 						stackSize,
 						(unsigned (__stdcall *)(void *))start,
 						arg,
 						STACK_SIZE_PARAM_IS_A_RESERVATION,
-						&tid);		
+						&tid);
 		return((PRThread *) thandle);
 #endif
 	} else {
@@ -372,7 +372,7 @@ TCP_Server(void *arg)
         goto exit;
     }
     memset(&netaddr, 0 , sizeof(netaddr));
-	
+
 	if (PR_SetNetAddr(PR_IpAddrAny, server_domain, TCP_SERVER_PORT,
 									&netaddr) == PR_FAILURE) {
         fprintf(stderr,"prsocket_test: PR_SetNetAddr failed\n");
@@ -383,7 +383,7 @@ TCP_Server(void *arg)
      * use
      */
     i = 0;
-	
+
     while (PR_Bind(sockfd, &netaddr) < 0) {
         if (PR_GetError() == PR_ADDRESS_IN_USE_ERROR) {
             netaddr.inet.port += 2;
@@ -450,7 +450,7 @@ TCP_Server(void *arg)
         scp->datalen = sp->datalen;
 
         t = create_new_thread(PR_USER_THREAD,
-            Serve_Client, (void *)scp, 
+            Serve_Client, (void *)scp,
             PR_PRIORITY_NORMAL,
             PR_LOCAL_THREAD,
             PR_UNJOINABLE_THREAD,
@@ -552,7 +552,7 @@ UDP_Server(void *arg)
 	if ((client_domain == PR_AF_INET6) && (server_domain == PR_AF_INET))
 		PR_ConvertIPv4AddrToIPv6(PR_htonl(INADDR_LOOPBACK),
 								&udp_server_addr.ipv6.ip);
-		
+
     /*
      * Wake up parent thread because server address is bound and made
      * available in the global variable 'udp_server_addr'
@@ -709,7 +709,7 @@ TCP_Client(void *arg)
 /*
  * UDP_Client
  *    Client Thread
- *    Create a socket and bind an address 
+ *    Create a socket and bind an address
  *    Communicate with the server at the address specified in the argument.
  *    Fill in a buffer, write data to server, read it back and check
  *    for data corruption.
@@ -840,7 +840,7 @@ UDP_Client(void *arg)
 
 /*
  * TCP_Socket_Client_Server_Test    - concurrent server test
- *    
+ *
  *    One server and several clients are started
  *    Each client connects to the server and sends a chunk of data
  *    For each connection, server starts another thread to read the data
@@ -892,7 +892,7 @@ TCP_Socket_Client_Server_Test(void)
     sparamp->exit_counter = &thread_count;
     sparamp->datalen = datalen;
     t = PR_CreateThread(PR_USER_THREAD,
-        TCP_Server, (void *)sparamp, 
+        TCP_Server, (void *)sparamp,
         PR_PRIORITY_NORMAL,
         PR_LOCAL_THREAD,
         PR_UNJOINABLE_THREAD,
@@ -956,7 +956,7 @@ TCP_Socket_Client_Server_Test(void)
 
 /*
  * UDP_Socket_Client_Server_Test    - iterative server test
- *    
+ *
  *    One server and several clients are started
  *    Each client connects to the server and sends a chunk of data
  *    For each connection, server starts another thread to read the data
@@ -1010,7 +1010,7 @@ UDP_Socket_Client_Server_Test(void)
     sparamp->datalen = datalen;
     DPRINTF(("Creating UDP server"));
     t = PR_CreateThread(PR_USER_THREAD,
-        UDP_Server, (void *)sparamp, 
+        UDP_Server, (void *)sparamp,
         PR_PRIORITY_NORMAL,
         PR_LOCAL_THREAD,
         PR_UNJOINABLE_THREAD,
@@ -1794,7 +1794,7 @@ TransmitFile_Server(void *arg)
         scp->datalen = sp->datalen;
 
         t[i] = PR_CreateThread(PR_USER_THREAD,
-            Serve_TransmitFile_Client, (void *)scp, 
+            Serve_TransmitFile_Client, (void *)scp,
             PR_PRIORITY_NORMAL,
             PR_LOCAL_THREAD,
             PR_JOINABLE_THREAD,
@@ -1837,8 +1837,8 @@ exit:
 }
 
 /*
- * Socket_Misc_Test    - test miscellaneous functions 
- *    
+ * Socket_Misc_Test    - test miscellaneous functions
+ *
  */
 static PRInt32
 Socket_Misc_Test(void)
@@ -2052,7 +2052,7 @@ Socket_Misc_Test(void)
     sparamp->exit_counter = &thread_count;
     sparamp->datalen = datalen;
     t = PR_CreateThread(PR_USER_THREAD,
-        TransmitFile_Server, (void *)sparamp, 
+        TransmitFile_Server, (void *)sparamp,
         PR_PRIORITY_NORMAL,
         PR_LOCAL_THREAD,
         PR_UNJOINABLE_THREAD,
@@ -2223,12 +2223,12 @@ int main(int argc, char **argv)
     } else
         printf("TCP_Socket_Client_Server_Test Passed\n");
 	test_cancelio = 0;
-	
+
     /*
      * Misc socket tests - including transmitfile, etc.
      */
 
-    /* File transmission test can not be done in Symbian OS because of 
+    /* File transmission test can not be done in Symbian OS because of
      * large file's size and the incomplete mmap() implementation. */
 #if !defined(WIN16)
     /*

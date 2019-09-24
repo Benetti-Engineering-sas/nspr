@@ -11,14 +11,14 @@
 ** Description: Simple test creates several local and global threads;
 **              half use a single,shared condvar, and the
 **              other half have their own condvar. The main thread then loops
-**				notifying them to wakeup. 
+**				notifying them to wakeup.
 **
 ** Modification History:
 ** 14-May-97 AGarcia- Converted the test to accomodate the debug_mode flag.
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 
 #include "nspr.h"
@@ -117,8 +117,8 @@ DPRINTF(("PrivateCondVarThread: thread 0x%lx notified exitcvar = 0x%lx cnt = %ld
 #endif
 }
 
-void 
-CreateTestThread(threadinfo *info, 
+void
+CreateTestThread(threadinfo *info,
                  PRInt32 id,
                  PRLock *lock,
                  PRCondVar *cvar,
@@ -128,7 +128,7 @@ CreateTestThread(threadinfo *info,
                  PRLock *exitlock,
                  PRCondVar *exitcvar,
                  PRInt32 *exitcount,
-                 PRBool shared, 
+                 PRBool shared,
                  PRThreadScope scope)
 {
     info->id = id;
@@ -154,7 +154,7 @@ CreateTestThread(threadinfo *info,
 }
 
 
-void 
+void
 CondVarTestSUU(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -164,7 +164,7 @@ CondVarTestSUU(void *_arg)
     PRCondVar *sharedcvar;
     PRLock *exitlock;
     PRCondVar *exitcvar;
-    
+
     exitcount=0;
     tcount=0;
     list = (threadinfo *)PR_MALLOC(sizeof(threadinfo) * (arg * 4));
@@ -213,7 +213,7 @@ CondVarTestSUU(void *_arg)
     }
 
     /* Join all the threads */
-    for(index=0; index<(arg); index++) 
+    for(index=0; index<(arg); index++)
         PR_JoinThread(list[index].thread);
 
     PR_DestroyCondVar(sharedcvar);
@@ -224,7 +224,7 @@ CondVarTestSUU(void *_arg)
     PR_DELETE(list);
 }
 
-void 
+void
 CondVarTestSUK(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -287,7 +287,7 @@ CondVarTestSUK(void *_arg)
     }
 
     /* Join all the threads */
-    for(index=0; index<(arg); index++) 
+    for(index=0; index<(arg); index++)
         PR_JoinThread(list[index].thread);
 
     PR_DestroyCondVar(sharedcvar);
@@ -298,7 +298,7 @@ CondVarTestSUK(void *_arg)
     PR_DELETE(list);
 }
 
-void 
+void
 CondVarTestPUU(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -384,7 +384,7 @@ DPRINTF(("CondVarTestPUU: thread 0x%lx waiting on exitcvar = 0x%lx cnt = %ld\n",
     PR_DELETE(saved_tcount);
 }
 
-void 
+void
 CondVarTestPUK(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -465,7 +465,7 @@ CondVarTestPUK(void *_arg)
     PR_DELETE(saved_tcount);
 }
 
-void 
+void
 CondVarTest(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -598,7 +598,7 @@ CondVarTest(void *_arg)
     PR_DELETE(saved_ptcount);
 }
 
-void 
+void
 CondVarTimeoutTest(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -709,7 +709,7 @@ CondVarTimeoutTest(void *_arg)
     PR_DELETE(list);
 }
 
-void 
+void
 CondVarMixedTest(void *_arg)
 {
     PRInt32 arg = (PRInt32)_arg;
@@ -833,7 +833,7 @@ CondVarMixedTest(void *_arg)
     PR_DELETE(list);
 }
 
-void 
+void
 CondVarCombinedTest(void *arg)
 {
     PRThread *threads[3];
@@ -953,7 +953,7 @@ default_threads, default_threads*2, default_threads*3, default_threads*4);
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

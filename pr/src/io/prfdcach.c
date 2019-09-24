@@ -160,7 +160,7 @@ PR_IMPLEMENT(PRStatus) PR_SetFDCacheSize(PRIntn low, PRIntn high)
     if (!_pr_initialized) _PR_ImplicitInitialization();
 
     if (low > high) low = high;  /* sanity check the params */
-    
+
     PR_Lock(_pr_fd_cache.ml);
     _pr_fd_cache.limit_high = high;
     _pr_fd_cache.limit_low = low;
@@ -179,7 +179,7 @@ void _PR_InitFdCache(void)
     const char *low = PR_GetEnv("NSPR_FD_CACHE_SIZE_LOW");
     const char *high = PR_GetEnv("NSPR_FD_CACHE_SIZE_HIGH");
 
-    /* 
+    /*
     ** _low is allowed to be zero, _high is not.
     ** If _high is zero, we're not doing the caching.
     */

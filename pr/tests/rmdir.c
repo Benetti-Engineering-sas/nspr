@@ -5,9 +5,9 @@
 
 /*
 ** File:        rmdir.c
-** Description: Demonstrate bugzilla 80884. 
+** Description: Demonstrate bugzilla 80884.
 **
-** after fix to unix_errors.c, message should report correct 
+** after fix to unix_errors.c, message should report correct
 ** failure of PR_Rmdir().
 **
 **
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
         failed_already = PR_TRUE;
         goto Finished;
     }
- 
+
     PR_Close(fd);
 
     if (PR_RmDir( DIRNAME ) == PR_SUCCESS) {
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
         failed_already = PR_TRUE;
         goto Finished;
     }
- 
+
     err = PR_GetError();
     fprintf(stderr, "remove directory fails with: %d: %s\n", err,
         PR_ErrorToString(err, PR_LANGUAGE_I_DEFAULT));

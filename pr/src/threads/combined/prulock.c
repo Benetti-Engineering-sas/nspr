@@ -7,10 +7,10 @@
 
 #if defined(WIN95)
 /*
-** Some local variables report warnings on Win95 because the code paths 
+** Some local variables report warnings on Win95 because the code paths
 ** using them are conditioned on HAVE_CUSTOME_USER_THREADS.
 ** The pragma suppresses the warning.
-** 
+**
 */
 #pragma warning(disable : 4101)
 #endif
@@ -99,7 +99,7 @@ void _PR_UnblockLockWaiter(PRLock *lock)
         /* Unblock first waiter */
         t = _PR_THREAD_CONDQ_PTR(q);
 
-		/* 
+		/*
 		** We are about to change the thread's state to runnable and for local
 		** threads, we are going to assign a cpu to it.  So, protect thread's
 		** data structure.
@@ -128,9 +128,9 @@ void _PR_UnblockLockWaiter(PRLock *lock)
 		** thread, we just assign our own cpu to that thread and put it on
 		** the cpu's run queue.  If the the currently running thread is a
 		** native thread, we assign the primordial cpu to it (on NT,
-		** MD_WAKEUP handles the cpu assignment).  
+		** MD_WAKEUP handles the cpu assignment).
 		*/
-		
+
         if ( !_PR_IS_NATIVE_THREAD(t) ) {
 
             t->state = _PR_RUNNABLE;
@@ -206,10 +206,10 @@ PR_IMPLEMENT(void) PR_Lock(PRLock *lock)
     PRThread *t;
     PRCList *q;
 
-    PR_ASSERT(me != suspendAllThread); 
+    PR_ASSERT(me != suspendAllThread);
     PR_ASSERT(!(me->flags & _PR_IDLE_THREAD));
     PR_ASSERT(lock != NULL);
-#ifdef _PR_GLOBAL_THREADS_ONLY 
+#ifdef _PR_GLOBAL_THREADS_ONLY
     _PR_MD_LOCK(&lock->ilock);
     PR_ASSERT(lock->owner == 0);
     lock->owner = me;
@@ -258,7 +258,7 @@ retry:
     }
 #endif
 
-    /* 
+    /*
     Add this thread to the asked for lock's list of waiting threads.  We
     add this thread thread in the right priority order so when the unlock
     occurs, the thread with the higher priority will get the lock.
@@ -285,7 +285,7 @@ retry:
 	}
     PR_INSERT_BEFORE(&me->waitQLinks, q);
 
-	/* 
+	/*
 	Now grab the threadLock since we are about to change the state.  We have
 	to do this since a PR_Suspend or PR_SetThreadPriority type call that takes
 	a PRThread* as an argument could be changing the state of this thread from
@@ -317,13 +317,13 @@ PR_IMPLEMENT(PRStatus) PR_Unlock(PRLock *lock)
 
     PR_ASSERT(lock != NULL);
     PR_ASSERT(lock->owner == me);
-    PR_ASSERT(me != suspendAllThread); 
+    PR_ASSERT(me != suspendAllThread);
     PR_ASSERT(!(me->flags & _PR_IDLE_THREAD));
     if (lock->owner != me) {
         return PR_FAILURE;
     }
 
-#ifdef _PR_GLOBAL_THREADS_ONLY 
+#ifdef _PR_GLOBAL_THREADS_ONLY
     lock->owner = 0;
     _PR_MD_UNLOCK(&lock->ilock);
     return PR_SUCCESS;
@@ -397,7 +397,7 @@ PR_IMPLEMENT(PRBool) PR_TestAndLock(PRLock *lock)
     PRBool rv = PR_FALSE;
     PRIntn is;
 
-#ifdef _PR_GLOBAL_THREADS_ONLY 
+#ifdef _PR_GLOBAL_THREADS_ONLY
     is = _PR_MD_TEST_AND_LOCK(&lock->ilock);
     if (is == 0) {
         lock->owner = me;

@@ -17,7 +17,7 @@
 ** in cyclic dependency of initialization.
 */
 
-#include <string.h>	
+#include <string.h>
 
 union memBlkHdrUn;
 
@@ -55,12 +55,12 @@ static void pr_ZoneFree(void *ptr);
 
 void
 _PR_DestroyZones(void)
-{   
+{
     int i, j;
 
     if (!use_zone_allocator)
         return;
-    
+
     for (j = 0; j < THREAD_POOLS; j++) {
         for (i = 0; i < MEM_ZONES; i++) {
             MemoryZone *mz = &zones[i][j];
@@ -72,9 +72,9 @@ _PR_DestroyZones(void)
                 mz->elements--;
             }
         }
-    } 
+    }
     use_zone_allocator = PR_FALSE;
-} 
+}
 
 /*
 ** pr_FindSymbolInProg
@@ -160,14 +160,14 @@ _PR_InitZones(void)
     if (!use_zone_allocator)
         return;
 
-    for (j = 0; j < THREAD_POOLS; j++) { 
+    for (j = 0; j < THREAD_POOLS; j++) {
         for (i = 0; i < MEM_ZONES; i++) {
             MemoryZone *mz = &zones[i][j];
             int rv = pthread_mutex_init(&mz->lock, NULL);
             PR_ASSERT(0 == rv);
             if (rv != 0) {
                 goto loser;
-            } 
+            }
             mz->blockSize = 16 << ( 2 * i);
         }
     }
@@ -358,7 +358,7 @@ pr_ZoneRealloc(void *oldptr, PRUint32 bytes)
         PR_ASSERT(mt->s.magic == ZONE_MAGIC);
         PR_ASSERT(mt->s.zone  == mb->s.zone);
         PR_ASSERT(mt->s.blockSize == blockSize);
-	
+
         if (bytes <= blockSize) {
             /* The block is already big enough. */
             mt->s.requestedSize = mb->s.requestedSize = bytes;
@@ -370,7 +370,7 @@ pr_ZoneRealloc(void *oldptr, PRUint32 bytes)
             return rv;
         }
     }
-    
+
     if (oldptr && mb->s.requestedSize)
         memcpy(rv, oldptr, mb->s.requestedSize);
     if (ours)
@@ -481,7 +481,7 @@ PR_IMPLEMENT(void *) PR_Calloc(PRUint32 nelem, PRUint32 elsize)
 {
 #if defined (WIN16)
     return PR_MD_calloc( (size_t)nelem, (size_t)elsize );
-    
+
 #else
     return calloc(nelem, elsize);
 #endif

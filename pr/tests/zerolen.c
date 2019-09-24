@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /*
- * Test: zerolen.c 
+ * Test: zerolen.c
  *
  * Description: a test for Bugzilla bug #17699.  We perform
  * the same test for PR_Writev, PR_Write, and PR_Send.  In

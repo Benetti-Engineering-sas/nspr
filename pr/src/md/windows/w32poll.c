@@ -275,14 +275,14 @@ PRInt32 _PR_MD_PR_POLL(PRPollDesc *pds, PRIntn npds, PRIntervalTime timeout)
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_READ)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
                 if (FD_ISSET(osfd, &wt))
                 {
                     if (pd->out_flags & _PR_POLL_READ_SYS_WRITE)
                         out_flags |= PR_POLL_READ;
                     if (pd->out_flags & _PR_POLL_WRITE_SYS_WRITE)
                         out_flags |= PR_POLL_WRITE;
-                } 
+                }
                 if (FD_ISSET(osfd, &ex)) out_flags |= PR_POLL_EXCEPT;
             }
             pd->out_flags = out_flags;

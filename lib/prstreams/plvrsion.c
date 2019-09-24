@@ -86,7 +86,7 @@ PR_IMPLEMENT(const PRVersionDescription*) libVersionPoint()
      * from being optimized away as unused variables.
      */
     const char *dummy;
-    
+
     dummy = rcsid;
     dummy = sccsid;
 #endif

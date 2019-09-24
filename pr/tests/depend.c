@@ -15,7 +15,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 #include "prinit.h"
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     const char *buildDate = __DATE__, *buildTime = __TIME__;
 
     printf("Depend.c build time is %s %s\n", buildDate, buildTime);
-    
+
     if (NULL != info) ChaseDependents(info, tab);
 
     return 0;

@@ -131,7 +131,7 @@ int main(int argc, char **argv)
         PrintHostent(&reversehe);
     }
     printf("PR_GetHostByAddr with PR_AF_INET6 done\n");
-  
+
     PR_StringToNetAddr("::1", &addr);
     if (PR_IsNetAddrType(&addr, PR_IpAddrV4Mapped) == PR_TRUE) {
         fprintf(stderr, "addr should not be ipv4 mapped address\n");

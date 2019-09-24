@@ -341,7 +341,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 
     PR_DestroyLock(ml);
 
-    PR_fprintf(err, "Done!\n");    
+    PR_fprintf(err, "Done!\n");
     return 0;
 }  /* main */
 
@@ -349,7 +349,7 @@ static PRIntn PR_CALLBACK RealMain( PRIntn argc, char **argv )
 int main(int argc, char **argv)
 {
     PRIntn rv;
-    
+
     PR_STDIO_INIT();
     rv = PR_Initialize(RealMain, argc, argv, 0);
     return rv;

@@ -84,7 +84,7 @@ PR_IMPLEMENT(const PRVersionDescription*) libVersionPoint(void)
     /*
      * Add dummy references to rcsid and sccsid to prevent them
      * from being optimized away as unused variables.
-     */ 
+     */
     const char *dummy;
 
     dummy = rcsid;

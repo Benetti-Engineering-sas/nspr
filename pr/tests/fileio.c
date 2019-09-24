@@ -7,7 +7,7 @@
 **
 ** Name: fileio.c
 **
-** Description: Program to copy one file to another. 
+** Description: Program to copy one file to another.
 **
 ** Modification History:
 ** 14-May-97 AGarcia- Converted the test to accomodate the debug_mode flag.
@@ -49,21 +49,21 @@ static void InitialSetup(void)
 {
 	PRUintn	i;
 	PRInt32 nWritten, rv;
-	
+
 	t1 = PR_Open("t1.tmp", PR_CREATE_FILE | PR_RDWR, 0);
-	PR_ASSERT(t1 != NULL);	
-	
+	PR_ASSERT(t1 != NULL);
+
 	for (i=0; i<TBSIZE; i++)
 		tbuf[i] = i;
-		
+
 	nWritten = PR_Write((PRFileDesc*)t1, tbuf, TBSIZE);
-	PR_ASSERT(nWritten == TBSIZE);	
-   		
+	PR_ASSERT(nWritten == TBSIZE);
+
 	rv = PR_Seek(t1,0,PR_SEEK_SET);
-	PR_ASSERT(rv == 0);	
+	PR_ASSERT(rv == 0);
 
    	t2 = PR_Open("t2.tmp", PR_CREATE_FILE | PR_RDWR, 0);
-	PR_ASSERT(t2 != NULL);	
+	PR_ASSERT(t2 != NULL);
 }
 
 
@@ -71,16 +71,16 @@ static void VerifyAndCleanup(void)
 {
 	PRUintn	i;
 	PRInt32 nRead, rv;
-	
+
 	for (i=0; i<TBSIZE; i++)
 		tbuf[i] = 0;
-		
+
 	rv = PR_Seek(t2,0,PR_SEEK_SET);
-	PR_ASSERT(rv == 0);	
+	PR_ASSERT(rv == 0);
 
 	nRead = PR_Read((PRFileDesc*)t2, tbuf, TBSIZE);
-	PR_ASSERT(nRead == TBSIZE);	
-   		
+	PR_ASSERT(nRead == TBSIZE);
+
 	for (i=0; i<TBSIZE; i++)
 		if (tbuf[i] != (PRUint8)i) {
 			if (debug_mode) printf("data mismatch for index= %d \n", i);
@@ -120,7 +120,7 @@ static void PR_CALLBACK reader(void *arg)
 {
 	PRUintn	i = 0;
 	PRInt32	nbytes;
-	
+
 	do {
 		(void) PR_WaitSem(emptyBufs);
 		nbytes = PR_Read((PRFileDesc*)arg, buf[i].data, BSIZE);
@@ -136,7 +136,7 @@ static void PR_CALLBACK writer(void *arg)
 {
 	PRUintn	i = 0;
 	PRInt32	nbytes;
-	
+
 	do {
 		(void) PR_WaitSem(fullBufs);
 		nbytes = buf[i].nbytes;
@@ -162,18 +162,18 @@ int main(int argc, char **argv)
 
 	/* Create initial temp file setup */
 	InitialSetup();
-	
+
 	/* create the reader thread */
-	
+
 	r = PR_CreateThread(PR_USER_THREAD,
-				      reader, t1, 
+				      reader, t1,
 				      PR_PRIORITY_NORMAL,
 				      PR_LOCAL_THREAD,
     				  PR_JOINABLE_THREAD,
 				      0);
 
 	w = PR_CreateThread(PR_USER_THREAD,
-				      writer, t2, 
+				      writer, t2,
 				      PR_PRIORITY_NORMAL,
                       PR_LOCAL_THREAD,
                       PR_JOINABLE_THREAD,

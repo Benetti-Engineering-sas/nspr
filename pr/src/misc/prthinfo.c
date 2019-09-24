@@ -86,7 +86,7 @@ PR_ThreadScanStackPointers(PRThread* t,
     {
         prword_t scan;
         prword_t limit;
-        
+
         scan = (prword_t) sp;
         limit = (prword_t) esp;
         while (scan < limit) {
@@ -124,7 +124,7 @@ PR_ThreadScanStackPointers(PRThread* t,
         if (status != PR_SUCCESS)
             return status;
     }
-    
+
     return PR_SUCCESS;
 }
 

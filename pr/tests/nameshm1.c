@@ -6,10 +6,10 @@
 /*
 ** File: nameshm1.c -- Test Named Shared Memory
 **
-** Description: 
+** Description:
 ** nameshm1 tests Named Shared Memory. nameshm1 performs two tests of
-** named shared memory. 
-** 
+** named shared memory.
+**
 ** The first test is a basic test. The basic test operates as a single
 ** process. The process exercises all the API elements of the facility.
 ** This test also attempts to write to all locations in the shared
@@ -31,7 +31,7 @@
 ** order.
 **
 ** Synopsis: nameshm1 [options] [name]
-** 
+**
 ** Options:
 ** -d       Enables debug trace via PR_LOG()
 ** -v       Enables verbose mode debug trace via PR_LOG()
@@ -39,7 +39,7 @@
 **          mapped as read-only. When this option is specified, the
 **          test should crash with a seg-fault; this is a destructive
 **          test and is considered successful when it seg-faults.
-** 
+**
 ** -C       Causes nameshm1 to start as the client-side of a
 **          client-server pair of processes. Only the instance
 **          of nameshm1 operating as the server-side process should
@@ -48,7 +48,7 @@
 **          The client-side uses the shared memory segment created by
 **          the server-side to communicate with the server-side
 **          process.
-**          
+**
 ** -p <n>   Specify the number of iterations the client-server tests
 **          should perform. Default: 1000.
 **
@@ -66,7 +66,7 @@
 ** /lth. Aug-1999.
 */
 
-#include <plgetopt.h> 
+#include <plgetopt.h>
 #include <nspr.h>
 #include <stdlib.h>
 #include <string.h>
@@ -104,7 +104,7 @@ char        optName[NameSize] = OPT_NAME;
 char buf[1024] = "";
 
 
-static void BasicTest( void ) 
+static void BasicTest( void )
 {
     PRSharedMemory  *shm;
     char *addr; /* address of shared memory segment */
@@ -134,7 +134,7 @@ static void BasicTest( void )
              ( "nameshm1: RW Create: success: %p", shm ));
 
     addr = PR_AttachSharedMemory( shm , 0 );
-    if ( NULL == addr ) 
+    if ( NULL == addr )
     {
         PR_LOG( lm, msgLevel,
                  ( "nameshm1: RW Attach: Error: %ld. OSError: %ld", PR_GetError(), PR_GetOSError()));
@@ -211,7 +211,7 @@ static void ReadOnlyTest( void )
 
 
     roAddr = PR_AttachSharedMemory( shm , PR_SHM_READONLY );
-    if ( NULL == roAddr ) 
+    if ( NULL == roAddr )
     {
         PR_LOG( lm, msgLevel,
                  ( "nameshm1: RO Attach: Error: %ld. OSError: %ld", PR_GetError(), PR_GetOSError()));
@@ -273,7 +273,7 @@ static void DoClient( void )
     PRStatus rc;
     PRSem *sem1, *sem2;
     PRSharedMemory  *shm;
-    PRUint32 *addr; 
+    PRUint32 *addr;
     PRInt32 i;
 
     PR_LOG( lm, msgLevel,
@@ -289,7 +289,7 @@ static void DoClient( void )
     if ( NULL == shm )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: DoClient(): Create: Error: %ld. OSError: %ld", 
+            ( "nameshm1: DoClient(): Create: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -298,10 +298,10 @@ static void DoClient( void )
              ( "nameshm1: DoClient(): Create: success: %p", shm ));
 
     addr = PR_AttachSharedMemory( shm , 0 );
-    if ( NULL == addr ) 
+    if ( NULL == addr )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: DoClient(): Attach: Error: %ld. OSError: %ld", 
+            ( "nameshm1: DoClient(): Attach: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -317,9 +317,9 @@ static void DoClient( void )
     {
         rc = PR_WaitSemaphore( sem2 );
         PR_ASSERT( PR_FAILURE != rc );
-        
+
         (*addr)++;
-        PR_ASSERT( (*addr % 2) == 0 );        
+        PR_ASSERT( (*addr % 2) == 0 );
         if ( optVerbose )
             PR_LOG( lm, msgLevel,
                  ( "nameshm1: Client ping: %d, i: %d", *addr, i));
@@ -338,7 +338,7 @@ static void DoClient( void )
     if ( PR_FAILURE == rc )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: DoClient(): Detach: Error: %ld. OSError: %ld", 
+            ( "nameshm1: DoClient(): Detach: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -350,7 +350,7 @@ static void DoClient( void )
     if ( PR_FAILURE == rc )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: DoClient(): Close: Error: %ld. OSError: %ld", 
+            ( "nameshm1: DoClient(): Close: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -368,7 +368,7 @@ static void ClientServerTest( void )
     PRProcess *proc;
     PRInt32 exit_status;
     PRSharedMemory  *shm;
-    PRUint32 *addr; 
+    PRUint32 *addr;
     PRInt32 i;
     char *child_argv[8];
     char buf[24];
@@ -398,7 +398,7 @@ static void ClientServerTest( void )
              ( "nameshm1: Server: Create: success: %p", shm ));
 
     addr = PR_AttachSharedMemory( shm , 0 );
-    if ( NULL == addr ) 
+    if ( NULL == addr )
     {
         PR_LOG( lm, msgLevel,
                  ( "nameshm1: Server: Attach: Error: %ld. OSError: %ld", PR_GetError(), PR_GetOSError()));
@@ -431,7 +431,7 @@ static void ClientServerTest( void )
 
     *addr = 1;
     for ( i = 0 ; i < optPing ; i++ )
-    { 
+    {
         rc = PR_WaitSemaphore( sem1 );
         PR_ASSERT( PR_FAILURE != rc );
 
@@ -441,7 +441,7 @@ static void ClientServerTest( void )
             PR_LOG( lm, msgLevel,
                  ( "nameshm1: Server pong: %d, i: %d", *addr, i));
 
-    
+
         rc = PR_PostSemaphore( sem2 );
         PR_ASSERT( PR_FAILURE != rc );
     }
@@ -465,7 +465,7 @@ static void ClientServerTest( void )
     if ( PR_FAILURE == rc )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: Server: Detach: Error: %ld. OSError: %ld", 
+            ( "nameshm1: Server: Detach: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -477,7 +477,7 @@ static void ClientServerTest( void )
     if ( PR_FAILURE == rc )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: Server: Close: Error: %ld. OSError: %ld", 
+            ( "nameshm1: Server: Close: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -489,7 +489,7 @@ static void ClientServerTest( void )
     if ( PR_FAILURE == rc )
     {
         PR_LOG( lm, msgLevel,
-            ( "nameshm1: Server: Destroy: Error: %ld. OSError: %ld", 
+            ( "nameshm1: Server: Destroy: Error: %ld. OSError: %ld",
                 PR_GetError(), PR_GetOSError()));
         failed_already = 1;
         return;
@@ -545,7 +545,7 @@ int main(int argc, char **argv)
     }
 
     lm = PR_NewLogModule("Test");       /* Initialize logging */
-    
+
     PR_LOG( lm, msgLevel,
              ( "nameshm1: Starting" ));
 

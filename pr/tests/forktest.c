@@ -169,7 +169,7 @@ DoIO(void)
     }
 
     /*
-     * Make sure it has proper null byte to mark end of string 
+     * Make sure it has proper null byte to mark end of string
      */
 
     buf[sizeof(buf) - 1] = '\0';

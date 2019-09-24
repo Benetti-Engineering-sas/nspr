@@ -85,7 +85,7 @@ PRInt32 rv;
  *  UTF16 Interface
  */
 PR_IMPLEMENT(PRDirUTF16*) PR_OpenDirUTF16(const PRUnichar *name)
-{ 
+{
     PRDirUTF16 *dir;
     PRStatus sts;
 
@@ -100,10 +100,10 @@ PR_IMPLEMENT(PRDirUTF16*) PR_OpenDirUTF16(const PRUnichar *name)
         PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
     }
     return dir;
-}  
- 
+}
+
 PR_IMPLEMENT(PRDirEntryUTF16*) PR_ReadDirUTF16(PRDirUTF16 *dir, PRDirFlags flags)
-{ 
+{
     /*
      * _MD_READ_DIR_UTF16 return a PRUnichar* to the name; allocation in
      * machine-dependent code
@@ -111,11 +111,11 @@ PR_IMPLEMENT(PRDirEntryUTF16*) PR_ReadDirUTF16(PRDirUTF16 *dir, PRDirFlags flags
     PRUnichar* name = _PR_MD_READ_DIR_UTF16(&dir->md, flags);
     dir->d.name = name;
     return name ? &dir->d : NULL;
-} 
- 
+}
+
 PR_IMPLEMENT(PRStatus) PR_CloseDirUTF16(PRDirUTF16 *dir)
-{ 
-    PRInt32 rv; 
+{
+    PRInt32 rv;
 
     if (dir) {
         rv = _PR_MD_CLOSE_DIR_UTF16(&dir->md);
@@ -124,7 +124,7 @@ PR_IMPLEMENT(PRStatus) PR_CloseDirUTF16(PRDirUTF16 *dir)
 	    return PR_FAILURE;
         else
 	    return PR_SUCCESS;
-    } 
+    }
     return PR_SUCCESS;
 }
 

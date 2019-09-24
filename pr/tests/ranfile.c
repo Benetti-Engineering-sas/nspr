@@ -284,7 +284,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 
@@ -355,9 +355,9 @@ int main(int argc, char **argv)
                     duration = PR_IntervalToMilliseconds(
                         PR_IntervalNow() - hammer[poll].timein);
                     writes = hammer[poll].writes * 1000 / duration;
-                    if (writes < writesMin) 
+                    if (writes < writesMin)
                         writesMin = writes;
-                    if (writes > writesMax) 
+                    if (writes > writesMax)
                         writesMax = writes;
                     writesTot += hammer[poll].writes;
                     durationTot += duration;
@@ -377,7 +377,7 @@ int main(int argc, char **argv)
     PR_DestroyCondVar(cv);
     PR_DestroyLock(ml);
 
-	if (failed_already) 
+	if (failed_already)
 	{
 	    printf("FAIL\n");
 		return 1;

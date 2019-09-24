@@ -18,13 +18,13 @@ static HANDLE OpenSemaphore(DWORD inDesiredAccess,
     HANDLE retval = NULL;
     HANDLE semaphore = NULL;
     PRUnichar wideName[MAX_PATH];  /* name size is limited to MAX_PATH */
-    
+
     MultiByteToWideChar(CP_ACP, 0, inName, -1, wideName, MAX_PATH);
     /* 0x7fffffff is the max count for our semaphore */
     semaphore = CreateSemaphoreW(NULL, 0, 0x7fffffff, wideName);
     if (NULL != semaphore) {
         DWORD lastErr = GetLastError();
-      
+
         if (ERROR_ALREADY_EXISTS != lastErr)
             CloseHandle(semaphore);
         else
@@ -142,7 +142,7 @@ PRSem *_PR_MD_OPEN_SEMAPHORE(
 #ifdef WINCE
         {
             /* The size of a sem's name is limited to MAX_PATH. */
-            PRUnichar wosname[MAX_PATH]; 
+            PRUnichar wosname[MAX_PATH];
             MultiByteToWideChar(CP_ACP, 0, osname, -1, wosname, MAX_PATH);
             sem->sem = CreateSemaphoreW(lpSA, value, 0x7fffffff, wosname);
         }

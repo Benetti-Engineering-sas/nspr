@@ -14,7 +14,7 @@
 **	         The debug mode will print all of the printfs associated with this test.
 **			 The regress mode will be the default mode. Since the regress tool limits
 **           the output to a one line status:PASS or FAIL,all of the printf statements
-**			 have been handled with an if (debug_mode) statement. 
+**			 have been handled with an if (debug_mode) statement.
 ***********************************************************************/
 
 /***********************************************************************
@@ -45,12 +45,12 @@ PRInt32 count;
 ** OUTPUTS:     None
 ** RETURN:      None
 ** SIDE EFFECTS:
-**      
+**
 ** RESTRICTIONS:
 **      None
 ** MEMORY:      NA
 ** ALGORITHM:   Determine what the status is and print accordingly.
-**      
+**
 ***********************************************************************/
 
 
@@ -129,9 +129,9 @@ static void PRSelectTest(void)
 
         loops++;
 
-        if (debug_mode) printf("Going into accept\n"); 
+        if (debug_mode) printf("Going into accept\n");
 
-        newSock = PR_Accept(listenSocket, 
+        newSock = PR_Accept(listenSocket,
                               &rAddr,
                               PR_INTERVAL_NO_TIMEOUT);
 
@@ -210,7 +210,7 @@ static void NativeSelectTest(void)
 
         loops++;
 
-        if (debug_mode) printf("Going into accept\n"); 
+        if (debug_mode) printf("Going into accept\n");
 
         newSock = PR_Accept(listenSocket, &rAddr, PR_INTERVAL_NO_TIMEOUT);
 
@@ -274,7 +274,7 @@ static void Measure(void (*func)(void), const char *msg)
 
 int main(int argc, char **argv)
 {
-	
+
 	/* The command line argument: -d is used to determine if the test is being run
 	in debug mode. The regress tool requires only one line output:PASS or FAIL.
 	All of the printfs associated with this test has been handled with a if (debug_mode)
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
 	PL_DestroyOptState(opt);
 
  /* main test */
-	
+
     PR_Init(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
     PR_STDIO_INIT();
 

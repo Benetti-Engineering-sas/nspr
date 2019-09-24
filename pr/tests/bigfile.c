@@ -165,14 +165,14 @@ int main(int argc, char **argv)
     LL_I2L(filesize64, filesize);
     buffer = (char*)PR_MALLOC(BUFFER_SIZE);
     LL_I2L(big_fragment, BUFFER_SIZE);
-    LL_MUL(filesize64, filesize64, one_meg); 
+    LL_MUL(filesize64, filesize64, one_meg);
 
     for (loop = 0; loop < BUFFER_SIZE; ++loop) buffer[loop] = (char)loop;
 
     VERBOSE(v_whisper, "Creating big file");
     file = PR_Open(filename, PR_CREATE_FILE | PR_WRONLY, 0666);
     if (NULL == file) return Error("PR_Open()", filename);
-    
+
     VERBOSE(v_whisper, "Testing available space in empty file");
     big_answer = file->methods->available64(file);
     if (!LL_IS_ZERO(big_answer)) return Error("empty available64()", filename);

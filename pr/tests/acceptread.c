@@ -100,7 +100,7 @@ static void AcceptingThread(void *arg)
     if (NULL == listen_sock)
     {
         PL_FPrintError(err_out, "PR_NewTCPSocket (server) failed");
-        PR_ProcessExit(1);        
+        PR_ProcessExit(1);
     }
     sock_opt.option = PR_SockOpt_Reuseaddr;
     sock_opt.value.reuse_addr = PR_TRUE;
@@ -108,19 +108,19 @@ static void AcceptingThread(void *arg)
     if (PR_FAILURE == rv)
     {
         PL_FPrintError(err_out, "PR_SetSocketOption (server) failed");
-        PR_ProcessExit(1);        
+        PR_ProcessExit(1);
     }
     rv = PR_Bind(listen_sock, listen_addr);
     if (PR_FAILURE == rv)
     {
         PL_FPrintError(err_out, "PR_Bind (server) failed");
-        PR_ProcessExit(1);        
+        PR_ProcessExit(1);
     }
     rv = PR_Listen(listen_sock, 10);
     if (PR_FAILURE == rv)
     {
         PL_FPrintError(err_out, "PR_Listen (server) failed");
-        PR_ProcessExit(1);        
+        PR_ProcessExit(1);
     }
     bytes = PR_AcceptRead(
         listen_sock, &accept_sock, &accept_addr, buf, buf_size, accept_timeout);

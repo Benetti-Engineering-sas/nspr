@@ -181,12 +181,12 @@ pr_root(void *arg)
     return 0;
 }
 
-PRStatus 
-_PR_MD_CREATE_THREAD(PRThread *thread, 
-                  void (*start)(void *), 
-                  PRThreadPriority priority, 
-                  PRThreadScope scope, 
-                  PRThreadState state, 
+PRStatus
+_PR_MD_CREATE_THREAD(PRThread *thread,
+                  void (*start)(void *),
+                  PRThreadPriority priority,
+                  PRThreadScope scope,
+                  PRThreadState state,
                   PRUint32 stackSize)
 {
 
@@ -250,14 +250,14 @@ _PR_MD_END_THREAD(void)
     _endthreadex(0);
 }
 
-void    
+void
 _PR_MD_YIELD(void)
 {
     /* Can NT really yield at all? */
     Sleep(0);
 }
 
-void     
+void
 _PR_MD_SET_PRIORITY(_MDThread *thread, PRThreadPriority newPri)
 {
     int nativePri;
@@ -428,7 +428,7 @@ _PR_MD_EXIT(PRIntn status)
 #ifdef HAVE_FIBERS
 
 void
-_pr_fiber_mainline(void *unused) 
+_pr_fiber_mainline(void *unused)
 {
     PRThread *fiber = _PR_MD_CURRENT_THREAD();
 
@@ -445,7 +445,7 @@ PRThread *_PR_MD_CREATE_USER_THREAD(
     if ( (thread = PR_NEW(PRThread)) == NULL ) {
         return NULL;
     }
-    
+
     memset(thread, 0, sizeof(PRThread));
     thread->md.fiber_fn = start;
     thread->md.fiber_arg = arg;
@@ -468,7 +468,7 @@ void
 _PR_MD_INIT_CONTEXT(PRThread *thread, char *top, void (*start) (void), PRBool *status)
 {
     thread->md.fiber_fn = (void (*)(void *))start;
-    thread->md.fiber_id = CreateFiber(thread->md.fiber_stacksize, 
+    thread->md.fiber_id = CreateFiber(thread->md.fiber_stacksize,
         (LPFIBER_START_ROUTINE)_pr_fiber_mainline, NULL);
     if (thread->md.fiber_id != 0)
         *status = PR_TRUE;
@@ -502,7 +502,7 @@ _PR_MD_RESTORE_CONTEXT(PRThread *thread)
     PR_ASSERT( !_PR_IS_NATIVE_THREAD(thread) );
 
     /* The user-level code for yielding will happily add ourselves to the runq
-     * and then switch to ourselves; the NT fibers can't handle switching to 
+     * and then switch to ourselves; the NT fibers can't handle switching to
      * ourselves.
      */
     if (thread != me) {
@@ -532,12 +532,12 @@ PRInt32 _PR_MD_GETTHREADAFFINITYMASK(PRThread *thread, PRUint32 *mask)
     PRInt32 rv, system_mask;
 
     rv = GetProcessAffinityMask(GetCurrentProcess(), mask, &system_mask);
-    
+
     return rv?0:-1;
 }
 
-void 
-_PR_MD_SUSPEND_CPU(_PRCPU *cpu) 
+void
+_PR_MD_SUSPEND_CPU(_PRCPU *cpu)
 {
     _PR_MD_SUSPEND_THREAD(cpu->thread);
 }

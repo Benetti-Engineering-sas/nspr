@@ -19,7 +19,7 @@ PL_strlen(const char *str)
 
     /* error checking in case we have a 64-bit platform -- make sure
      * we don't have ultra long strings that overflow an int32
-     */ 
+     */
     if( sizeof(PRUint32) < sizeof(size_t) )
     {
         if( l > PR_INT32_MAX )

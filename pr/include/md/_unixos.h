@@ -146,7 +146,7 @@ extern void _MD_unix_init_running_cpu(struct _PRCPU *cpu);
 #endif
 
 #if defined(DEBUG) && !defined(DARWIN)
-#if !defined(SOLARIS)	
+#if !defined(SOLARIS)
 #include <string.h>  /* for memset() */
 #define _MD_INIT_STACK(ts,REDZONE)					\
     PR_BEGIN_MACRO                 					\
@@ -191,7 +191,7 @@ extern void _MD_unix_init_running_cpu(struct _PRCPU *cpu);
 
 #endif	/* DEBUG */
 
-#if !defined(SOLARIS) 
+#if !defined(SOLARIS)
 
 #define PR_SET_INTSOFF(newval)
 
@@ -271,7 +271,7 @@ extern void		_MD_Wakeup_CPUs(void);
 #define _MD_INIT_FILEDESC(fd)
 
 extern void		_MD_MakeNonblock(PRFileDesc *fd);
-#define _MD_MAKE_NONBLOCK			_MD_MakeNonblock		
+#define _MD_MAKE_NONBLOCK			_MD_MakeNonblock
 
 /************************************************************************/
 
@@ -388,7 +388,7 @@ extern PRInt32		_MD_listen(PRFileDesc *fd, PRIntn backlog);
 extern PRInt32		_MD_shutdown(PRFileDesc *fd, PRIntn how);
 #define _MD_SHUTDOWN	_MD_shutdown
 
-extern PRInt32		_MD_recv(PRFileDesc *fd, void *buf, PRInt32 amount, 
+extern PRInt32		_MD_recv(PRFileDesc *fd, void *buf, PRInt32 amount,
                                PRIntn flags, PRIntervalTime timeout);
 #define _MD_RECV	_MD_recv
 extern PRInt32		_MD_send(PRFileDesc *fd, const void *buf, PRInt32 amount,

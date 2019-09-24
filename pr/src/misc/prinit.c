@@ -161,8 +161,8 @@ static void _PR_InitStuff(void)
 	_pr_gc_lm = PR_NewLogModule("gc");
 	_pr_shm_lm = PR_NewLogModule("shm");
 	_pr_shma_lm = PR_NewLogModule("shma");
-      
-    /* NOTE: These init's cannot depend on _PR_MD_CURRENT_THREAD() */ 
+
+    /* NOTE: These init's cannot depend on _PR_MD_CURRENT_THREAD() */
     _PR_MD_EARLY_INIT();
 
     _PR_InitLocks();
@@ -178,13 +178,13 @@ static void _PR_InitStuff(void)
     PR_ASSERT(NULL != _pr_sleeplock);
 
     _PR_InitThreads(PR_USER_THREAD, PR_PRIORITY_NORMAL, 0);
-    
+
 #ifdef WIN16
 	{
 	PRInt32 top;   /* artificial top of stack, win16 */
     _pr_top_of_task_stack = (char *) &top;
 	}
-#endif    
+#endif
 
 #ifndef _PR_GLOBAL_THREADS_ONLY
 	_PR_InitCPUs();
@@ -281,7 +281,7 @@ PR_IMPLEMENT(PRIntn) PR_Initialize(
  *
  * _PR_CleanupBeforeExit --
  *
- *   Perform the cleanup work before exiting the process. 
+ *   Perform the cleanup work before exiting the process.
  *   We first do the cleanup generic to all platforms.  Then
  *   we call _PR_MD_CLEANUP_BEFORE_EXIT(), where platform-dependent
  *   cleanup is done.  This function is used by PR_Cleanup().
@@ -296,7 +296,7 @@ PR_IMPLEMENT(PRIntn) PR_Initialize(
 static void
 _PR_CleanupBeforeExit(void)
 {
-/* 
+/*
 Do not make any calls here other than to destroy resources.  For example,
 do not make any calls that eventually may end up in PR_Lock.  Because the
 thread is destroyed, can not access current thread any more.
@@ -329,7 +329,7 @@ thread is destroyed, can not access current thread any more.
  *   Then it performs cleanup in preparation for exiting the process.
  *   PR_Cleanup() does not exit the primordial thread (which would
  *   in turn exit the process).
- *   
+ *
  *   PR_Cleanup() only responds when it is called by the primordial
  *   thread. Calls by any other thread are silently ignored.
  *
@@ -428,11 +428,11 @@ PR_IMPLEMENT(PRStatus) PR_Cleanup()
 /*
  *------------------------------------------------------------------------
  * PR_ProcessExit --
- * 
+ *
  *   Cause an immediate, nongraceful, forced termination of the process.
  *   It takes a PRIntn argument, which is the exit status code of the
  *   process.
- *   
+ *
  * See also: PR_Cleanup()
  *
  *------------------------------------------------------------------------
@@ -609,7 +609,7 @@ PR_ProcessAttrSetInheritableFD(
         nwritten = PR_snprintf(cur, freeSize, ":%s:%d:0x%" PR_PRIxOSFD,
                 name, (PRIntn)fd->methods->file_type, fd->secret->md.osfd);
     }
-    attr->fdInheritBufferUsed += nwritten; 
+    attr->fdInheritBufferUsed += nwritten;
     return PR_SUCCESS;
 }
 

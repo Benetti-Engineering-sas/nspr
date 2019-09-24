@@ -45,7 +45,7 @@
 #else
 #define USE_MACH_DYLD
 #endif
-#define _PR_HAVE_SOCKADDR_LEN  
+#define _PR_HAVE_SOCKADDR_LEN
 #define _PR_STAT_HAS_ST_ATIMESPEC
 #define _PR_HAVE_LARGE_OFF_T
 #define _PR_HAVE_SYSV_SEMAPHORES

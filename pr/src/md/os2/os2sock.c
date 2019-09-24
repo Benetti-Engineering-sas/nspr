@@ -12,7 +12,7 @@
 /*There is standard BSD (which is kind of slow) and a new flavor of select() that takes      */
 /*an integer list of sockets, the number of read sockets, write sockets, except sockets, and */
 /*a millisecond count for timeout. In the interest of performance I have choosen the OS/2    */
-/*specific version of select(). See OS/2 TCP/IP Programmer's Toolkit for more info.          */ 
+/*specific version of select(). See OS/2 TCP/IP Programmer's Toolkit for more info.          */
 
 #include "primpl.h"
 
@@ -32,7 +32,7 @@ _PR_MD_SOCKET(int domain, int type, int flags)
 
     osfd = socket(domain, type, flags);
 
-    if (osfd == -1) 
+    if (osfd == -1)
     {
         err = sock_errno();
         _PR_MD_MAP_SOCKET_ERROR(err);
@@ -106,14 +106,14 @@ socket_io_wait( PRInt32 osfd, PRInt32 fd_type, PRIntervalTime timeout )
                 else
                     rv = bsdselect(osfd + 1, NULL, &rd_wr, NULL, &tv);
 #else
-            lTimeout = _PR_INTERRUPT_CHECK_INTERVAL_SECS * 1000; 
+            lTimeout = _PR_INTERRUPT_CHECK_INTERVAL_SECS * 1000;
             do {
                 socks[0] = osfd;
                 if (fd_type == READ_FD)
                     rv = os2_select(socks, 1, 0, 0, lTimeout);
                 else
                     rv = os2_select(socks, 0, 1, 0, lTimeout);
-#endif                    
+#endif
                 if (rv == -1 && (syserror = sock_errno()) != EINTR) {
                     _PR_MD_MAP_SELECT_ERROR(syserror);
                     break;
@@ -253,7 +253,7 @@ done:
 }
 
 PRInt32
-_PR_MD_CONNECT(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen, 
+_PR_MD_CONNECT(PRFileDesc *fd, const PRNetAddr *addr, PRUint32 addrlen,
                PRIntervalTime timeout)
 {
     PRInt32 rv, err;
@@ -313,7 +313,7 @@ retry:
             }
             return 0;
         }
-        
+
         _PR_MD_MAP_CONNECT_ERROR(err);
     }
 
@@ -347,7 +347,7 @@ _PR_MD_LISTEN(PRFileDesc *fd, PRIntn backlog)
 
 
 PRInt32
-_PR_MD_RECV(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags, 
+_PR_MD_RECV(PRFileDesc *fd, void *buf, PRInt32 amount, PRIntn flags,
             PRIntervalTime timeout)
 {
     PRInt32 osfd = fd->secret->md.osfd;
@@ -639,7 +639,7 @@ _MD_MakeNonblock(PRFileDesc *fd)
     PRInt32 osfd = fd->secret->md.osfd;
     PRInt32 err;
     PRUint32  one = 1;
-    
+
     if (osfd <= 2) {
         /* Don't mess around with stdin, stdout or stderr */
         return;

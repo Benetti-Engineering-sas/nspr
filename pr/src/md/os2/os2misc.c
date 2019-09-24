@@ -73,7 +73,7 @@ PR_Now(void)
     LL_MUL(ms, ms, ms2us);
     LL_MUL(s, s, s2us);
     LL_ADD(s, s, ms);
-    return s;       
+    return s;
 }
 
 
@@ -120,7 +120,7 @@ static int assembleCmdLine(char *const *argv, char **cmdLine)
             strcat(*cmdLine, " ");
         }
         strcat(*cmdLine, *arg);
-    } 
+    }
     return 0;
 }
 
@@ -221,7 +221,7 @@ PRProcess * _PR_CreateOS2Process(
     char *cmdLine = NULL;
     char **newEnvp = NULL;
     char *envBlock = NULL;
-   
+
     STARTDATA startData = {0};
     APIRET    rc;
     ULONG     ulAppType = 0;
@@ -250,7 +250,7 @@ PRProcess * _PR_CreateOS2Process(
         PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
         goto errorExit;
     }
-   
+
     if (assembleCmdLine(argv, &cmdLine) == -1) {
         PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
         goto errorExit;
@@ -260,7 +260,7 @@ PRProcess * _PR_CreateOS2Process(
     /*
      * DosQueryAppType() fails if path (the char* in the first argument) is in
      * high memory. If that is the case, the following moves it to low memory.
-     */ 
+     */
     if ((ULONG)path >= 0x20000000) {
         size_t len = strlen(path) + 1;
         char *copy = (char *)alloca(len);
@@ -268,7 +268,7 @@ PRProcess * _PR_CreateOS2Process(
         path = copy;
     }
 #endif
-   
+
     if (envp == NULL) {
         newEnvp = NULL;
     } else {
@@ -287,7 +287,7 @@ PRProcess * _PR_CreateOS2Process(
         PR_SetError(PR_OUT_OF_MEMORY_ERROR, 0);
         goto errorExit;
     }
-  
+
     rc = DosQueryAppType(path, &ulAppType);
     if (rc != NO_ERROR) {
        char *pszDot = strrchr(path, '.');
@@ -307,7 +307,7 @@ PRProcess * _PR_CreateOS2Process(
        PR_SetError(PR_UNKNOWN_ERROR, 0);
        goto errorExit;
     }
- 
+
     if ((ulAppType & FAPPTYP_WINDOWAPI) == FAPPTYP_WINDOWAPI) {
         startData.SessionType = SSF_TYPE_PM;
     }
@@ -317,16 +317,16 @@ PRProcess * _PR_CreateOS2Process(
     else {
         startData.SessionType = SSF_TYPE_DEFAULT;
     }
- 
+
     if (ulAppType & (FAPPTYP_WINDOWSPROT31 | FAPPTYP_WINDOWSPROT | FAPPTYP_WINDOWSREAL))
     {
         strcpy(pszEXEName, "WINOS2.COM");
         startData.SessionType = PROG_31_STDSEAMLESSVDM;
         strcpy(pszFormatString, "/3 %s %s");
     }
- 
+
     startData.InheritOpt = SSF_INHERTOPT_SHELL;
- 
+
     if (pszEXEName[0]) {
         pszFormatResult = PR_MALLOC(strlen(pszFormatString)+strlen(path)+strlen(cmdLine));
         sprintf(pszFormatResult, pszFormatString, path, cmdLine);
@@ -336,13 +336,13 @@ PRProcess * _PR_CreateOS2Process(
         startData.PgmInputs = cmdLine;
     }
     startData.PgmName = pszEXEName;
- 
+
     startData.Length = sizeof(startData);
     startData.Related = SSF_RELATED_INDEPENDENT;
     startData.ObjectBuffer = pszObjectBuffer;
     startData.ObjectBuffLen = CCHMAXPATH;
     startData.Environment = envBlock;
- 
+
     if (attr) {
         /* On OS/2, there is really no way to pass file handles for stdin,
          * stdout, and stderr to a new process.  Instead, we can make it
@@ -407,7 +407,7 @@ PRProcess * _PR_CreateOS2Process(
         }
 
         proc->md.pid = procInfo.codeTerminate;
-    } else {	
+    } else {
         /*
          * If no STDIN/STDOUT redirection is not needed, use DosStartSession
          * to create a new, independent session
@@ -418,7 +418,7 @@ PRProcess * _PR_CreateOS2Process(
             PR_SetError(PR_UNKNOWN_ERROR, rc);
             goto errorExit;
         }
- 
+
         proc->md.pid = pid;
     }
 
@@ -453,7 +453,7 @@ errorExit:
 
 PRStatus _PR_DetachOS2Process(PRProcess *process)
 {
-    /* On OS/2, a process is either created as a child or not. 
+    /* On OS/2, a process is either created as a child or not.
      * You can't 'detach' it later on.
      */
     PR_DELETE(process);
@@ -470,7 +470,7 @@ PRStatus _PR_WaitOS2Process(PRProcess *process,
     RESULTCODES results;
     PID pidEnded = 0;
 
-    ulRetVal = DosWaitChild(DCWA_PROCESS, DCWW_WAIT, 
+    ulRetVal = DosWaitChild(DCWA_PROCESS, DCWW_WAIT,
                             &results,
                             &pidEnded, process->md.pid);
 
@@ -509,7 +509,7 @@ void
 _PR_MD_WAKEUP_CPUS( void )
 {
     return;
-}    
+}
 
 /*
  **********************************************************************

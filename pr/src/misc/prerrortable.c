@@ -107,7 +107,7 @@ PR_ErrorToString(PRErrorCode code, PRLanguageCode language)
 		    callback_private, et->table_private);
 		if (msg) return msg;
 	    }
-    
+
 	    return(et->table->msgs[code - et->table->base].en_text);
 	}
     }
@@ -183,7 +183,7 @@ PR_ErrorInstallTable(const struct PRErrorTable *table)
 
 PR_IMPLEMENT(void)
 PR_ErrorInstallCallback(const char * const * languages,
-		       PRErrorCallbackLookupFn *lookup, 
+		       PRErrorCallbackLookupFn *lookup,
 		       PRErrorCallbackNewTableFn *newtable,
 		       struct PRErrorCallbackPrivate *cb_private)
 {
@@ -191,7 +191,7 @@ PR_ErrorInstallCallback(const char * const * languages,
 
     assert(strcmp(languages[0], "i-default") == 0);
     assert(strcmp(languages[1], "en") == 0);
-    
+
     callback_languages = languages;
     callback_lookup = lookup;
     callback_newtable = newtable;
