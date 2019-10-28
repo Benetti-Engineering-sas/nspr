@@ -706,7 +706,7 @@ static void RunThisOne(
 
 static Verbosity ChangeVerbosity(Verbosity verbosity, PRIntn delta)
 {
-    return (Verbosity)(((PRIntn)verbosity) + delta)
+    return (Verbosity)(((PRIntn)verbosity) + delta);
 }  /* ChangeVerbosity */
 
 int main(int argc, char **argv)
