@@ -89,6 +89,7 @@ fi
 # nameshm1
 # nblayer
 # nonblock
+# ntioto
 # op_2long
 # parent
 # provider
@@ -147,7 +148,6 @@ lock
 lockfile
 logger
 many_cv
-ntioto
 ntoh
 op_excl
 op_filnf
