@@ -6483,78 +6483,71 @@ fi
     PR_MD_CSRCS=darwin.c
     PR_MD_ASFILES=os_Darwin.s
 
-    # Add Mac OS X support for loading CFM & CFBundle plugins
-    if test -f "${MACOS_SDK_DIR}/System/Library/Frameworks/Carbon.framework/Carbon"; then
-        $as_echo "#define XP_MACOSX 1" >>confdefs.h
+    if test -n "$_MACOSX_DEPLOYMENT_TARGET" ; then
+                export MACOSX_DEPLOYMENT_TARGET=$_MACOSX_DEPLOYMENT_TARGET
+    elif test -z "$MACOSX_DEPLOYMENT_TARGET" ; then
+                                case "${target_cpu}" in
+            powerpc*)
+                                export MACOSX_DEPLOYMENT_TARGET=10.3
+                ;;
+            i*86*)
+                                export MACOSX_DEPLOYMENT_TARGET=10.4
+                ;;
+        esac
+    fi
 
-        OS_TARGET=MacOSX
 
-        if test -n "$_MACOSX_DEPLOYMENT_TARGET" ; then
-                        export MACOSX_DEPLOYMENT_TARGET=$_MACOSX_DEPLOYMENT_TARGET
-        elif test -z "$MACOSX_DEPLOYMENT_TARGET" ; then
-                                                case "${target_cpu}" in
-                powerpc*)
-                                        export MACOSX_DEPLOYMENT_TARGET=10.3
-                    ;;
-                i*86*)
-                                        export MACOSX_DEPLOYMENT_TARGET=10.4
-                    ;;
-            esac
+    if test "$MACOS_SDK_DIR"; then
+
+        if test ! -d "$MACOS_SDK_DIR"; then
+            as_fn_error $? "SDK not found.  When using --with-macos-sdk, you must
+specify a valid SDK.  SDKs are installed when the optional cross-development
+tools are selected during the Xcode/Developer Tools installation." "$LINENO" 5
         fi
 
 
-        if test "$MACOS_SDK_DIR"; then
+        CC_VERSION=`$CC -v 2>&1 | grep 'gcc version'`
+        GCC_VERSION_FULL=`echo $CC_VERSION | $PERL -pe 's/^.*gcc version ([^ ]*).*/$1/'`
+        GCC_VERSION=`echo $GCC_VERSION_FULL | $PERL -pe '(split(/\./))[0]>=4&&s/(^\d*\.\d*).*/$1/;'`
 
-            if test ! -d "$MACOS_SDK_DIR"; then
-                as_fn_error $? "SDK not found.  When using --with-macos-sdk, you must
-specify a valid SDK.  SDKs are installed when the optional cross-development
-tools are selected during the Xcode/Developer Tools installation." "$LINENO" 5
+        GCC_VERSION_MAJOR=`echo $GCC_VERSION_FULL | $PERL -pe 's/(^\d*).*/$1/;'`
+        if test "$GCC_VERSION_MAJOR" -lt "4" ; then
+            SDK_C_FRAMEWORK="-F${MACOS_SDK_DIR}/System/Library/Frameworks"
+            if test -d "${MACOS_SDK_DIR}/Library/Frameworks" ; then
+                SDK_C_FRAMEWORK="$SDK_C_FRAMEWORK -F${MACOS_SDK_DIR}/Library/Frameworks"
             fi
 
+            SDK_C_INCLUDE="-isystem ${MACOS_SDK_DIR}/usr/include/gcc/darwin/${GCC_VERSION} -isystem ${MACOS_SDK_DIR}/usr/include ${SDK_C_FRAMEWORK}"
 
-            CC_VERSION=`$CC -v 2>&1 | grep 'gcc version'`
-            GCC_VERSION_FULL=`echo $CC_VERSION | $PERL -pe 's/^.*gcc version ([^ ]*).*/$1/'`
-            GCC_VERSION=`echo $GCC_VERSION_FULL | $PERL -pe '(split(/\./))[0]>=4&&s/(^\d*\.\d*).*/$1/;'`
+            CFLAGS="$CFLAGS -nostdinc ${SDK_C_INCLUDE}"
 
-            GCC_VERSION_MAJOR=`echo $GCC_VERSION_FULL | $PERL -pe 's/(^\d*).*/$1/;'`
-            if test "$GCC_VERSION_MAJOR" -lt "4" ; then
-                SDK_C_FRAMEWORK="-F${MACOS_SDK_DIR}/System/Library/Frameworks"
-                if test -d "${MACOS_SDK_DIR}/Library/Frameworks" ; then
-                    SDK_C_FRAMEWORK="$SDK_C_FRAMEWORK -F${MACOS_SDK_DIR}/Library/Frameworks"
-                fi
-
-                SDK_C_INCLUDE="-isystem ${MACOS_SDK_DIR}/usr/include/gcc/darwin/${GCC_VERSION} -isystem ${MACOS_SDK_DIR}/usr/include ${SDK_C_FRAMEWORK}"
-
-                CFLAGS="$CFLAGS -nostdinc ${SDK_C_INCLUDE}"
-
-                                CPP="$CPP -nostdinc ${SDK_C_INCLUDE}"
+                        CPP="$CPP -nostdinc ${SDK_C_INCLUDE}"
 
 
-                HOST_DARWIN_MAJOR=`echo "$build_os" | sed -E -e 's/^darwin([0-9]+).*$/\1/'`
+            HOST_DARWIN_MAJOR=`echo "$build_os" | sed -E -e 's/^darwin([0-9]+).*$/\1/'`
 
-                if test "$HOST_DARWIN_MAJOR" -lt 9 ; then
-                                                                                                                        MACOS_SDK_LIBS="-L${MACOS_SDK_DIR}/usr/lib/gcc/darwin -L${MACOS_SDK_DIR}/usr/lib/gcc/darwin/${GCC_VERSION_FULL} -L${MACOS_SDK_DIR}/usr/lib ${SDK_C_FRAMEWORK}"
-                else
-                                                                                                                                                                                                        MACOS_SDK_LIBS="-Wl,-syslibroot,${MACOS_SDK_DIR}"
-                fi
-
-                LDFLAGS="${MACOS_SDK_LIBS} $LDFLAGS"
-                export NEXT_ROOT=$MACOS_SDK_DIR
-
-                if test -n "$CROSS_COMPILE" ; then
-                                                                                HOST_CC="NEXT_ROOT= $HOST_CC"
-                    HOST_CXX="NEXT_ROOT= $HOST_CXX"
-                fi
+            if test "$HOST_DARWIN_MAJOR" -lt 9 ; then
+                                                                                                MACOS_SDK_LIBS="-L${MACOS_SDK_DIR}/usr/lib/gcc/darwin -L${MACOS_SDK_DIR}/usr/lib/gcc/darwin/${GCC_VERSION_FULL} -L${MACOS_SDK_DIR}/usr/lib ${SDK_C_FRAMEWORK}"
             else
-                                                CFLAGS="$CFLAGS -isysroot ${MACOS_SDK_DIR}"
+                                                                                                                                                                MACOS_SDK_LIBS="-Wl,-syslibroot,${MACOS_SDK_DIR}"
+            fi
 
-                                CPP="$CPP -isysroot ${MACOS_SDK_DIR}"
+            LDFLAGS="${MACOS_SDK_LIBS} $LDFLAGS"
+            export NEXT_ROOT=$MACOS_SDK_DIR
 
-                                                                                if test "$GCC_VERSION_FULL" != "4.0.0" ; then
-                                                            LDFLAGS="$LDFLAGS -isysroot ${MACOS_SDK_DIR}"
-                else
-                                                            LDFLAGS="$LDFLAGS -Wl,-syslibroot,${MACOS_SDK_DIR}"
-                fi
+            if test -n "$CROSS_COMPILE" ; then
+                                                                HOST_CC="NEXT_ROOT= $HOST_CC"
+                HOST_CXX="NEXT_ROOT= $HOST_CXX"
+            fi
+        else
+                                    CFLAGS="$CFLAGS -isysroot ${MACOS_SDK_DIR}"
+
+                        CPP="$CPP -isysroot ${MACOS_SDK_DIR}"
+
+                                                            if test "$GCC_VERSION_FULL" != "4.0.0" ; then
+                                                LDFLAGS="$LDFLAGS -isysroot ${MACOS_SDK_DIR}"
+            else
+                                                LDFLAGS="$LDFLAGS -Wl,-syslibroot,${MACOS_SDK_DIR}"
             fi
         fi
     fi
