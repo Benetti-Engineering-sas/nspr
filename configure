@@ -6458,12 +6458,22 @@ fi
                 CPU_ARCH=i386
             fi
             ;;
+        aarch64)
+            CPU_ARCH=aarch64
+            ;;
         *)
             CPU_ARCH=ppc
             ;;
     esac
     if test "`echo $CC | grep -c '\-arch '`" = "0"; then
-        CC="$CC -arch $CPU_ARCH"
+        case "$CPU_ARCH" in
+        aarch64)
+            CC="$CC -arch arm64"
+            ;;
+        *)
+            CC="$CC -arch $CPU_ARCH"
+            ;;
+        esac
     fi
     ac_fn_c_check_header_mongrel "$LINENO" "crt_externs.h" "ac_cv_header_crt_externs_h" "$ac_includes_default"
 if test "x$ac_cv_header_crt_externs_h" = xyes; then :

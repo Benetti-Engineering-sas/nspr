@@ -1327,12 +1327,22 @@ case "$target" in
                 CPU_ARCH=i386
             fi
             ;;
+        aarch64)
+            CPU_ARCH=aarch64
+            ;;
         *)
             CPU_ARCH=ppc
             ;;
     esac
     if test "`echo $CC | grep -c '\-arch '`" = "0"; then
-        CC="$CC -arch $CPU_ARCH"
+        case "$CPU_ARCH" in
+        aarch64)
+            CC="$CC -arch arm64"
+            ;;
+        *)
+            CC="$CC -arch $CPU_ARCH"
+            ;;
+        esac
     fi
     AC_CHECK_HEADER(crt_externs.h, AC_DEFINE(HAVE_CRT_EXTERNS_H))
     DSO_CFLAGS=-fPIC
