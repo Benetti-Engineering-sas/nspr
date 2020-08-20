@@ -398,7 +398,7 @@ AC_ARG_WITH(macos-sdk,
 AC_ARG_ENABLE(macos-target,
              [  --enable-macos-target=VER
                           Set the minimum MacOS version needed at runtime
-                          [10.2 for ppc, 10.4 for x86]],
+                          [10.3 for ppc, 10.4 for x86]],
              [_MACOSX_DEPLOYMENT_TARGET=$enableval])
 
 dnl ========================================================
@@ -1360,8 +1360,8 @@ case "$target" in
             dnl minimum.
             case "${target_cpu}" in
                 powerpc*)
-                    dnl Architecture minimum 10.2
-                    export MACOSX_DEPLOYMENT_TARGET=10.2
+                    dnl Architecture minimum 10.3
+                    export MACOSX_DEPLOYMENT_TARGET=10.3
                     ;;
                 i*86*)
                     dnl Architecture minimum 10.4

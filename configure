@@ -1467,7 +1467,7 @@ Optional Features:
   --enable-cplus          Enable some c++ api routines
   --enable-macos-target=VER
                           Set the minimum MacOS version needed at runtime
-                          10.2 for ppc, 10.4 for x86
+                          10.3 for ppc, 10.4 for x86
   --disable-os2-high-mem  Disable high-memory support on OS/2
 
   --enable-strip          Enable stripping of shared libs and programs
@@ -6494,7 +6494,7 @@ fi
         elif test -z "$MACOSX_DEPLOYMENT_TARGET" ; then
                                                 case "${target_cpu}" in
                 powerpc*)
-                                        export MACOSX_DEPLOYMENT_TARGET=10.2
+                                        export MACOSX_DEPLOYMENT_TARGET=10.3
                     ;;
                 i*86*)
                                         export MACOSX_DEPLOYMENT_TARGET=10.4
